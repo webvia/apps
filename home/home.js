@@ -1,7 +1,23 @@
 SetIconCharacter('🏠');  SetTitleText('Home');
 
-let html=`
+let css=`
+body { background-color: #121212;  color: #F8F8F8; }  d { display: block; }
+#wrap { display: flex;  justify-content: center; }
+	#cont { width: 33.33vw; }
+		#box { padding: 2em 0 1.5em 0; }
+			#input { width: 96%;  margin: 0;  padding: .5em .5em .5em .5em;  font-size: 1.25em; font-family: inherit;  border-radius: .25em;  border: none;  outline: 1px solid #DBB2FF; background-color: #23036A;  color: #F8F8F8;  }
+			#input:hover, #input:focus { outline: 2px solid #DBB2FF; }
+		#links { font-size: 1.5em; user-select: none;  border-radius: .25em;  outline: 1px solid #DBB2FF; }
+			#links:hover { outline: 2px solid #DBB2FF; }
+			#links d { display: flex;  flex-direction: row;  flex-wrap: nowrap;  align-items: center;  padding: .25em .5em .25em .5em;  }
+			#links d:hover { background-color: #23036A;  color: #DBB2FF;  cursor: pointer;  outline: 2px solid #DBB2FF;  border-radius: .25em; }
+			#links img { width: 1em;  height: 1em; }
+			#links t { padding-left: .75em; }
+`;  AddStyleInternal(css);
 
+// ===================================================================================================================================================================================================
+
+let html=`
 <d id="wrap">
 	<d id="cont">
 		<d id="box">
@@ -18,27 +34,7 @@ let html=`
 		</d "links">
 	</d "cont">
 </d "wrap">
-
 `;  ModifyContent('add',html,'body','end');
-
-// ===================================================================================================================================================================================================
-
-let css=`
-
-body { background-color: #121212;  color: #F8F8F8; }  d { display: block; }
-#wrap { display: flex;  justify-content: center; }
-	#cont { width: 33.33vw; }
-		#box { padding: 2em 0 1.5em 0; }
-			#input { width: 96%;  margin: 0;  padding: .5em .5em .5em .5em;  font-size: 1.25em; font-family: inherit;  border-radius: .25em;  border: none;  outline: 1px solid #DBB2FF; background-color: #23036A;  color: #F8F8F8;  }
-			#input:hover, #input:focus { outline: 2px solid #DBB2FF; }
-		#links { font-size: 1.5em; user-select: none;  border-radius: .25em;  outline: 1px solid #DBB2FF; }
-			#links:hover { outline: 2px solid #DBB2FF; }
-			#links d { display: flex;  flex-direction: row;  flex-wrap: nowrap;  align-items: center;  padding: .25em .5em .25em .5em;  }
-			#links d:hover { background-color: #23036A;  color: #DBB2FF;  cursor: pointer;  outline: 2px solid #DBB2FF;  border-radius: .25em; }
-			#links img { width: 1em;  height: 1em; }
-			#links t { padding-left: .75em; }
-
-`;  AddStyleInternal(css);
 
 // ===================================================================================================================================================================================================
 
@@ -57,21 +53,13 @@ let az=`https://www.amazon.com/s?k=`;
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function Go(u){ if(u==null){return}; let q=qi.value; if(q==null||q==''){return}; q.replace(' ','+').toLowerCase(); u=u.replace('{q}',q); win.open(u); Reset() }
+function Go(u){ if(u==null){return}; let q=qi.value; if(q==null||q==''){return}; q.replace(' ','+').toLowerCase(); u=u.replace('{q}',q); win.open(u) }
 
+function PV(){ let q=qi.value;  if(q==null||q==''){return};  q=q.toUpperCase().split(' ');  let qa1=''; let qa2=''; let qa3=''; let qs1=''; let qs2=''; let qs3='';  if(q.length>0){ qa1='100'; qs1=q[0] }; if(q.length>1){ qa2='100'; qs2=q[1] }; if(q.length>2){ qa3='100'; qs3=q[2] }; win.open(`https://www.portfoliovisualizer.com/backtest-portfolio?s=y&startYear=&endYear=&includeYTD=true&allocation1_1=${qa1}&allocation2_2=${qa2}&allocation3_3=${qa3}&symbol1=${qs1}&symbol2=${qs2}&symbol3=${qs3}`) }
 
-function PV(){ let q=qi.value;  if(q==null||q==''){return};  q=q.toUpperCase().split(' ');  let qa1=''; let qa2=''; let qa3=''; let qs1=''; let qs2=''; let qs3='';  if(q.length>0){ qa1='100'; qs1=q[0] }; if(q.length>1){ qa2='100'; qs2=q[1] }; if(q.length>2){ qa3='100'; qs3=q[2] }; win.open(`https://www.portfoliovisualizer.com/backtest-portfolio?s=y&startYear=&endYear=&includeYTD=true&allocation1_1=${qa1}&allocation2_2=${qa2}&allocation3_3=${qa3}&symbol1=${qs1}&symbol2=${qs2}&symbol3=${qs3}`); Reset() }
-
-
-function Reset(){ qi.value=''; qi.blur(); }
-
-
-win.addEventListener('focus',OnWinFocus);  function OnWinFocus(){ qi.blur() };
-win.addEventListener('blur',OnWinBlur);  function OnWinBlur(){ qi.blur() };
-
+function Focus() { qi.focus();  qi.select() };  win.addEventListener('focus', Focus);  qi.addEventListener('focus', Focus);
 
 /* Notes =============================================================================================================================================================================================
-
 
 
 ====================================================================================================================================================================================================*/

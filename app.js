@@ -1,9 +1,13 @@
+// Vars ==============================================================================================================================================================================================
+
 let win=window; let hist=win.history; let clip=win.navigator.clipboard; let doc=win.document; let loc=doc.location; let title=doc.title; let head=doc.head; let body=doc.body;
 let href=loc.href; let prot=loc.protocol+'://'; let host=loc.host; let path=loc.pathname; let srch=loc.search; let params=new URLSearchParams(srch); let hash=loc.hash; /*href=prot://host/path/?srch(prms)#hash*/
 let app_u=params.get('app'); let app_j=app_u+'.js';  
 let icon=head.querySelector('#app_icon');  let base=head.querySelector('#app_base').setAttribute('href',app_u+'/');  doc.querySelector('noscript').remove();
 
-// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Setup =============================================================================================================================================================================================
+
+win.onerror=(message,source,lineno,colno,error) => { let msg=message.substring(message.indexOf(':')+2);  let src=source.substring(source.lastIndexOf('/')+1);  let err=`${msg}  [ ${src} > ${lineno}-${colno} ]`;  alert(err) };
 
 if(app_u!==null){ SetTitleText(app_u); SetIconCharacter(`🔳`); AddScriptExternal(app_j) } else{ SetTitleText(`App not specified`); SetIconCharacter(`⛔️`); body.insertAdjacentHTML('beforeend',`App not specified.`) } 
 

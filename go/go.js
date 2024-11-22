@@ -17,7 +17,7 @@ else if(s=='cat'){ u=`en.wikipedia.org/`;  if(s=='cat'){ u=`${u}wiki/Category:${
 else if(s=='yt'){ u=`www.youtube.com/`;  if(t=='v'||t=='video'){ u=`${u}watch?v=${v}` }  else if(t=='pl'){ u=`${u}playlist?list=${v}` }  else if(t=='ch'){ u=`${u}@${v}` }  else{ u=`${u}results?search_query=${v}` } }
 
 // Amazon  [ amz : prod, store ]
-else if(s=='amz'){ u=`www.amazon.com/`;  if(t=='prod'||t=='product'){ u=`${u}dp/${v}` }  else if(t=='st'||t=='store'){ u=`${u}stores/page/${v}` }  else{ u=`${u}s?k=${v}` } }
+else if(s=='amz'){ u=`www.amazon.com/`;  if(t=='p'|t=='prod'||t=='product'){ u=`${u}dp/${v}` }  else if(t=='st'||t=='store'){ u=`${u}stores/page/${v}` }  else{ u=`${u}s?k=${v}` } }
 
 // DuckDuckGo  [ ddg ]   \ddg__hello+world
 else if(s=='ddg'){ u=`duckduckgo.com/`;  u=`${u}?q=${v}` }
