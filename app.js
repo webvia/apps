@@ -1,15 +1,17 @@
-// Vars ==============================================================================================================================================================================================
+let win,hist,clip, doc,head,title,icon,base,body,links,h1, loc,href,prot,ref,host,dom,path,srch,prms,hash, app_u,app_j;
 
-let win=window; let hist=win.history; let clip=win.navigator.clipboard; let doc=win.document; let loc=doc.location; let title=doc.title; let head=doc.head; let body=doc.body;
-let href=loc.href; let prot=loc.protocol+'://'; let host=loc.host; let path=loc.pathname; let srch=loc.search; let params=new URLSearchParams(srch); let hash=loc.hash; /*href=prot://host/path/?srch(prms)#hash*/
-let app_u=params.get('app'); let app_j=app_u+'.js';  
-let icon=head.querySelector('#app_icon');  let base=head.querySelector('#app_base').setAttribute('href',app_u+'/');  doc.querySelector('noscript').remove();
+function OnError(message,source,lineno,colno,error){ let msg=message.substring(message.indexOf(':')+2);  let src=source.substring(source.lastIndexOf('/')+1);  let err=`${msg}  [ ${src} > ${lineno}-${colno} ]`;  alert(err) }
 
-// Setup =============================================================================================================================================================================================
+// PreLoad ===========================================================================================================================================================================================
 
-win.onerror=(message,source,lineno,colno,error) => { let msg=message.substring(message.indexOf(':')+2);  let src=source.substring(source.lastIndexOf('/')+1);  let err=`${msg}  [ ${src} > ${lineno}-${colno} ]`;  alert(err) };
-
-if(app_u!==null){ SetTitleText(app_u); SetIconCharacter(`🔳`); AddScriptExternal(app_j) } else{ SetTitleText(`App not specified`); SetIconCharacter(`⛔️`); body.insertAdjacentHTML('beforeend',`App not specified.`) } 
+PreLoad(); function PreLoad(){ window.addEventListener('error',OnError);
+win=window; hist=win.history; clip=win.navigator.clipboard; doc=win.document; title=doc.title; head=doc.head; body=doc.body; links=doc.links; 
+loc=doc.location; href=loc.href; prot=loc.protocol+'://'; host=loc.host; path=loc.pathname; srch=loc.search; prms=new URLSearchParams(srch); hash=loc.hash;
+ref=href.replace(/^.+\/\/www\.|.+\/\//,''); dom=ref.substring(0,ref.indexOf('/')); dom=dom.substring(0,dom.lastIndexOf('.')); //href(ref)=prot/host(dom)/path/?srch&prms#hash
+app_u=prms.get('app'); app_j=app_u+'.js';  
+icon=head.querySelector('#app_icon'); base=head.querySelector('#app_base').setAttribute('href',app_u+'/'); doc.querySelector('noscript').remove();
+if(app_u!==null){ SetTitleText(app_u); SetIconCharacter(`🔳`); AddScriptExternal(app_j) } else{ SetTitleText(`App not specified`); SetIconCharacter(`⛔️`); body.insertAdjacentHTML('beforeend',`App not specified.`) }; 
+} /*-PreLoad*/  /*DOMContentLoaded*/
 
 // Functions =========================================================================================================================================================================================
 

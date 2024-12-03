@@ -7,59 +7,89 @@ body { background-color: #121212;  color: #F8F8F8; }  d { display: block; }
 		#box { padding: 2em 0 1.5em 0; }
 			#input { width: 96%;  margin: 0;  padding: .5em .5em .5em .5em;  font-size: 1.25em; font-family: inherit;  border-radius: .25em;  border: none;  outline: 1px solid #DBB2FF; background-color: #23036A;  color: #F8F8F8;  }
 			#input:hover, #input:focus { outline: 2px solid #DBB2FF; }
-		#links { font-size: 1.5em; user-select: none;  border-radius: .25em;  outline: 1px solid #DBB2FF; }
-			#links:hover { outline: 2px solid #DBB2FF; }
-			#links d { display: flex;  flex-direction: row;  flex-wrap: nowrap;  align-items: center;  padding: .25em .5em .25em .5em;  }
-			#links d:hover { background-color: #23036A;  color: #DBB2FF;  cursor: pointer;  outline: 2px solid #DBB2FF;  border-radius: .25em; }
-			#links img { width: 1em;  height: 1em; }
-			#links t { padding-left: .75em; }
+		#srchs, #links { font-size: 1.5em; user-select: none;  border-radius: .25em; }  #srchs { outline: 1px solid #DBB2FF; }
+			#srchs:hover { outline: 2px solid #DBB2FF; }
+			#srchs d, #links d { display: flex;  flex-direction: row;  flex-wrap: nowrap;  align-items: center;  padding: .25em .5em .25em .5em;  }
+			#srchs d:hover, #links d:hover { background-color: #23036A;  color: #DBB2FF;  cursor: pointer;  outline: 2px solid #DBB2FF;  border-radius: .25em; }
+			#srchs img, #links img { width: 1em;  height: 1em; }
+			#srchs t, #links t { padding-left: .75em; }
 `;  AddStyleInternal(css);
 
 // ===================================================================================================================================================================================================
+
+let ss=[
+[`DuckDuckGo`,`duckduckgo.com`,`?q={q}&kl=us-en&kp=-2&kz=-1&kav=1&kn=1&kd=-1&kg=g&kae=d&kw=s&k1=-1`],
+[`Wikipedia`,`duckduckgo.com`,`?q={q}+site:en.wikipedia.org/wiki&kl=us-en&kp=-2&kz=-1&kav=1&kn=1&kd=-1&kg=g&kae=d&kw=s&k1=-1`],
+[`YouTube`,`www.youtube.com`,`results?search_query={q}`],
+[`Amazon`,`www.amazon.com`,`s?k={q}`],
+[`StockAnalysis`,`stockanalysis.com`,`etf/{q}`],
+[`PortfolioVisualizer`,`www.portfoliovisualizer.com`,`backtest-portfolio?s=y&startYear=&endYear=&includeYTD=true&allocation1_1={qa1}&allocation2_2={qa2}&allocation3_3={qa3}&symbol1={qs1}&symbol2={qs2}&symbol3={qs3}`],
+[`StackOverflow`,`duckduckgo.com`,`?q={q}+site:stackoverflow.com/questions&kl=us-en&kp=-2&kz=-1&kav=1&kn=1&kd=-1&kg=g&kae=d&kw=s&k1=-1`]
+];
+let sh='';
+for(let x of ss){ sh=sh+`<d onclick="Search('https://${x[1]}/${x[2]}')"><img src="https://external-content.duckduckgo.com/ip3/${x[1]}.ico"><t>${x[0]}</t></d>` }
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+let ls=[
+[`YT New`,`www.youtube.com`,`feed/subscriptions`],
+[`YT Later`,`www.youtube.com`,`playlist?list=WL`],
+[`YT Lists`,`www.youtube.com`,`feed/playlists`],
+[`Rumble`,`rumble.com`,`subscriptions`],
+[`DuckDuckGo`,`duckduckgo.com`,`https://duckduckgo.com/?kl=us-en&kp=-2&kz=-1&kav=1&kn=1&kd=-1&kg=p&kae=d&kw=s&k1=-1`],
+[`DailyMail`,`www.dailymail.co.uk`,`ushome/index.html`],
+[`Feedly`,`feedly.com`,`i/collection/content/user/d1063c98-1dba-4ed5-bd64-401aef96eb8d/category/global.all`],
+[`CNBC`,`www.cnbc.com`,``],
+[`TradingView`,`www.tradingview.com`,`chart/4uKzkaDw/`],
+[`M1`,`dashboard.m1.com`,`d/invest/portfolio`],
+[`Weather`,`weather.com`,`weather/tenday/l/f9eb3032c181663e18886051520a802768705b1d5a5027452b85c95a97985bb2`],
+[`Amazon`,`www.amazon.com`,`hz/wishlist/ls/20Q8SU4QH5BZX`],
+[`ZeroHedge`,`www.zerohedge.com`,`markets`],
+[`Proton`,`mail.proton.me`,``]
+];
+let lh='';
+for(let x of ls){ lh=lh+`<d onclick="Link('https://${x[1]}/${x[2]}')"><img src="https://external-content.duckduckgo.com/ip3/${x[1]}.ico"><t>${x[0]}</t></d>` }
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 let html=`
 <d id="wrap">
 	<d id="cont">
 		<d id="box">
-			<form method="dialog" onsubmit="Go(dg1+qx+dg2)"><input id="input"/></form>
+			<form method="dialog" onsubmit="Search(dg+qx)"><input id="input"/></form>
 		</d "box">
-		<d id="links">
-			<d onclick="Go(dg1+qx+dg2)"><img src="img/dg256.png"><t>DuckDuckGo</t></d>
-			<d onclick="Go(dg1+qx+dgwp+dg2)"><img src="img/wp48.png"><t>Wikipedia</t></d>
-			<d onclick="Go(yt+qx)"><img src="img/yt48.png"><t>YouTube</t></d>
-			<d onclick="Go(az+qx)"><img src="img/az190.png"><t>Amazon</t></d>
-			<d onclick="Go(sa+qx)"><img src="img/sa32.png"><t>StockAnalysis</t></d>
-			<d onclick="PV()"><img src="img/pv48.png"><t>PortfolioVisualizer</t></d>
-			<d onclick="Go(dg1+qx+dgso+dg2)"><img src="img/so158.png"><t>StackOverflow</t></d>
-		</d "links">
+		<d id="srchs">{sh}</d "srchs">
+		<d id="links">{lh}</d "links">
 	</d "cont">
 </d "wrap">
-`;  ModifyContent('add',html,'body','end');
+`;  
+
+html=html.replace('{sh}',sh);  html=html.replace('{lh}',lh);
+
+ModifyContent('add',html,'body','end');
 
 // ===================================================================================================================================================================================================
 
 let qi=body.querySelector('#input');
 
-let qx=`{q}`;
 
-let dg1=`https://duckduckgo.com/?q=`;  let dg2=`&kl=us-en&kp=-2&kz=-1&kav=1&kn=1&kd=-1&kg=g&kae=d&kw=s&k1=-1`;
+function Search(u){ if(u==null){return}; let q=qi.value; if(q==null||q==''){return}; q.replace(' ','+').toLowerCase(); 
 
-let dgwp=`+site:en.wikipedia.org/wiki`;
-let dgso=`+site:stackoverflow.com/questions`;
+if(/www\.portfoliovisualizer\.com/.test(u)){ q=q.toUpperCase().split(' ');  let qa1=''; let qa2=''; let qa3=''; let qs1=''; let qs2=''; let qs3='';  if(q.length>0){ qa1='100'; qs1=q[0] }; if(q.length>1){ qa2='100'; qs2=q[1] }; if(q.length>2){ qa3='100'; qs3=q[2] }; 
+} /*-if portfoliovisualizer*/
 
-let yt=`https://www.youtube.com/results?search_query=`;
-let sa=`https://stockanalysis.com/etf/`;
-let az=`https://www.amazon.com/s?k=`;
+else { u=u.replace('{q}',q); win.open(u) }
 
-// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-function Go(u){ if(u==null){return}; let q=qi.value; if(q==null||q==''){return}; q.replace(' ','+').toLowerCase(); u=u.replace('{q}',q); win.open(u) }
-
-function PV(){ let q=qi.value;  if(q==null||q==''){return};  q=q.toUpperCase().split(' ');  let qa1=''; let qa2=''; let qa3=''; let qs1=''; let qs2=''; let qs3='';  if(q.length>0){ qa1='100'; qs1=q[0] }; if(q.length>1){ qa2='100'; qs2=q[1] }; if(q.length>2){ qa3='100'; qs3=q[2] }; win.open(`https://www.portfoliovisualizer.com/backtest-portfolio?s=y&startYear=&endYear=&includeYTD=true&allocation1_1=${qa1}&allocation2_2=${qa2}&allocation3_3=${qa3}&symbol1=${qs1}&symbol2=${qs2}&symbol3=${qs3}`) }
+} /*-Search*/
 
 function Focus() { qi.focus();  qi.select() };  win.addEventListener('focus', Focus);  qi.addEventListener('focus', Focus);
 
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function Link(u){ win.open(u) }
+
 /* Notes =============================================================================================================================================================================================
+
 
 
 ====================================================================================================================================================================================================*/
