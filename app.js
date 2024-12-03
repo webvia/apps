@@ -8,8 +8,8 @@ PreLoad(); function PreLoad(){ window.addEventListener('error',OnError);
 win=window; hist=win.history; clip=win.navigator.clipboard; doc=win.document; title=doc.title; head=doc.head; body=doc.body; links=doc.links; 
 loc=doc.location; href=loc.href; prot=loc.protocol+'://'; host=loc.host; path=loc.pathname; srch=loc.search; prms=new URLSearchParams(srch); hash=loc.hash;
 ref=href.replace(/^.+\/\/www\.|.+\/\//,''); dom=ref.substring(0,ref.indexOf('/')); dom=dom.substring(0,dom.lastIndexOf('.')); //href(ref)=prot/host(dom)/path/?srch&prms#hash
-app_u=prms.get('app'); app_j=app_u+'.js';  
-icon=head.querySelector('#app_icon'); base=head.querySelector('#app_base').setAttribute('href',app_u+'/'); doc.querySelector('noscript').remove();
+app_u=prms.get('app'); app_j=app_u+'.js';  icon=head.querySelector('#app_icon');  base=head.querySelector('#app_base').setAttribute('href',app_u+'/'); doc.querySelector('noscript').remove();
+AddStyleInternal(`body { margin: 0;  font-family: sans-serif; }  table { border-collapse: collapse; }`); 
 if(app_u!==null){ SetTitleText(app_u); SetIconCharacter(`🔳`); AddScriptExternal(app_j) } else{ SetTitleText(`App not specified`); SetIconCharacter(`⛔️`); body.insertAdjacentHTML('beforeend',`App not specified.`) }; 
 } /*-PreLoad*/  /*DOMContentLoaded*/
 
