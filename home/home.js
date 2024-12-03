@@ -3,11 +3,11 @@ SetIconCharacter('🏠');  SetTitleText('Home');
 let css=`
 body { background-color: #121212;  color: #F8F8F8; }  d { display: block; }
 #wrap { display: flex;  justify-content: center; }
-	#cont { width: 33.33vw; }
+	#cont { width: 33.33vw;  height: 100vh;  display: flex;  flex-direction: column;  flex-wrap: wrap; }  #cont > * { flex: 1 1 1 }
 		#box { padding: 2em 0 1.5em 0; }
 			#input { width: 96%;  margin: 0;  padding: .5em .5em .5em .5em;  font-size: 1.25em; font-family: inherit;  border-radius: .25em;  border: none;  outline: 1px solid #DBB2FF; background-color: #23036A;  color: #F8F8F8;  }
 			#input:hover, #input:focus { outline: 2px solid #DBB2FF; }
-		#srchs, #links { font-size: 1.5em; user-select: none;  border-radius: .25em; }  #srchs { outline: 1px solid #DBB2FF; }
+		#srchs, #links { font-size: 1.5em; user-select: none;  border-radius: .25em; }  #srchs { outline: 1px solid #DBB2FF;  margin-bottom: 1em; }
 			#srchs:hover { outline: 2px solid #DBB2FF; }
 			#srchs d, #links d { display: flex;  flex-direction: row;  flex-wrap: nowrap;  align-items: center;  padding: .25em .5em .25em .5em;  }
 			#srchs d:hover, #links d:hover { background-color: #23036A;  color: #DBB2FF;  cursor: pointer;  outline: 2px solid #DBB2FF;  border-radius: .25em; }
@@ -56,7 +56,7 @@ let html=`
 <d id="wrap">
 	<d id="cont">
 		<d id="box">
-			<form method="dialog" onsubmit="Search(dg+qx)"><input id="input"/></form>
+			<form method="dialog" onsubmit="Search('https://duckduckgo.com/?q={q}&kl=us-en&kp=-2&kz=-1&kav=1&kn=1&kd=-1&kg=g&kae=d&kw=s&k1=-1')"><input id="input"/></form>
 		</d "box">
 		<d id="srchs">{sh}</d "srchs">
 		<d id="links">{lh}</d "links">
@@ -82,7 +82,7 @@ else { u=u.replace('{q}',q); win.open(u) }
 
 } /*-Search*/
 
-function Focus() { qi.focus();  qi.select() };  win.addEventListener('focus', Focus);  qi.addEventListener('focus', Focus);
+function Focus() { qi.focus();  qi.select() };  qi.addEventListener('focus', Focus);  //win.addEventListener('focus', Focus);
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
