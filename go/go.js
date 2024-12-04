@@ -1,4 +1,4 @@
-SetIconCharacter('🚀');  SetTitleText('Go');  let q=params.get('q');
+SetIconCharacter('🚀');  SetTitleText('Go');  let q=prms.get('q');
 
 window.onload=function(){ if(q===null){ return }; Go() }
 

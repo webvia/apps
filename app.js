@@ -1,6 +1,6 @@
 let win,hist,clip, doc,head,title,icon,base,body,links,h1, loc,href,prot,ref,host,dom,path,srch,prms,hash, app_u,app_j;
 
-function OnError(message,source,lineno,colno,error){ let msg=message.substring(message.indexOf(':')+2);  let src=source.substring(source.lastIndexOf('/')+1);  let err=`${msg}  [ ${src} > ${lineno}-${colno} ]`;  alert(err) }
+function OnError(message,source,lineno,colno,error){ let msg=message;  let src=source.substring(source.lastIndexOf('/')+1);  let err=`${msg}  [ ${src} > ${lineno}-${colno} ]`;  alert(err) }  //let msg=message.substring(message.indexOf(':')+2); 
 
 // PreLoad ===========================================================================================================================================================================================
 
