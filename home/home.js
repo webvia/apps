@@ -1,6 +1,6 @@
 // DATA ==============================================================================================================================================================================================
 
-let sd=[
+let so=[
 [`DuckDuckGo`,`duckduckgo.com`,`?q={q}&kl=us-en&kp=-2&kz=-1&kav=1&kn=1&kd=-1&kg=g&kae=d&kw=s&k1=-1`],
 [`Wikipedia`,`duckduckgo.com`,`?q={q}+site:en.wikipedia.org/wiki&kl=us-en&kp=-2&kz=-1&kav=1&kn=1&kd=-1&kg=g&kae=d&kw=s&k1=-1`,`en.wikipedia.org`],
 [`YouTube`,`www.youtube.com`,`results?search_query={q}`],
@@ -10,7 +10,7 @@ let sd=[
 [`StackOverflow`,`duckduckgo.com`,`?q={q}+site:stackoverflow.com/questions&kl=us-en&kp=-2&kz=-1&kav=1&kn=1&kd=-1&kg=g&kae=d&kw=s&k1=-1`,`stackoverflow.com`]
 ];
 
-let ld=[
+let lo=[
 [`New`,`www.youtube.com`,`feed/subscriptions`],
 [`Watch`,`www.youtube.com`,`playlist?list=WL`],
 [`Lists`,`www.youtube.com`,`feed/playlists`],
@@ -36,13 +36,14 @@ let h=`
 		<d id="opts">
 			<d id="srch" class="opts">`;
 
-for(let x of sd){ let iu=(x[3]!=null)?x[3]:x[1];  h=h+`<d class="op" onclick="Srch('https://${x[1]}/${x[2]}')"><img src="https://external-content.duckduckgo.com/ip3/${iu}.ico"><t>${x[0]}</t></d>` }
+for(let x of so){ let iu=(x[3]!=null)?x[3]:x[1];  h=h+`<d class="op" onclick="Srch('https://${x[1]}/${x[2]}')"><img src="https://external-content.duckduckgo.com/ip3/${iu}.ico"><t>${x[0]}</t></d>` }
 
 h=h+`
 			</d "srch">
+			<d id="sep"></d "sep">
 			<d id="link" class="opts">`;
 
-for(let x of ld){ let iu=(x[3]!=null)?x[3]:x[1];  h=h+`<d class="op" onclick="Link('https://${x[1]}/${x[2]}')"><img src="https://external-content.duckduckgo.com/ip3/${iu}.ico"><t>${x[0]}</t></d>` }
+for(let x of lo){ let iu=(x[3]!=null)?x[3]:x[1];  h=h+`<d class="op" onclick="Link('https://${x[1]}/${x[2]}')"><img src="https://external-content.duckduckgo.com/ip3/${iu}.ico"><t>${x[0]}</t></d>` }
 
 h=h+`
 			</d "link">
@@ -56,50 +57,29 @@ SetIconCharacter('🏠');  SetTitleText('Home');  ModifyContent('add',h,'body','
 
 let css=`
 body { background-color: #121212;  color: #F8F8F8; }  d { display: block; }
-#cent { display: flex;  flex-direction: row;  flex-wrap: nowrap;  justify-content: center; }
+#cent { display: flex;  flex-direction: row;  flex-wrap: nowrap;  justify-content: center;  height: 100vh; }
 	#cont {  }
 		#box { display: flex;  flex-direction: row;  flex-wrap: nowrap;  justify-content: center;  align-items: center; }
-			#input { width: 33.33vw;  margin: 2em 0 2em 0;  padding: .5em;  font-size: 1.25em;  font-family: inherit;  border-radius: .333em;  border: none;  outline: 1px solid #DBB2FF; background-color: #23036A;  color: #F8F8F8; }   #input:hover, #input:focus { outline: 2px solid #DBB2FF; }
-		#opts {  }
-			.opts { display: flex;  flex-direction: column;  flex-wrap: wrap;  row-gap: 1em;  column-gap: 1em; }  #srch { height: 20vh; }  #link { height: 30vh; }
-				.op { display: flex;  flex-direction: row;  flex-wrap: nowrap;  align-items: center;  padding: .25em .5em .25em .5em;  font-size: 1.5em;  user-select: none; }
+			#input { width: 33.33vw;  margin: 1.5em 0 1.5em 0;  padding: .5em;  font-size: 1.25em;  font-family: inherit;  border-radius: .333em;  border: none;  outline: 1px solid #DBB2FF; background-color: #23036A;  color: #F8F8F8; }   #input:hover, #input:focus { outline: 2px solid #DBB2FF; }
+		#opts { display: flex;  flex-direction: column;  flex-wrap: nowrap; }
+			.opts { display: flex;  flex-direction: column;  flex-wrap: wrap; }  #srch { height: 20vh; }  #link { height: 30vh; }
+				.op { display: flex;  flex-direction: row;  flex-wrap: nowrap;  align-items: center;  padding: .5em 1em .5em 1em;  font-size: 1.5em;  user-select: none;  border-left: 2px solid #DBB2FF; }
 				.op:hover { background-color: #23036A;  color: #DBB2FF;  cursor: pointer;  outline: 2px solid #DBB2FF;  border-radius: .333em; }
 					.op img { width: 1em;  height: 1em; margin-right: .5em }
+#sep { border-bottom: 2px solid #DBB2FF;  margin: 1.5em 0 1.5em 0; }
 
 `;  AddStyleInternal(css);
 
 // FUNC ==============================================================================================================================================================================================
 
-function Srch(u){ if(u==null){return}; let q=qi.value; if(q==null||q==''){return}; q.replace(' ','+').toLowerCase(); 
-
-if(/www\.portfoliovisualizer\.com/.test(u)){ q=q.toUpperCase().split(' ');  let qa1=''; let qa2=''; let qa3=''; let qs1=''; let qs2=''; let qs3='';  if(q.length>0){ qa1='100'; qs1=q[0] }; if(q.length>1){ qa2='100'; qs2=q[1] }; if(q.length>2){ qa3='100'; qs3=q[2] }; 
-} /*-if portfoliovisualizer*/
-
-else { u=u.replace('{q}',q); win.open(u) }
-
+function Srch(u){ if(u==null){return}; let q=qi.value; if(q==null||q==''){return}; q.replace(' ','+').toLowerCase();  if(/www\.portfoliovisualizer\.com/.test(u)){ q=q.toUpperCase().split(' ');  let qa1=''; let qa2=''; let qa3=''; let qs1=''; let qs2=''; let qs3='';  if(q.length>0){ qa1='100'; qs1=q[0] }; if(q.length>1){ qa2='100'; qs2=q[1] }; if(q.length>2){ qa3='100'; qs3=q[2] }; } /*-if portfoliovisualizer*/  else { u=u.replace('{q}',q); win.open(u) }
 } /*-Search*/
-
-
-function Focus() { qi.focus();  qi.select() };  qi.addEventListener('focus', Focus);  //win.addEventListener('focus', Focus);
-
-// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function Link(u){ win.open(u) }
 
+function Focus() { qi.focus();  qi.select() };  qi.addEventListener('focus', Focus);  //win.addEventListener('focus', Focus);
 
 /* NOTES =============================================================================================================================================================================================
 
-body { background-color: #121212;  color: #F8F8F8; }  d { display: block; }
-#wrap { display: flex;  justify-content: center; }
-	#cont { width: 33.33vw;  height: 100vh;  display: flex;  flex-direction: column;  flex-wrap: wrap; }  #cont > * { flex: 1 1 1 }
-		#box { padding: 2em 0 1.5em 0; }
-			#input { width: 96%;  margin: 0;  padding: .5em .5em .5em .5em;  font-size: 1.25em; font-family: inherit;  border-radius: .25em;  border: none;  outline: 1px solid #DBB2FF; background-color: #23036A;  color: #F8F8F8;  }
-			#input:hover, #input:focus { outline: 2px solid #DBB2FF; }
-		#srchs, #links { font-size: 1.5em; user-select: none;  border-radius: .25em; }  #srchs { outline: 1px solid #DBB2FF;  margin-bottom: 1em; }
-			#srchs:hover { outline: 2px solid #DBB2FF; }
-			#srchs d, #links d { display: flex;  flex-direction: row;  flex-wrap: nowrap;  align-items: center;  padding: .25em .5em .25em .5em;  }
-			#srchs d:hover, #links d:hover { background-color: #23036A;  color: #DBB2FF;  cursor: pointer;  outline: 2px solid #DBB2FF;  border-radius: .25em; }
-			#srchs img, #links img { width: 1em;  height: 1em; }
-			#srchs t, #links t { padding-left: .75em; }
 
 ====================================================================================================================================================================================================*/
