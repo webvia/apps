@@ -6,16 +6,17 @@ let so=[
 [`YouTube`,`www.youtube.com`,`results?search_query={q}`],
 [`Amazon`,`www.amazon.com`,`s?k={q}`],
 [`StockAnalysis`,`stockanalysis.com`,`etf/{q}`],
-[`PortfolioVisualizer`,`www.portfoliovisualizer.com`,`backtest-portfolio?s=y&startYear=&endYear=&includeYTD=true&allocation1_1={qa1}&allocation2_2={qa2}&allocation3_3={qa3}&symbol1={qs1}&symbol2={qs2}&symbol3={qs3}`],
+[`PortfolioVis`,`www.portfoliovisualizer.com`,`backtest-portfolio?s=y&startYear=&endYear=&includeYTD=true&allocation1_1={qa1}&allocation2_2={qa2}&allocation3_3={qa3}&symbol1={qs1}&symbol2={qs2}&symbol3={qs3}`],
 [`StackOverflow`,`duckduckgo.com`,`?q={q}+site:stackoverflow.com/questions&kl=us-en&kp=-2&kz=-1&kav=1&kn=1&kd=-1&kg=g&kae=d&kw=s&k1=-1`,`stackoverflow.com`]
 ];
 
 let lo=[
+[`DuckDuckGo`,`duckduckgo.com`,`https://duckduckgo.com/?kl=us-en&kp=-2&kz=-1&kav=1&kn=1&kd=-1&kg=p&kae=d&kw=s&k1=-1`],
 [`New`,`www.youtube.com`,`feed/subscriptions`],
 [`Watch`,`www.youtube.com`,`playlist?list=WL`],
 [`Lists`,`www.youtube.com`,`feed/playlists`],
 [`Rumble`,`rumble.com`,`subscriptions`],
-[`DuckDuckGo`,`duckduckgo.com`,`https://duckduckgo.com/?kl=us-en&kp=-2&kz=-1&kav=1&kn=1&kd=-1&kg=p&kae=d&kw=s&k1=-1`],
+[`Odysee`,`odysee.com`,`$/following`],
 [`DailyMail`,`www.dailymail.co.uk`,`ushome/index.html`],
 [`Feedly`,`feedly.com`,`i/collection/content/user/d1063c98-1dba-4ed5-bd64-401aef96eb8d/category/global.all`],
 [`CNBC`,`www.cnbc.com`,``],
@@ -51,20 +52,20 @@ h=h+`
 	</d "cont">
 </d "cent">`;
 
-SetIconCharacter('🏠');  SetTitleText('Home');  ModifyContent('add',h,'body','end');  let qi=body.querySelector('#input');
+SetIconCharacter('🚀');  SetTitleText('Go');  ModifyContent('add',h,'body','end');  let qi=body.querySelector('#input');
 
 // CSS ===============================================================================================================================================================================================
-
+// def: row nowrap
 let css=`
 body { background-color: #121212;  color: #F8F8F8; }  d { display: block; }
-#cent { display: flex;  flex-direction: row;  flex-wrap: nowrap;  justify-content: center;  height: 100vh; }
+#cent { display: flex;  flex-flow: row nowrap;  justify-content: center;  height: 100vh; }
 	#cont {  }
-		#box { display: flex;  flex-direction: row;  flex-wrap: nowrap;  justify-content: center;  align-items: center; }
+		#box { display: flex;  flex-flow: row nowrap;  justify-content: center;  align-items: center; }
 			#input { width: 33.33vw;  margin: 1.5em 0 1.5em 0;  padding: .5em;  font-size: 1.25em;  font-family: inherit;  border-radius: .333em;  border: none;  outline: 1px solid #DBB2FF; background-color: #23036A;  color: #F8F8F8; }   #input:hover, #input:focus { outline: 2px solid #DBB2FF; }
-		#opts { display: flex;  flex-direction: column;  flex-wrap: nowrap; }
-			.opts { display: flex;  flex-direction: column;  flex-wrap: wrap; }  #srch { height: 20vh; }  #link { height: 30vh; }
-				.op { display: flex;  flex-direction: row;  flex-wrap: nowrap;  align-items: center;  padding: .5em 1em .5em 1em;  font-size: 1.5em;  user-select: none;  border-left: 2px solid #DBB2FF; }
-				.op:hover { background-color: #23036A;  color: #DBB2FF;  cursor: pointer;  outline: 2px solid #DBB2FF;  border-radius: .333em; }
+		#opts { display: flex;  flex-flow: column nowrap; }
+			.opts { display: flex;  flex-flow: column wrap; }  #srch { height: 20vh; }  #link { height: 30vh; }
+				.op { display: flex;  flex-flow: row nowrap;  align-items: center;  padding: .5em 1em .5em 1em;  font-size: 1.5em;  user-select: none;  border-left: 2px solid #DBB2FF; }
+				.op:hover { background-color: #23036A;  color: #DBB2FF;  cursor: pointer;  outline: 1px solid #DBB2FF;  border-radius: .333em; }
 					.op img { width: 1em;  height: 1em; margin-right: .5em }
 #sep { border-bottom: 2px solid #DBB2FF;  margin: 1.5em 0 1.5em 0; }
 
@@ -72,7 +73,11 @@ body { background-color: #121212;  color: #F8F8F8; }  d { display: block; }
 
 // FUNC ==============================================================================================================================================================================================
 
-function Srch(u){ if(u==null){return}; let q=qi.value; if(q==null||q==''){return}; q.replace(' ','+').toLowerCase();  if(/www\.portfoliovisualizer\.com/.test(u)){ q=q.toUpperCase().split(' ');  let qa1=''; let qa2=''; let qa3=''; let qs1=''; let qs2=''; let qs3='';  if(q.length>0){ qa1='100'; qs1=q[0] }; if(q.length>1){ qa2='100'; qs2=q[1] }; if(q.length>2){ qa3='100'; qs3=q[2] }; } /*-if portfoliovisualizer*/  else { u=u.replace('{q}',q); win.open(u) }
+function Srch(u){ if(u==null){return}; let q=qi.value; if(q==null||q==''){return}; q.replace(' ','+').toLowerCase();  
+
+if(/www\.portfoliovisualizer\.com/.test(u)){ q=q.toUpperCase().split(' ');  let qa1=''; let qa2=''; let qa3=''; let qs1=''; let qs2=''; let qs3='';  if(q.length>0){ qa1='100'; qs1=q[0] }; if(q.length>1){ qa2='100'; qs2=q[1] }; if(q.length>2){ qa3='100'; qs3=q[2] }; 
+
+} /*-if portfoliovisualizer*/  else { u=u.replace('{q}',q); win.open(u) }
 } /*-Search*/
 
 function Link(u){ win.open(u) }
