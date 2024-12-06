@@ -60,12 +60,12 @@ SetIconCharacter('⭐️');  SetTitleText('Home');  ModifyContent('add',h,'body'
 let css=`
 body { background-color: #121212;  color: #F8F8F8; }  d { display: block; }
 #center { display: flex;  flex-flow: row wrap;  justify-content: center;  align-items: center;  max-height: 80vh }
-	#content { display: flex;  flex-flow: row wrap;  justify-content: center;  align-items: center;  max-width: 66.66vw }
+	#content { display: flex;  flex-flow: row wrap;  justify-content: center;  align-items: center;  max-width: 80vw }
 		#query { display: flex;  flex-flow: row nowrap;  justify-content: center;  align-items: center; }
 			#input { width: 30em;  margin: 1.5em 0 1.5em 0;  padding: .5em;  font-size: 1.25em;  font-family: inherit;  border-radius: .333em;  border: none;  outline: 1px solid #DBB2FF; background-color: #23036A;  color: #F8F8F8; }   #input:hover, #input:focus { outline: 2px solid #DBB2FF; }
 		#groups { display: flex;  flex-flow: column wrap;  justify-content: center; }
 			.items { display: flex;  flex-flow: row wrap;  justify-content: center; }
-				.item { display: flex;  flex-flow: row nowrap;  align-items: center;  min-width: 7em;  padding: .5em 1em .5em 1em;  font-size: 1.5em;  user-select: none; }
+				.item { display: flex;  flex-flow: row nowrap;  align-items: center;  min-width: 8em;  padding: .5em 1em .5em 1em;  font-size: 1.5em;  user-select: none; }
 				.item:hover { background-color: #23036A;  color: #DBB2FF;  cursor: pointer;  outline: 1px solid #DBB2FF;  border-radius: .333em; }
 					.item img { width: 1em;  height: 1em; margin-right: .5em }
 			#sep { border-bottom: 2px solid #DBB2FF;  margin: 1.5em 0 1.5em 0; }
