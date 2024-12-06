@@ -25,7 +25,7 @@ let links=[
 [`M1 Invest`,`dashboard.m1.com`,`d/invest/portfolio`],
 [`Weather`,`weather.com`,`weather/tenday/l/f9eb3032c181663e18886051520a802768705b1d5a5027452b85c95a97985bb2`],
 [`Amazon`,`www.amazon.com`,`hz/wishlist/ls/20Q8SU4QH5BZX`],
-[`Protonq`,`mail.proton.me`,``],
+[`Proton`,`mail.proton.me`,``],
 ];
 
 // HTML ==============================================================================================================================================================================================
@@ -60,11 +60,11 @@ SetIconCharacter('⭐️');  SetTitleText('Home');  ModifyContent('add',h,'body'
 let css=`
 body { background-color: #121212;  color: #F8F8F8; }  d { display: block; }
 #center { display: flex;  flex-flow: row wrap;  justify-content: center;  align-items: center;  max-height: 80vh }
-	#content { display: flex;  flex-flow: row wrap;  justify-content: center;  align-items: center;  max-width: 80vw }
+	#content { display: flex;  flex-flow: row wrap;  justify-content: center;  align-items: center;  max-width: 75vw }
 		#query { display: flex;  flex-flow: row nowrap;  justify-content: center;  align-items: center; }
 			#input { width: 30em;  margin: 1.5em 0 1.5em 0;  padding: .5em;  font-size: 1.25em;  font-family: inherit;  border-radius: .333em;  border: none;  outline: 1px solid #DBB2FF; background-color: #23036A;  color: #F8F8F8; }   #input:hover, #input:focus { outline: 2px solid #DBB2FF; }
 		#groups { display: flex;  flex-flow: column wrap;  justify-content: center; }
-			.items { display: flex;  flex-flow: row wrap;  justify-content: center; }
+			.items { display: flex;  flex-flow: row wrap;  justify-content: left; }  /* space- between around evenly */
 				.item { display: flex;  flex-flow: row nowrap;  align-items: center;  min-width: 8em;  padding: .5em 1em .5em 1em;  font-size: 1.5em;  user-select: none; }
 				.item:hover { background-color: #23036A;  color: #DBB2FF;  cursor: pointer;  outline: 1px solid #DBB2FF;  border-radius: .333em; }
 					.item img { width: 1em;  height: 1em; margin-right: .5em }
