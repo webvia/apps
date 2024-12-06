@@ -1,11 +1,11 @@
-let win,hist,clip, doc,head,title,icon,base,body,links,h1, loc,href,prot,ref,host,dom,path,srch,prms,hash, app_u,app_j;
+let win,hist,clip, doc,head,title,icon,base,body,h1, loc,href,prot,ref,host,dom,path,srch,prms,hash, app_u,app_j;
 
 function OnError(message,source,lineno,colno,error){ let msg=message;  let src=source.substring(source.lastIndexOf('/')+1);  let err=`${msg}  [ ${src} > ${lineno}-${colno} ]`;  alert(err) }  //let msg=message.substring(message.indexOf(':')+2); 
 
 // PreLoad ===========================================================================================================================================================================================
 
 PreLoad(); function PreLoad(){ window.addEventListener('error',OnError);
-win=window; hist=win.history; clip=win.navigator.clipboard; doc=win.document; title=doc.title; head=doc.head; body=doc.body; links=doc.links; 
+win=window; hist=win.history; clip=win.navigator.clipboard; doc=win.document; title=doc.title; head=doc.head; body=doc.body;
 loc=doc.location; href=loc.href; prot=loc.protocol+'://'; host=loc.host; path=loc.pathname; srch=loc.search; prms=new URLSearchParams(srch); hash=loc.hash;
 ref=href.replace(/^.+\/\/www\.|.+\/\//,''); dom=ref.substring(0,ref.indexOf('/')); dom=dom.substring(0,dom.lastIndexOf('.')); //href(ref)=prot/host(dom)/path/?srch&prms#hash
 app_u=prms.get('app'); app_j=app_u+'.js';  icon=head.querySelector('#app_icon');  base=head.querySelector('#app_base').setAttribute('href',app_u+'/'); doc.querySelector('noscript').remove();
@@ -40,6 +40,17 @@ function MergeContent(c){ let f=new DocumentFragment();  for(let n of c){ f.appe
 function InsertContent(c,n,p){ if(p=='before'){ n.before(c) } else if(p=='begin'){ n.prepend(c) } else if(p=='end'){ n.append(c) } else if(p=='after'){ n.after(c) } }
 function DatafyContent(c,d){ if(d===undefined){ return c }  c=c.replaceAll('\${','${');  let cd='';  for(let di of d){ let ci=c;  for(let dp in di){ let re=new RegExp(`\\$\\{${dp}\\}`,'g');  ci=ci.replace(re, di[dp]) }  cd=cd+ci }  return cd }
 
+// AddDialog -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function AddDialog(cont){
+
+body.insertAdjacentHTML('beforeend',`<dialog id="app_dialog"><form method="dialog" id="app_dialog_form"><div id="app_dialog_content">${cont}</div></form></dialog>`);
+
+let dlg = doc.querySelector("#app_dialog");
+
+}
+
+
 /* Notes =============================================================================================================================================================================================
 
 
@@ -55,6 +66,7 @@ function DatafyContent(c,d){ if(d===undefined){ return c }  c=c.replaceAll('\${'
 // remove-inner        what:sels    ----------    ---    ----
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 Variables, Events/Listeners/Keyboard, Fetch/Push, Clipboard, Selection, Location/URL, CSS
 HTML/DOM, Dialog, Form, H1-6, List/Tree, Media, Table(sort), Template
