@@ -42,11 +42,13 @@ function DatafyContent(c,d){ if(d===undefined){ return c }  c=c.replaceAll('\${'
 
 // AddDialog -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function AddDialog(cont){
+function OpenDialog(html){
 
-body.insertAdjacentHTML('beforeend',`<dialog id="app_dialog"><form method="dialog" id="app_dialog_form"><div id="app_dialog_content">${cont}</div></form></dialog>`);
+let dh=`<dialog id="app_dialog"><form method="dialog" id="app_dialog_form"><div id="app_dialog_buttons"><button formmethod="dialog">✔️</button><button formmethod="dialog" autofocus>❌️</button></div><div id="app_dialog_content">${html}</div></form></dialog>`;
 
-let dlg = doc.querySelector("#app_dialog");
+body.insertAdjacentHTML('beforeend',dh);  let d=doc.querySelector("#app_dialog");
+
+dialog.showModal(); //dialog.show(); dialog.close();   dlg::backdrop { }  \moz_html__Element/dialog  
 
 }
 
