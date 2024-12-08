@@ -8,11 +8,11 @@ let links=[
 [`Rumble`,`rumble.com`,`subscriptions`],
 [`Odysee`,`odysee.com`,`$/following`],
 [`DailyMail`,`www.dailymail.co.uk`,`ushome/index.html`],
-[`Feedly`,`feedly.com`,`i/collection/content/user/d1063c98-1dba-4ed5-bd64-401aef96eb8d/category/global.all`],
+[`Feedly`,`feedly.com`,``],
 [`CNBC`,`www.cnbc.com`,`#~~`],
 [`ZeroHedge`,`www.zerohedge.com`,`markets#~~`],
 [`TradingView`,`www.tradingview.com`,`chart/4uKzkaDw/`],
-[`M1 Invest`,`dashboard.m1.com`,`d/invest/portfolio`],
+[`M1 Invest`,`dashboard.m1.com`,``],
 [`Weather`,`weather.com`,`weather/tenday/l/f9eb3032c181663e18886051520a802768705b1d5a5027452b85c95a97985bb2`],
 [`Amazon`,`www.amazon.com`,`hz/wishlist/ls/20Q8SU4QH5BZX`],
 [`Proton`,`mail.proton.me`,``],
@@ -30,48 +30,34 @@ let searches=[
 
 // HTML ==============================================================================================================================================================================================
 
-let h=`
-<d id="center">
-	<d id="content">
-		<d id="links" class="items">`;
-for(let i of links){ Items(i) }
-h=h+`
-		</d "links">
-		<d id="query"><form method="dialog" onsubmit="Search('https://duckduckgo.com/?q={q}&kl=us-en&kp=-2&kz=-1&kav=1&kn=1&kd=-1&kg=g&kae=d&kw=s&k1=-1')"><input id="input"/></form></d "box">
-		<d id="searches" class="items">`;
-for(let i of searches){ Items(i) }
-h=h+`
-		</d "searches">
-	</d "content">
-</d "center">`;
+let h=``;
+h=h+`<x center><x content><x items links>`;  for(let i of links){ Items(i) }
+h=h+`</x links><x query><form method="dialog" onsubmit="Search('https://duckduckgo.com/?q={q}&kl=us-en&kp=-2&kz=-1&kav=1&kn=1&kd=-1&kg=g&kae=d&kw=s&k1=-1')"><input input id="input"/></form></x query><x items searches>`;  for(let i of searches){ Items(i) }
+h=h+`</x searches></x content></x center>`;  ModifyContent('add',h,'body','end');
 
-// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-function Items(i) { let func=(i[2].includes('{'))?'Search':'Link';  let img=(i[3]!=null)?i[3]:i[1];  h=h+`<d class="item" onclick="${func}('https://${i[1]}/${i[2]}')" title="${i[1]}/${i[2]}"><img src="https://external-content.duckduckgo.com/ip3/${img}.ico"><t>${i[0]}</t></d>`
+function Items(i) { let func=(i[2].includes('{'))?'Search':'Link';  let img=(i[3]!=null)?i[3]:i[1];  h=h+`<x item onclick="${func}('https://${i[1]}/${i[2]}')" title="${i[1]}/${i[2]}"><img icon src="https://external-content.duckduckgo.com/ip3/${img}.ico"><x>${i[0]}</x></x>`
 } /*-Items*/
 
-SetIconCharacter('⭐️');  SetTitleText('Home');  ModifyContent('add',h,'body','end');  let qi=body.querySelector('#input');
-
 // CSS ===============================================================================================================================================================================================
-
-let css=`
-body { background-color: #121212;  color: #F8F8F8; }  d { display: block; }
-#center { display: flex;  flex-flow: row wrap;  justify-content: center;  align-items: center;  max-height: 80vh }
-	#content { display: flex;  flex-flow: row wrap;  justify-content: center;  align-items: center;  max-width: 75vw; }
-		.items { display: flex;  flex-flow: row wrap;  justify-content: left; }
-			.item { display: flex;  flex-flow: row nowrap;  align-items: center;  min-width: 8em;  padding: .5em 1em .5em 1em;  font-size: 1.5em;  user-select: none; }
-			.item:hover { background-color: #23036A;  color: #DBB2FF;  cursor: pointer;  outline: 1px solid #DBB2FF;  border-radius: .333em; }
-				.item img { width: 1em;  height: 1em; margin-right: .5em }
-		#query { display: flex;  flex-flow: row nowrap;  justify-content: center;  align-items: center; }
-			#input { width: 30em;  padding: .5em;  font-size: 1.25em;  font-family: inherit;  border-radius: .333em;  border: none;  outline: 1px solid #DBB2FF; background-color: #212121;  color: #F8F8F8; }   #input:hover, #input:focus { outline: 2px solid #DBB2FF; }
-		#links { padding-top: 1em;  padding-bottom: 2em;  border-bottom: 2px solid #DBB2FF;  margin-bottom: 2.5em; }
-		#searches { padding-top: 1em;  margin-top: .5em; }
-
+//def: row nowrap
+let css=`body { background-color: #121212;  color: #F8F8F8; }
+[center] { display: flex;  flex-flow: row nowrap;  justify-content: center; }
+[content] { display: flex;  flex-flow: column nowrap;  justify-content: center;  max-width: 75vw;  max-height: 80vh }
+	[items] { display: flex;  flex-flow: row wrap;  justify-content: left; }
+		[item] { display: flex;  flex-flow: row nowrap;  align-items: center;  min-width: 8em;  padding: .5em 1em .5em 1em;  font-size: 1.5em;  user-select: none; }
+		[item]:hover { background-color: #23036A;  color: #DBB2FF;  cursor: pointer;  outline: 1px solid #DBB2FF;  border-radius: .333em; }
+			[icon] { width: 1em;  height: 1em; margin-right: .5em }
+	[query] { display: flex;  flex-flow: row nowrap;  justify-content: center;  align-items: center; }
+		[input] { width: 33.33vw;  padding: .5em;  font-size: 1.25em;  font-family: inherit;  border-radius: .33em;  border: none;  outline: 1px solid #DBB2FF; background-color: #212121;  color: #F8F8F8; }   [input]:hover, [input]:focus { outline: 2px solid #DBB2FF; }
+	[links] { padding-top: 1em;  padding-bottom: 2em;  border-bottom: 2px solid #DBB2FF;  margin-bottom: 3em; }
+	[searches] { padding-top: 1em;  margin-top: .5em; }
 `;  AddStyleInternal(css);
 
 // FUNC ==============================================================================================================================================================================================
 
-function Search(u){ if(u==null){return}; this.blur(); let q=qi.value; if(q==null||q==''){return}; q.replace(' ','+').toLowerCase();  
+SetIconCharacter('⭐️');  SetTitleText('Home');  let qi=body.querySelector('#input');  qi.addEventListener('focus', Focus);  qi.addEventListener('keydown', KeyDown);
+
+function Search(u){ this.blur(); if(u==null){return}; let q=qi.value; if(q==null||q==''){return}; q.replace(' ','+').toLowerCase();  
 
 if(/www\.portfoliovisualizer\.com/.test(u)){ q=q.toUpperCase().split(' ');  let qa1=''; let qa2=''; let qa3=''; let qs1=''; let qs2=''; let qs3='';  if(q.length>0){ qa1='100'; qs1=q[0] }; if(q.length>1){ qa2='100'; qs2=q[1] }; if(q.length>2){ qa3='100'; qs3=q[2] }; 
 
@@ -80,9 +66,19 @@ if(/www\.portfoliovisualizer\.com/.test(u)){ q=q.toUpperCase().split(' ');  let 
 
 function Link(u){ this.blur(); win.open(u); }
 
-function Focus() { qi.focus();  qi.select() };  qi.addEventListener('focus', Focus);  //win.addEventListener('focus', Focus);
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+function Focus() { qi.focus();  qi.select() };  //win.addEventListener('focus', Focus);
+
+function KeyDown(ev){ let key=ev.key;
+  if(key=='Tab'){ ev.preventDefault(); qi.setRangeText('\t',this.selectionStart,this.selectionEnd,'end') }  /* insert tab */
+  else if(key=='='){ ev.preventDefault(); Calc() }  /* run calc */
+  else if(key=='Delete'){ ev.preventDefault(); Reset() }  /* clear data */
+}
+
+function Calc(){ let v=qi.value; let c=eval(v); qi.value=`${v} = ${c}`;  }
+
+function Reset(){ qi.value='';  Focus() }
 
 /* NOTES =============================================================================================================================================================================================
-
 
 ====================================================================================================================================================================================================*/
