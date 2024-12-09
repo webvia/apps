@@ -14,7 +14,7 @@ let links=[
 [`TradingView`,`www.tradingview.com`,`chart/4uKzkaDw/`],
 [`M1 Invest`,`dashboard.m1.com`,``],
 [`Weather`,`weather.com`,`weather/tenday/l/f9eb3032c181663e18886051520a802768705b1d5a5027452b85c95a97985bb2`],
-[`Amazon`,`www.amazon.com`,`hz/wishlist/ls/20Q8SU4QH5BZX`],
+[`Amazon`,`www.amazon.com`,`hz/wishlist/ls/`],
 [`Proton`,`mail.proton.me`,``]
 ];
 
@@ -42,7 +42,7 @@ function Items(i) { h=h+`<x item onclick="Go('https://${i[1]}/${i[2]}')" title="
 
 let css=`body { background-color: #121212;  color: #F8F8F8; }
 [center] { display: flex;  flex-flow: row nowrap;  justify-content: center; }
-[content] { display: flex;  flex-flow: column wrap;  justify-content: center;  max-width: 75vw;  max-height: 80vh }
+[content] { display: flex;  flex-flow: column wrap;  justify-content: center;  max-width:60vw;  max-height: 85vh }
 	[items] { display: flex;  flex-flow: row wrap;  justify-content: left; }
 		[item] { display: flex;  flex-flow: row nowrap;  align-items: center;  min-width: 8em;  padding: .5em 1em .5em 1em;  font-size: 1.5em;  user-select: none;  cursor: pointer;  border-radius: .333em; }
 		[item]:hover { background-color: #23036A;  color: #DBB2FF;  outline: 1px solid #DBB2FF; }   [item]:focus-within { background-color: transparent;  color: #F8F8F8;  outline: none; }
@@ -61,12 +61,11 @@ SetIconCharacter('⭐️');  SetTitleText('Home');  let qi=body.querySelector('#
 
 function Go(u){ if(u==null){return};  if(!u.includes('{')){ win.open(u); return };  let q=qi.value;  if(q==null||q==''){return};  q.replace(' ','+').toLowerCase();  
 
-if(/www\.portfoliovisualizer\.com/.test(u)){ let qu=``;  let qs=q.split(' ');  if(qs.length>0){ qu=qu+`&symbol1=${qs[0]}&allocation1_1=100` };  if(qs.length>1){ qu=qu+`&symbol2=${qs[1]}&allocation2_2=100` };  if(qs.length>2){ qu=qu+`&symbol3=${qs[2]}&allocation3_3=100` };  q=qu;
-} /*-if portfoliovisualizer*/
+if(/www\.portfoliovisualizer\.com/.test(u)){ let qu=``;  let qs=q.split(' ');  if(qs.length>0){ qu=qu+`&symbol1=${qs[0]}&allocation1_1=100` };  if(qs.length>1){ qu=qu+`&symbol2=${qs[1]}&allocation2_2=100` };  if(qs.length>2){ qu=qu+`&symbol3=${qs[2]}&allocation3_3=100` };  q=qu; } /*-if portfoliovisualizer*/
 
 u=u.replace('{q}',q);  win.open(u);
 
-} /*-Search*/
+} /*-Go*/
 
 function KeyDown(ev){ let k=ev.key;
   if(k=='Tab'){ ev.preventDefault();  qi.setRangeText('\t',this.selectionStart,this.selectionEnd,'end') }  /* insert tab */
@@ -77,6 +76,7 @@ function KeyDown(ev){ let k=ev.key;
 function Calc(){ let v=qi.value;  let c=eval(v);  qi.value=`${v} = ${c}`;  }
 
 function Reset(){ qi.value='';  Focus() }
+
 function Focus() { qi.focus();  qi.select() };  //win.addEventListener('focus', Focus);
 
 /* NOTES =============================================================================================================================================================================================

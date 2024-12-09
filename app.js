@@ -1,6 +1,6 @@
 let win,hist,clip, doc,head,title,icon,base,body,h1, loc,href,prot,ref,host,dom,path,srch,prms,hash, app_u,app_j;
 
-function OnError(message,source,lineno,colno,error){ let errmsg=`${message}  [ ${source} > ${lineno}-${colno} ]`;  alert(errmsg) }
+function OnError(message,source,lineno,colno,error){ let er=`${message}  [ ${source} > ${lineno}-${colno} ]`;  alert(er) }
 
 //function OnError(message,source,lineno,colno,error){ let msg=message.substring(message.indexOf(':')+2);  let src=source.substring(source.lastIndexOf('/')+1);  let err=`${msg}  [ ${src} > ${lineno}-${colno} ]`;  alert(err) }
 
@@ -28,15 +28,16 @@ function log(msg){ console.log(msg) }  function dir(obj){ console.dir(obj) }
 
 // ModifyContent -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function ModifyContent(a,c1,c2,p,d){ 
-     if(a=='move'){ c1=doc.querySelectorAll(c1);  c2=doc.querySelector(c2);  for(let c1n of c1){ InsertContent(c1n, c2, p) } }
-else if(a=='copy'){ c1=doc.querySelectorAll(c1);  c1=MergeContent(c1);  c2=doc.querySelectorAll(c2);  for(let c2n of c2){ let c1c=c1.cloneNode(true);  InsertContent(c1c, c2n, p) } }
-else if(a=='add'){ c1=DatafyContent(c1,d);  c1=ConvertContent(c1);  c2=doc.querySelectorAll(c2);  for(let c2n of c2){ let c1c=c1.cloneNode(true);  InsertContent(c1c, c2n, p) } }
-else if(a=='replace'){ c1=doc.querySelectorAll(c1);  c2=DatafyContent(c2,p);  c2=ConvertContent(c2);  for(let c1n of c1){ let c2c=c2.cloneNode(true);  c1n.replaceWith(c2c) } }
-else if(a=='replace-inner'){ c1=doc.querySelectorAll(c1);  c2=DatafyContent(c2,p);  c2=ConvertContent(c2);  for(let c1n of c1){ let c2c=c2.cloneNode(true);  c1n.replaceChildren(c2c) } }
-else if(a=='remove'){ c1=doc.querySelectorAll(c1);  for(let c1n of c1){ c1n.replaceWith() } }
-else if(a=='remove-inner'){ c1=doc.querySelectorAll(c1);  for(let c1n of c1){ c1n.replaceChildren() } }
+function ModifyContent(a,c1,c2,p,d){ if(a==undefined){return}
+	else if(a=='add'){ c1=DatafyContent(c1,d);  c1=ConvertContent(c1);  c2=doc.querySelectorAll(c2);  for(let c2n of c2){ let c1c=c1.cloneNode(true);  InsertContent(c1c, c2n, p) } }
+	else if(a=='copy'){ c1=doc.querySelectorAll(c1);  c1=MergeContent(c1);  c2=doc.querySelectorAll(c2);  for(let c2n of c2){ let c1c=c1.cloneNode(true);  InsertContent(c1c, c2n, p) } }
+	else if(a=='move'){ c1=doc.querySelectorAll(c1);  c2=doc.querySelector(c2);  for(let c1n of c1){ InsertContent(c1n, c2, p) } }
+	else if(a=='remove'){ c1=doc.querySelectorAll(c1);  for(let c1n of c1){ c1n.replaceWith() } }
+	else if(a=='remove-inner'){ c1=doc.querySelectorAll(c1);  for(let c1n of c1){ c1n.replaceChildren() } }
+	else if(a=='replace'){ c1=doc.querySelectorAll(c1);  c2=DatafyContent(c2,p);  c2=ConvertContent(c2);  for(let c1n of c1){ let c2c=c2.cloneNode(true);  c1n.replaceWith(c2c) } }
+	else if(a=='replace-inner'){ c1=doc.querySelectorAll(c1);  c2=DatafyContent(c2,p);  c2=ConvertContent(c2);  for(let c1n of c1){ let c2c=c2.cloneNode(true);  c1n.replaceChildren(c2c) } }
 }
+
 function ConvertContent(c){ if(typeof c!=='string'){ return c }  let t=doc.createElement('template');  t.innerHTML=c;  f=t.content;  t.remove();  return f }
 function MergeContent(c){ let f=new DocumentFragment();  for(let n of c){ f.append(n.cloneNode(true)) };  return f }
 function InsertContent(c,n,p){ if(p=='before'){ n.before(c) } else if(p=='begin'){ n.prepend(c) } else if(p=='end'){ n.append(c) } else if(p=='after'){ n.after(c) } }
