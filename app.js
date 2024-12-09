@@ -1,6 +1,8 @@
 let win,hist,clip, doc,head,title,icon,base,body,h1, loc,href,prot,ref,host,dom,path,srch,prms,hash, app_u,app_j;
 
-function OnError(message,source,lineno,colno,error){ let msg=message;  let src=source.substring(source.lastIndexOf('/')+1);  let err=`${msg}  [ ${src} > ${lineno}-${colno} ]`;  alert(err) }  //let msg=message.substring(message.indexOf(':')+2); 
+function OnError(message,source,lineno,colno,error){ let errmsg=`${message}  [ ${source} > ${lineno}-${colno} ]`;  alert(errmsg) }
+
+//function OnError(message,source,lineno,colno,error){ let msg=message.substring(message.indexOf(':')+2);  let src=source.substring(source.lastIndexOf('/')+1);  let err=`${msg}  [ ${src} > ${lineno}-${colno} ]`;  alert(err) }
 
 // PreLoad ===========================================================================================================================================================================================
 
@@ -9,7 +11,7 @@ win=window; hist=win.history; clip=win.navigator.clipboard; doc=win.document; ti
 loc=doc.location; href=loc.href; prot=loc.protocol+'://'; host=loc.host; path=loc.pathname; srch=loc.search; prms=new URLSearchParams(srch); hash=loc.hash;
 ref=href.replace(/^.+\/\/www\.|.+\/\//,''); dom=ref.substring(0,ref.indexOf('/')); dom=dom.substring(0,dom.lastIndexOf('.')); //href(ref)=prot/host(dom)/path/?srch&prms#hash
 app_u=prms.get('app'); app_j=app_u+'.js';  icon=head.querySelector('#app_icon');  base=head.querySelector('#app_base').setAttribute('href',app_u+'/'); doc.querySelector('noscript').remove();
-AddStyleInternal(`body { margin: 0;  font-family: sans-serif; }  table { border-collapse: collapse; }`); 
+AddStyleInternal(`body { margin: 0;  font-family: sans-serif; }  table { border-collapse: collapse; }  #dlg::backdrop { opacity: .5; }`); 
 if(app_u!==null){ SetTitleText(app_u); SetIconCharacter(`🔳`); AddScriptExternal(app_j) } else{ SetTitleText(`App not specified`); SetIconCharacter(`⛔️`); body.insertAdjacentHTML('beforeend',`App not specified.`) }; 
 } /*-PreLoad*/  /*DOMContentLoaded*/
 
@@ -40,18 +42,21 @@ function MergeContent(c){ let f=new DocumentFragment();  for(let n of c){ f.appe
 function InsertContent(c,n,p){ if(p=='before'){ n.before(c) } else if(p=='begin'){ n.prepend(c) } else if(p=='end'){ n.append(c) } else if(p=='after'){ n.after(c) } }
 function DatafyContent(c,d){ if(d===undefined){ return c }  c=c.replaceAll('\${','${');  let cd='';  for(let di of d){ let ci=c;  for(let dp in di){ let re=new RegExp(`\\$\\{${dp}\\}`,'g');  ci=ci.replace(re, di[dp]) }  cd=cd+ci }  return cd }
 
-// AddDialog -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Dialog --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function OpenDialog(html){
+function OpenDialog(contentHTML,isModal,submitButtonText,closeButtonText){ 
 
-let dh=`<dialog id="app_dialog"><form method="dialog" id="app_dialog_form"><div id="app_dialog_buttons"><button formmethod="dialog">✔️</button><button formmethod="dialog" autofocus>❌️</button></div><div id="app_dialog_content">${html}</div></form></dialog>`;
+let h=`<dialog id="dlg"><form id="dlg_form"><div id="dlg_top" style="text-align:right"><button id="dlg_button_close_top" onclick="CloseDialog()" autofocus>❌️</button></div><div id="dlg_content">${contentHTML}</div>`;
 
-body.insertAdjacentHTML('beforeend',dh);  let d=doc.querySelector("#app_dialog");
+if(submitButtonText!==undefined){ h=h+`<div id="dlg_bottom" style="text-align:right"><button id="dlg_button_submit" formmethod="dialog">${submitButtonText}</button><button id="dlg_button_close" onclick="CloseDialog()">${closeButtonText}</button></div>`; }
 
-dialog.showModal(); //dialog.show(); dialog.close();   dlg::backdrop { }  \moz_html__Element/dialog  
+h=h+`</form></dialog>`;
 
-}
+body.insertAdjacentHTML('beforeend',h);  let dlg=doc.querySelector("#dlg");  if(isModal){ dlg.showModal() } else{ dlg.show() } // \moz_html__Element/dialog  
 
+} /*-OpenDialog*/
+
+function CloseDialog(){ let dlg=doc.querySelector("#dlg"); dlg.close(); dlg.remove() }
 
 /* Notes =============================================================================================================================================================================================
 
@@ -70,9 +75,9 @@ dialog.showModal(); //dialog.show(); dialog.close();   dlg::backdrop { }  \moz_h
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-Variables, Events/Listeners/Keyboard, Fetch/Push, Clipboard, Selection, Location/URL, CSS
-HTML/DOM, Dialog, Form, H1-6, List/Tree, Media, Table(sort), Template
-Data/Storage: Storage_API, Cookie_Store_API, Web_Storage_API, IndexedDB_API, File_System_Access_API, File_API, Cache
+UI:  Dialog*,Popup,Menu, Expander, Form, H1-6, List,Tree, Media, Table(sort), Template
+Misc:  Variables, Events/Listeners/Keyboard, Fetch/Push, Clipboard, Selection, Location/URL, CSS
+Data/Storage:  Storage_API, Cookie_Store_API, Web_Storage_API, IndexedDB_API, File_System_Access_API, File_API, Cache
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -24,7 +24,7 @@ let searches=[
 [`YouTube`,`www.youtube.com`,`results?search_query={q}`],
 [`Amazon`,`www.amazon.com`,`s?k={q}`],
 [`StockAnalysis`,`stockanalysis.com`,`etf/{q}`],
-[`PortfolioVis`,`www.portfoliovisualizer.com`,`backtest-portfolio?s=y&startYear=&endYear=&includeYTD=true&allocation1_1={qa1}&allocation2_2={qa2}&allocation3_3={qa3}&symbol1={qs1}&symbol2={qs2}&symbol3={qs3}`],
+[`PortfolioVis`,`www.portfoliovisualizer.com`,`backtest-portfolio?s=y&startYear=&endYear=&includeYTD=true{q}`],
 [`StackOverflow`,`duckduckgo.com`,`?q={q}+site:stackoverflow.com/questions&kl=us-en&kp=-2&kz=-1&kav=1&kn=1&kd=-1&kg=g&kae=d&kw=s&k1=-1`,`stackoverflow.com`],
 ];
 
@@ -35,14 +35,14 @@ h=h+`<x center><x content><x items links>`;  for(let i of links){ Items(i) }
 h=h+`</x links><x query><form method="dialog" onsubmit="Search('https://duckduckgo.com/?q={q}&kl=us-en&kp=-2&kz=-1&kav=1&kn=1&kd=-1&kg=g&kae=d&kw=s&k1=-1')"><input input id="input"/></form></x query><x items searches>`;  for(let i of searches){ Items(i) }
 h=h+`</x searches></x content></x center>`;  ModifyContent('add',h,'body','end');
 
-function Items(i) { let func=(i[2].includes('{'))?'Search':'Link';  let img=(i[3]!=null)?i[3]:i[1];  h=h+`<x item onclick="${func}('https://${i[1]}/${i[2]}')" title="${i[1]}/${i[2]}"><img icon src="https://external-content.duckduckgo.com/ip3/${img}.ico"><x>${i[0]}</x></x>`
+function Items(i) { let func=(i[2].includes('{'))?'Search':'Link';  let img=(i[3]!=null)?i[3]:i[1];  h=h+`<x item onclick="${func}('https://${i[1]}/${i[2]}');this.blur();" title="${i[1]}/${i[2]}"><img icon src="https://external-content.duckduckgo.com/ip3/${img}.ico"><x>${i[0]}</x></x>`
 } /*-Items*/
 
 // CSS ===============================================================================================================================================================================================
-//def: row nowrap
+
 let css=`body { background-color: #121212;  color: #F8F8F8; }
 [center] { display: flex;  flex-flow: row nowrap;  justify-content: center; }
-[content] { display: flex;  flex-flow: column nowrap;  justify-content: center;  max-width: 75vw;  max-height: 80vh }
+[content] { display: flex;  flex-flow: column wrap;  justify-content: center;  max-width: 75vw;  max-height: 80vh }
 	[items] { display: flex;  flex-flow: row wrap;  justify-content: left; }
 		[item] { display: flex;  flex-flow: row nowrap;  align-items: center;  min-width: 8em;  padding: .5em 1em .5em 1em;  font-size: 1.5em;  user-select: none; }
 		[item]:hover { background-color: #23036A;  color: #DBB2FF;  cursor: pointer;  outline: 1px solid #DBB2FF;  border-radius: .333em; }
@@ -57,16 +57,19 @@ let css=`body { background-color: #121212;  color: #F8F8F8; }
 
 SetIconCharacter('⭐️');  SetTitleText('Home');  let qi=body.querySelector('#input');  qi.addEventListener('focus', Focus);  qi.addEventListener('keydown', KeyDown);
 
-function Search(u){ this.blur(); if(u==null){return}; let q=qi.value; if(q==null||q==''){return}; q.replace(' ','+').toLowerCase();  
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-if(/www\.portfoliovisualizer\.com/.test(u)){ q=q.toUpperCase().split(' ');  let qa1=''; let qa2=''; let qa3=''; let qs1=''; let qs2=''; let qs3='';  if(q.length>0){ qa1='100'; qs1=q[0] }; if(q.length>1){ qa2='100'; qs2=q[1] }; if(q.length>2){ qa3='100'; qs3=q[2] }; 
+function Search(u){ if(u==null){return}; let q=qi.value; if(q==null||q==''){return}; q.replace(' ','+').toLowerCase();  
 
-} /*-if portfoliovisualizer*/  else { u=u.replace('{q}',q); win.open(u) }
+if(/www\.portfoliovisualizer\.com/.test(u)){ let qu=``; let qs=q.split(' '); if(qs.length>0){ qu=qu+`&symbol1=${qs[0]}&allocation1_1=100` }; if(qs.length>1){ qu=qu+`&symbol2=${qs[1]}&allocation2_2=100` }; if(qs.length>2){ qu=qu+`&symbol3=${qs[2]}&allocation3_3=100` }; q=qu;
+} /*-if portfoliovisualizer*/
+
+u=u.replace('{q}',q); win.open(u);
+
 } /*-Search*/
 
-function Link(u){ this.blur(); win.open(u); }
+function Link(u){ win.open(u); }
 
-// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 function Focus() { qi.focus();  qi.select() };  //win.addEventListener('focus', Focus);
 
 function KeyDown(ev){ let key=ev.key;
