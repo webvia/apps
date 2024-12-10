@@ -76,7 +76,7 @@ function CloseDialog(){ let dlg=doc.querySelector("#dlg"); dlg.close(); dlg.remo
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-UI:  Dialog*,Popup,Menu, Expander, Form, H1-6, List,Tree, Media, Table(sort), Template
+UI:  Overlays:Dialog*,Popup,Menu,Drawer,Slide,Messagebox, Repeat,Card, Expand,Reveal, Form, H1-6, List,Tree, Media, Table(sort), Tabs, Template
 Misc:  Variables, Events/Listeners/Keyboard, Fetch/Push, Clipboard, Selection, Location/URL, CSS
 Data/Storage:  Storage_API, Cookie_Store_API, Web_Storage_API, IndexedDB_API, File_System_Access_API, File_API, Cache
 

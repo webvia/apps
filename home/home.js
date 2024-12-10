@@ -33,7 +33,7 @@ let searches=[
 
 let h=``;
 h=h+`<x center><x content><x items links>`;  for(let i of links){ Items(i) }
-h=h+`</x links><x query><form method="dialog" onsubmit="Go('https://duckduckgo.com/?q={q}&kl=us-en&kp=-2&kz=-1&kav=1&kn=1&kd=-1&kg=g&kae=d&kw=s&k1=-1')"><input input id="input" placeholder="Search"/></form></x query><x items searches>`;  for(let i of searches){ Items(i) }
+h=h+`</x links><x query><form method="dialog" onsubmit="Go('https://duckduckgo.com/?q={q}&kl=us-en&kp=-2&kz=-1&kav=1&kn=1&kd=-1&kg=g&kae=d&kw=s&k1=-1')"><input input id="input" type="text" placeholder="search"/></form></x query><x items searches>`;  for(let i of searches){ Items(i) }
 h=h+`</x searches></x content></x center>`;  ModifyContent('add',h,'body','end');
 
 function Items(i) { h=h+`<x item onclick="Go('https://${i[1]}/${i[2]}')" title="${i[1]}/${i[2]}"><img icon src="https://external-content.duckduckgo.com/ip3/${(i[3]!=null)?i[3]:i[1]}.ico"><x>${i[0]}</x></x>` } /*-Items*/
@@ -42,7 +42,7 @@ function Items(i) { h=h+`<x item onclick="Go('https://${i[1]}/${i[2]}')" title="
 
 let css=`body { background-color: #121212;  color: #F8F8F8; }
 [center] { display: flex;  flex-flow: row nowrap;  justify-content: center; }
-[content] { display: flex;  flex-flow: column wrap;  justify-content: center;  max-width:60vw;  max-height: 85vh }
+[content] { display: flex;  flex-flow: column wrap;  justify-content: center;  max-width: 60vw;  max-height: 85vh; }
 	[items] { display: flex;  flex-flow: row wrap;  justify-content: left; }
 		[item] { display: flex;  flex-flow: row nowrap;  align-items: center;  min-width: 8em;  padding: .5em 1em .5em 1em;  font-size: 1.5em;  user-select: none;  cursor: pointer;  border-radius: .333em; }
 		[item]:hover { background-color: #23036A;  color: #DBB2FF;  outline: 1px solid #DBB2FF; }   [item]:focus-within { background-color: transparent;  color: #F8F8F8;  outline: none; }
@@ -55,11 +55,11 @@ let css=`body { background-color: #121212;  color: #F8F8F8; }
 
 // FUNC ==============================================================================================================================================================================================
 
-SetIconCharacter('⭐️');  SetTitleText('Home');  let qi=body.querySelector('#input');  qi.addEventListener('focus', Focus);  qi.addEventListener('keydown', KeyDown);
+SetIconCharacter('⭐️');  SetTitleText('Home');  let qi=body.querySelector('#input');  qi.addEventListener('focus', Focus);  qi.addEventListener('keydown', KeyDown);  qi.addEventListener('input', Input);
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function Go(u){ if(u==null){return};  if(!u.includes('{')){ win.open(u); return };  let q=qi.value;  if(q==null||q==''){return};  q.replace(' ','+').toLowerCase();  
+function Go(u){ if(u==null){return};  if(!u.includes('{')){ win.open(u); return }; let q=qi.value;  if(q==null||q==''){return};  q.replace(' ','+').toLowerCase();  
 
 if(/www\.portfoliovisualizer\.com/.test(u)){ let qu=``;  let qs=q.split(' ');  if(qs.length>0){ qu=qu+`&symbol1=${qs[0]}&allocation1_1=100` };  if(qs.length>1){ qu=qu+`&symbol2=${qs[1]}&allocation2_2=100` };  if(qs.length>2){ qu=qu+`&symbol3=${qs[2]}&allocation3_3=100` };  q=qu; } /*-if portfoliovisualizer*/
 
@@ -73,12 +73,15 @@ function KeyDown(ev){ let k=ev.key;
   else if(k=='Delete'){ ev.preventDefault();  Reset() }  /* clear data */
 }
 
+function Input(ev) { ev.target.value = ev.target.value.toLowerCase() }
+
+function Focus(ev) { qi.focus();  qi.select() };  //win.addEventListener('focus', Focus);
+
 function Calc(){ let v=qi.value;  let c=eval(v);  qi.value=`${v} = ${c}`;  }
 
 function Reset(){ qi.value='';  Focus() }
 
-function Focus() { qi.focus();  qi.select() };  //win.addEventListener('focus', Focus);
-
 /* NOTES =============================================================================================================================================================================================
+
 
 ====================================================================================================================================================================================================*/
