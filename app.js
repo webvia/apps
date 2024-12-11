@@ -36,7 +36,7 @@ function ModifyContent(a,c1,c2,p,d){ if(a==undefined){return}
 	else if(a=='remove-inner'){ c1=doc.querySelectorAll(c1);  for(let c1n of c1){ c1n.replaceChildren() } }
 	else if(a=='replace'){ c1=doc.querySelectorAll(c1);  c2=DatafyContent(c2,p);  c2=ConvertContent(c2);  for(let c1n of c1){ let c2c=c2.cloneNode(true);  c1n.replaceWith(c2c) } }
 	else if(a=='replace-inner'){ c1=doc.querySelectorAll(c1);  c2=DatafyContent(c2,p);  c2=ConvertContent(c2);  for(let c1n of c1){ let c2c=c2.cloneNode(true);  c1n.replaceChildren(c2c) } }
-}
+} /*-ModifyContent*/
 
 function ConvertContent(c){ if(typeof c!=='string'){ return c }  let t=doc.createElement('template');  t.innerHTML=c;  f=t.content;  t.remove();  return f }
 function MergeContent(c){ let f=new DocumentFragment();  for(let n of c){ f.append(n.cloneNode(true)) };  return f }

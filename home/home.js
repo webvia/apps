@@ -32,25 +32,24 @@ let searches=[
 // HTML ==============================================================================================================================================================================================
 
 let h=``;
-h=h+`<x center><x content><x items links>`;  for(let i of links){ Items(i) }
-h=h+`</x links><x query><form method="dialog" onsubmit="Go('https://duckduckgo.com/?q={q}&kl=us-en&kp=-2&kz=-1&kav=1&kn=1&kd=-1&kg=g&kae=d&kw=s&k1=-1')"><input input id="input" type="text" placeholder="search"/></form></x query><x items searches>`;  for(let i of searches){ Items(i) }
-h=h+`</x searches></x content></x center>`;  ModifyContent('add',h,'body','end');
+h=h+`<x content><x items links>`;  for(let i of links){ Items(i) }
+h=h+`</x links><x search><form method="dialog" onsubmit="Go('https://duckduckgo.com/?q={q}&kl=us-en&kp=-2&kz=-1&kav=1&kn=1&kd=-1&kg=g&kae=d&kw=s&k1=-1')"><input input id="input" type="text" placeholder="search"/></form></x search><x items searches>`;  for(let i of searches){ Items(i) }
+h=h+`</x searches></x content>`;  ModifyContent('add',h,'body','end');
 
 function Items(i) { h=h+`<x item onclick="Go('https://${i[1]}/${i[2]}')" title="${i[1]}/${i[2]}"><img icon src="https://external-content.duckduckgo.com/ip3/${(i[3]!=null)?i[3]:i[1]}.ico"><x>${i[0]}</x></x>` } /*-Items*/
 
 // CSS ===============================================================================================================================================================================================
 
-let css=`body { background-color: #121212;  color: #F8F8F8; }
-[center] { display: flex;  flex-flow: row nowrap;  justify-content: center; }
-[content] { display: flex;  flex-flow: column wrap;  justify-content: center;  max-width: 60vw;  max-height: 85vh; }
-	[items] { display: flex;  flex-flow: row wrap;  justify-content: left; }
-		[item] { display: flex;  flex-flow: row nowrap;  align-items: center;  min-width: 8em;  padding: .5em 1em .5em 1em;  font-size: 1.5em;  user-select: none;  cursor: pointer;  border-radius: .333em; }
+let css=`body {  }
+[content] { display: flex;  flex-flow: column wrap;  justify-content: center;  margin: 0 2em 0 2em }
+	[items] { display: flex;  flex-flow: row wrap;  justify-content: left;  padding: 1em }
+		[item] { display: flex;  flex-flow: row nowrap;  align-items: center;  width: 8em;  padding: .5em 1em .5em 1em;  font-size: 1.5em;  user-select: none;  cursor: pointer;  border-radius: .333em; }
 		[item]:hover { background-color: #23036A;  color: #DBB2FF;  outline: 1px solid #DBB2FF; }   [item]:focus-within { background-color: transparent;  color: #F8F8F8;  outline: none; }
 			[icon] { width: 1em;  height: 1em; margin-right: .5em }
-	[query] { display: flex;  flex-flow: row nowrap;  justify-content: center;  align-items: center; }
+	[links] { border-bottom: 2px solid #DBB2FF;  margin: .5em 0 3em 0; }
+	[search] { display: flex;  flex-flow: row nowrap;  justify-content: center;  align-items: center; }
 		[input] { width: 33.33vw;  padding: .5em;  font-size: 1.25em;  font-family: inherit;  border-radius: .33em;  border: none;  outline: 1px solid #DBB2FF; background-color: #212121;  color: #F8F8F8; }   [input]:hover, [input]:focus { outline: 2px solid #DBB2FF; }
-	[links] { padding-top: 1em;  padding-bottom: 2em;  border-bottom: 2px solid #DBB2FF;  margin-bottom: 3em; }
-	[searches] { padding-top: 1em;  margin-top: .5em; }
+	[searches] { margin-top: .5em; }
 `;  AddStyleInternal(css);
 
 // FUNC ==============================================================================================================================================================================================
