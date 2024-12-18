@@ -6,7 +6,7 @@ function OnError(message,source,lineno,colno,error){ let er=`${message}  [ ${sou
 
 // PreLoad ===========================================================================================================================================================================================
 
-PreLoad(); function PreLoad(){ window.addEventListener('error',OnError);
+PreLoad(); function PreLoad(){ //window.addEventListener('error',OnError);
 win=window; hist=win.history; clip=win.navigator.clipboard; doc=win.document; title=doc.title; head=doc.head; body=doc.body;
 loc=doc.location; href=loc.href; prot=loc.protocol+'://'; host=loc.host; path=loc.pathname; srch=loc.search; prms=new URLSearchParams(srch); hash=loc.hash;
 ref=href.replace(/^.+\/\/www\.|.+\/\//,''); dom=ref.substring(0,ref.indexOf('/')); dom=dom.substring(0,dom.lastIndexOf('.')); //href(ref)=prot/host(dom)/path/?srch&prms#hash
@@ -45,19 +45,19 @@ function DatafyContent(c,d){ if(d===undefined){ return c }  c=c.replaceAll('\${'
 
 // Dialog --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function OpenDialog(contentHTML,isModal,submitButtonText,closeButtonText){ 
+function OpenDialog(contentHTML,type,submitButtonText,closeButtonText){ 
 
-let h=`<dialog id="dlg"><form id="dlg_form"><div id="dlg_top" style="text-align:right"><button id="dlg_button_close_top" onclick="CloseDialog()" autofocus>❌️</button></div><div id="dlg_content">${contentHTML}</div>`;
+let h=`<dialog id="dlg" style="margin-top:0"><form id="dlg_form"><div id="dlg_top" style="text-align:right"><button id="dlg_button_close_top" onclick="CloseDialog()" autofocus>❌️</button></div><div id="dlg_content">${contentHTML}</div>`;
 
-if(submitButtonText!==undefined){ h=h+`<div id="dlg_bottom" style="text-align:right"><button id="dlg_button_submit" formmethod="dialog">${submitButtonText}</button><button id="dlg_button_close" onclick="CloseDialog()">${closeButtonText}</button></div>`; }
+if(submitButtonText!==undefined){ h=h+`<div id="dlg_bottom" style="text-align:right"><button id="dlg_button_submit" formmethod="dialog">${submitButtonText}</button><button id="dlg_button_close" onclick="CloseDialog()">${closeButtonText}</button></div>` }
 
 h=h+`</form></dialog>`;
 
-body.insertAdjacentHTML('beforeend',h);  let dlg=doc.querySelector("#dlg");  if(isModal){ dlg.showModal() } else{ dlg.show() } // \moz_html__Element/dialog  
+body.insertAdjacentHTML('beforeend',h);  let d=doc.querySelector("#dlg");  if(type=='modal'){ d.showModal() } else{ d.show() } // \moz_html__Element/dialog  
 
 } /*-OpenDialog*/
 
-function CloseDialog(){ let dlg=doc.querySelector("#dlg"); dlg.close(); dlg.remove() }
+function CloseDialog(){ let d=doc.querySelector("#dlg"); d.close(); d.remove() }
 
 /* Notes =============================================================================================================================================================================================
 
@@ -79,6 +79,18 @@ function CloseDialog(){ let dlg=doc.querySelector("#dlg"); dlg.close(); dlg.remo
 UI:  Overlays:Dialog*,Popup,Menu,Drawer,Slide,Messagebox, Repeat,Card, Expand,Reveal, Form, H1-6, List,Tree, Media, Table(sort), Tabs, Template
 Misc:  Variables, Events/Listeners/Keyboard, Fetch/Push, Clipboard, Selection, Location/URL, CSS
 Data/Storage:  Storage_API, Cookie_Store_API, Web_Storage_API, IndexedDB_API, File_System_Access_API, File_API, Cache
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+@media screen and (max-width: 767px) { ... }
+@media screen and (min-width: 768px) { ... }
+
+
+480 max
+481-767 min-max
+768-1024 min-max
+1025-1280 min-max
+1281 min
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
