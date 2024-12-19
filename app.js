@@ -11,7 +11,7 @@ win=window; hist=win.history; clip=win.navigator.clipboard; doc=win.document; ti
 loc=doc.location; href=loc.href; prot=loc.protocol+'://'; host=loc.host; path=loc.pathname; srch=loc.search; prms=new URLSearchParams(srch); hash=loc.hash;
 ref=href.replace(/^.+\/\/www\.|.+\/\//,''); dom=ref.substring(0,ref.indexOf('/')); dom=dom.substring(0,dom.lastIndexOf('.')); //href(ref)=prot/host(dom)/path/?srch&prms#hash
 app_u=prms.get('app'); app_j=app_u+'.js';  icon=head.querySelector('#app_icon');  base=head.querySelector('#app_base').setAttribute('href',app_u+'/'); doc.querySelector('noscript').remove();
-AddStyleInternal(`body { margin: 0;  font-family: sans-serif; }  table { border-collapse: collapse; }  #dlg::backdrop { opacity: .5; }`); 
+AddStyleInternal(`body { margin: unset;  font-family: sans-serif; }  table { border-collapse: collapse; }  #dlg::backdrop { opacity: .5; }`); 
 if(app_u!==null){ SetTitleText(app_u); SetIconCharacter(`🔳`); AddScriptExternal(app_j) } else{ SetTitleText(`App not specified`); SetIconCharacter(`⛔️`); body.insertAdjacentHTML('beforeend',`App not specified.`) }; 
 } /*-PreLoad*/  /*DOMContentLoaded*/
 
@@ -29,13 +29,13 @@ function log(msg){ console.log(msg) }  function dir(obj){ console.dir(obj) }
 // ModifyContent -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function ModifyContent(a,c1,c2,p,d){ if(a==undefined){return}
-	else if(a=='add'){ c1=DatafyContent(c1,d);  c1=ConvertContent(c1);  c2=doc.querySelectorAll(c2);  for(let c2n of c2){ let c1c=c1.cloneNode(true);  InsertContent(c1c, c2n, p) } }
-	else if(a=='copy'){ c1=doc.querySelectorAll(c1);  c1=MergeContent(c1);  c2=doc.querySelectorAll(c2);  for(let c2n of c2){ let c1c=c1.cloneNode(true);  InsertContent(c1c, c2n, p) } }
-	else if(a=='move'){ c1=doc.querySelectorAll(c1);  c2=doc.querySelector(c2);  for(let c1n of c1){ InsertContent(c1n, c2, p) } }
-	else if(a=='remove'){ c1=doc.querySelectorAll(c1);  for(let c1n of c1){ c1n.replaceWith() } }
-	else if(a=='remove-inner'){ c1=doc.querySelectorAll(c1);  for(let c1n of c1){ c1n.replaceChildren() } }
-	else if(a=='replace'){ c1=doc.querySelectorAll(c1);  c2=DatafyContent(c2,p);  c2=ConvertContent(c2);  for(let c1n of c1){ let c2c=c2.cloneNode(true);  c1n.replaceWith(c2c) } }
-	else if(a=='replace-inner'){ c1=doc.querySelectorAll(c1);  c2=DatafyContent(c2,p);  c2=ConvertContent(c2);  for(let c1n of c1){ let c2c=c2.cloneNode(true);  c1n.replaceChildren(c2c) } }
+  else if(a=='add'){ c1=DatafyContent(c1,d);  c1=ConvertContent(c1);  c2=doc.querySelectorAll(c2);  for(let c2n of c2){ let c1c=c1.cloneNode(true);  InsertContent(c1c, c2n, p) } }
+  else if(a=='copy'){ c1=doc.querySelectorAll(c1);  c1=MergeContent(c1);  c2=doc.querySelectorAll(c2);  for(let c2n of c2){ let c1c=c1.cloneNode(true);  InsertContent(c1c, c2n, p) } }
+  else if(a=='move'){ c1=doc.querySelectorAll(c1);  c2=doc.querySelector(c2);  for(let c1n of c1){ InsertContent(c1n, c2, p) } }
+  else if(a=='remove'){ c1=doc.querySelectorAll(c1);  for(let c1n of c1){ c1n.replaceWith() } }
+  else if(a=='remove-inner'){ c1=doc.querySelectorAll(c1);  for(let c1n of c1){ c1n.replaceChildren() } }
+  else if(a=='replace'){ c1=doc.querySelectorAll(c1);  c2=DatafyContent(c2,p);  c2=ConvertContent(c2);  for(let c1n of c1){ let c2c=c2.cloneNode(true);  c1n.replaceWith(c2c) } }
+  else if(a=='replace-inner'){ c1=doc.querySelectorAll(c1);  c2=DatafyContent(c2,p);  c2=ConvertContent(c2);  for(let c1n of c1){ let c2c=c2.cloneNode(true);  c1n.replaceChildren(c2c) } }
 } /*-ModifyContent*/
 
 function ConvertContent(c){ if(typeof c!=='string'){ return c }  let t=doc.createElement('template');  t.innerHTML=c;  f=t.content;  t.remove();  return f }
