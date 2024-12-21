@@ -1,4 +1,4 @@
-let win,hist,clip, doc,head,title,icon,base,body,h1, loc,href,prot,ref,host,dom,path,srch,prms,hash, app_u,app_j;
+let win,hist,clip, doc,root,head,title,icon,base,body,h1, dlg,mnu, loc,href,prot,ref,host,dom,path,srch,prms,hash, app_u,app_j;
 
 function OnError(message,source,lineno,colno,error){ let er=`${message}  [ ${source} > ${lineno}-${colno} ]`;  alert(er) }
 
@@ -7,7 +7,7 @@ function OnError(message,source,lineno,colno,error){ let er=`${message}  [ ${sou
 // PreLoad ===========================================================================================================================================================================================
 
 PreLoad(); function PreLoad(){ //window.addEventListener('error',OnError);
-win=window; hist=win.history; clip=win.navigator.clipboard; doc=win.document; title=doc.title; head=doc.head; body=doc.body;
+win=window; hist=win.history; clip=win.navigator.clipboard; doc=win.document; root=doc.documentElement; title=doc.title; head=doc.head; body=doc.body;
 loc=doc.location; href=loc.href; prot=loc.protocol+'://'; host=loc.host; path=loc.pathname; srch=loc.search; prms=new URLSearchParams(srch); hash=loc.hash;
 ref=href.replace(/^.+\/\/www\.|.+\/\//,''); dom=ref.substring(0,ref.indexOf('/')); dom=dom.substring(0,dom.lastIndexOf('.')); //href(ref)=prot/host(dom)/path/?srch&prms#hash
 app_u=prms.get('app'); app_j=app_u+'.js';  icon=head.querySelector('#app_icon');  base=head.querySelector('#app_base').setAttribute('href',app_u+'/'); doc.querySelector('noscript').remove();
@@ -45,7 +45,7 @@ function DatafyContent(c,d){ if(d===undefined){ return c }  c=c.replaceAll('\${'
 
 // Dialog --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function OpenDialog(contentHTML,type,submitButtonText,closeButtonText){ 
+function OpenDialog(contentHTML,type,submitButtonText,closeButtonText){ // <button onclick="OpenDialog('<div>hi</div>','modal','Save','Cancel')">dialog</button>
 
 let h=`<dialog id="dlg" style="margin-top:0"><form id="dlg_form"><div id="dlg_top" style="text-align:right"><button id="dlg_button_close_top" onclick="CloseDialog()" autofocus>❌️</button></div><div id="dlg_content">${contentHTML}</div>`;
 
@@ -58,6 +58,21 @@ body.insertAdjacentHTML('beforeend',h);  let d=doc.querySelector("#dlg");  if(ty
 } /*-OpenDialog*/
 
 function CloseDialog(){ let d=doc.querySelector("#dlg"); d.close(); d.remove() }
+
+
+// Menu ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function OpenMenu(){ // <button><dialog class="menu">
+/*view:*/ let view_hgt=root.clientHeight;  let view_wid=root.clientWidth;
+/*btn:*/ let btn=event.target.closest('button');  let btn_rect=btn.getBoundingClientRect();  let btn_lft=btn_rect.left;  let btn_bot=btn_rect.bottom;  let btn_below_hgt=view_hgt-btn_bot;  let btn_rht_wid=view_wid-btn_lft;
+/*mnu:*/ mnu=btn.nextElementSibling;  let mnu_sty=mnu.style;  mnu_sty.padding='unset';  mnu_sty.maxHeight=(view_hgt-16)+'px';  mnu_sty.maxWidth=(view_wid-16)+'px';
+  mnu.showModal();  let mnu_rect=mnu.getBoundingClientRect();  let mnu_hgt=mnu_rect.height;  let mnu_wid=mnu_rect.width;  
+if( mnu_hgt<btn_below_hgt ){ mnu_sty.marginTop=(btn_bot)+'px' } else { mnu_sty.marginBottom=(8)+'px';  mnu_sty.marginTop='auto' }
+if( mnu_wid<btn_rht_wid ){ mnu_sty.marginLeft=(btn_lft)+'px' } else { mnu_sty.marginRight=(8)+'px';  mnu_sty.marginLeft='auto' }
+} /*-mnuOpen*/
+
+function CloseMenu(){ mnu.close() }
+
 
 /* Notes =============================================================================================================================================================================================
 
