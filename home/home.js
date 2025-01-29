@@ -1,7 +1,7 @@
 // DATA ==============================================================================================================================================================================================
 let dg=`kl=us-en&kp=-2&kz=-1&kav=1&kn=1&kd=-1&kg=p&kae=d&kw=s&k1=-1`;
 
-_.links=[
+let link_list=[
 /*Name	Menu	 Domain	 Path	AltIcon	*/
 [`DuckDuckGo`,	``,	`duckduckgo.com`,	`?${dg}`,	``,	],
 [`YouTube`,	`+`,	`www.youtube.com`,	``,	``,	],
@@ -21,7 +21,7 @@ _.links=[
 [`ProtonMail`,	``,	`mail.proton.me`,	``,	``,	],
 ];
 
-_.searches=[
+let search_list=[
 [`DuckDuckGo`,	``,	`duckduckgo.com`,	`?q={q}&${dg}`,	``,	],
 [`Wikipedia`,	``,	`duckduckgo.com`,	`?q={q}+site:en.wikipedia.org/wiki&${dg}`,	`en.wikipedia.org`,	],
 [`YouTube`,	``,	`www.youtube.com`,	`results?search_query={q}`,	``,	],
@@ -34,19 +34,19 @@ _.searches=[
 
 // HTML ==============================================================================================================================================================================================
 
-function Items(items){ let h=``;  for(let i of items){ let n=i[0]/*name*/; let m=i[1]/*menu*/; let d=i[2]/*domain*/; let p=i[3]/*path*/; let a=i[4]/*alticon*/; 
-  /*item-go:*/ if(m===''){ h=`${h}<button item onclick="Go('https://${d}/${p}')" title="${d}/${p}"><img icon src="https://external-content.duckduckgo.com/ip3/${(a!=='')?a:d}.ico"><x>${n}</x></button item>`;  continue }
-  /*menu-open:*/ if(m==='+'){ h=`${h}<button item onclick="OpenMenu()"><img icon src="https://external-content.duckduckgo.com/ip3/${(a!=='')?a:d}.ico"><x>${n} ▾</x></button item><dialog menu onclick="CloseMenu()">`;  continue }
-  /*menu-item-go:*/ if(m==='-'||m==='='){ h=`${h}<button item onclick="Go('https://${d}/${p}')" title="${d}/${p}"><img icon src="https://external-content.duckduckgo.com/ip3/${(a!=='')?a:d}.ico"><x>${n}</x></button item>${(m==='=')?`</dialog menu>`:``}`;  continue }  } /*-for*/  return h } /*-Items*/
+function List(list){ let h=``;  for(const x of list){ let n=x[0]/*name*/; let m=x[1]/*menu*/; let d=x[2]/*domain*/; let p=x[3]/*path*/; let a=x[4]/*alticon*/; 
+  /*item-go:*/ if(m===''){ h=`${h}<button litem onclick="Go('https://${d}/${p}')" title="${d}/${p}"><img icon src="https://external-content.duckduckgo.com/ip3/${(a!=='')?a:d}.ico"><x>${n}</x></button litem>`;  continue }
+  /*menu-open:*/ if(m==='+'){ h=`${h}<button litem onclick="OpenMenu()"><img icon src="https://external-content.duckduckgo.com/ip3/${(a!=='')?a:d}.ico"><x>${n} ▾</x></button litem><dialog menu onclick="CloseMenu()">`;  continue }
+  /*menu-item-go:*/ if(m==='-'||m==='='){ h=`${h}<button litem onclick="Go('https://${d}/${p}')" title="${d}/${p}"><img icon src="https://external-content.duckduckgo.com/ip3/${(a!=='')?a:d}.ico"><x>${n}</x></button litem>${(m==='=')?`</dialog menu>`:``}`;  continue }  } /*-for*/  return h } /*-Items*/
 
-function HTML(){ let h=`<x content><x items link_items><button item onclick="window.open()" title="New Tab"><img icon src="https://external-content.duckduckgo.com/ip3/earth.google.com.ico"><x>New Tab</x></button item>${Items(_.links)}</x link_items><x middle><x time id="time"></x time><form method="dialog" onsubmit="Go('https://duckduckgo.com/?q={q}&${dg}')"><input query id="query" type="text" placeholder="search"/></form><x end></x end></x middle><x items search_items>${Items(_.searches)}</x search_items></x content>`;  ModifyContent('add',h,'body','end') }  HTML();
+function HTML(){ let h=`<x content><x list link_list><button litem onclick="window.open()" title="NewTab"><img icon src="https://external-content.duckduckgo.com/ip3/earth.google.com.ico"><x>NewTab</x></button litem>${List(link_list)}</x link_list><x middle><x time id="time"></x time><form method="dialog" onsubmit="Go('https://duckduckgo.com/?q={q}&${dg}')"><input query id="query" type="text" placeholder="search"/></form><x end></x end></x middle><x list search_list>${List(search_list)}</x search_list></x content>`;  ModifyContent('add',h,'body','end') }  HTML();
 
 // CSS ===============================================================================================================================================================================================
 
 function CSS(){ let css=` 
 [content] { display: flex;  flex-flow: column wrap;  justify-content: center;  margin: .5em 2em 0 2em }
-  [items] { display: flex;  flex-flow: row wrap;  justify-content: left;  padding: 1em }
-    [item] { display: flex;  flex-flow: row nowrap;  align-items: center;  width: 8em;  padding: .5em 1em .5em 1em;  font-size: 1.5em;  border-radius: .33em; }  [item]:hover { background-color: #23036A;  color: #DBB2FF;  outline: 1px solid #DBB2FF; }
+  [list] { display: flex;  flex-flow: row wrap;  justify-content: left;  padding: 1em }
+    [litem] { display: flex;  flex-flow: row nowrap;  align-items: center;  width: 8em;  padding: .5em 1em .5em 1em;  font-size: 1.5em;  border-radius: .33em; }  [litem]:hover { background-color: #23036A;  color: #DBB2FF;  outline: 1px solid #DBB2FF; }
       [icon] { width: 1em;  height: 1em;  margin-right: .5em }
   [middle] { display: grid;  grid-template-columns: 1fr auto 1fr;  padding: 3em 0 .5em 0;  border-top: 2px solid #DBB2FF; }
     [time] { display: flex;  flex-flow: row nowrap;  justify-content: center;  align-items: center;  font-size: 2.75em;  color: #DBB2FF;  user-select: none; }
