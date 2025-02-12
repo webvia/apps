@@ -12,8 +12,8 @@ ref=href.replace(/^.+\/\/www\.|.+\/\//,''); dom=ref.substring(0,ref.indexOf('/')
 app_url=prms.get('app'); app_js=app_url+'.js';  icon=head.querySelector('#app_icon');  base=head.querySelector('#app_base').setAttribute('href',app_url+'/'); 
 cli_hgt=root.clientHeight; cli_wid=root.clientWidth;  
 doc.querySelector('noscript').remove();
-AddStyleInternal(` body { margin: unset;  font-family: sans-serif; }  button { all: unset;  user-select: none;  cursor: pointer; }  table { border-collapse: collapse; } `); 
-if(app_url!==null){ SetTitleText(app_url); SetIconCharacter(`🔳`); AddScriptExternal(app_js) } else{ SetTitleText(`App not specified`); SetIconCharacter(`⛔️`); body.insertAdjacentHTML('beforeend',`App not specified.`) }; 
+AddStyleInternal(` body { margin: unset;  font-family: sans-serif; }  button { all: unset;  user-select: none;  cursor: pointer; }  table { border-collapse: collapse; } `, 'apps_style'); 
+if(app_url!==null){ SetTitleText(app_url); SetIconCharacter(`🔳`); AddScriptExternal(app_js,'app_script') } else{ SetTitleText(`App not specified`); SetIconCharacter(`⛔️`); body.insertAdjacentHTML('beforeend',`App not specified.`) }; 
 } /*-PreLoad*/  /*DOMContentLoaded*/
 
 // Functions =========================================================================================================================================================================================
@@ -21,11 +21,11 @@ if(app_url!==null){ SetTitleText(app_url); SetIconCharacter(`🔳`); AddScriptEx
 function SetTitleText(txt){ doc.title=txt }
 function SetIconURL(url){ icon.href=url }
 function SetIconCharacter(chr){ icon.href=`data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text x=%22-.1em%22 y=%22.9em%22 font-size=%2280%22>${chr}</text></svg>` }
-function AddStyleInline(elem,css){ elem.style=css }
-function AddStyleInternal(css){ let e=doc.createElement('style'); e.textContent=css; head.append(e) }
-function AddStyleExternal(url){ let e=doc.createElement('link'); e.rel='stylesheet'; e.href=url; head.append(e) }
-function AddScriptExternal(url){ let e=doc.createElement('script'); e.src=url; e.defer=true; head.append(e) }
-function AddModules(modules){} // tree, etc ...
+function AddStyleInline(css,elem){ elem.style=css }
+function AddStyleInternal(css,id){ let e=doc.createElement('style'); e.textContent=css; e.id=id; head.append(e) }
+function AddStyleExternal(url,id){ let e=doc.createElement('link'); e.rel='stylesheet'; e.href=url; e.id=id; head.append(e) }
+function AddScriptExternal(url,id){ let e=doc.createElement('script'); e.src=url; e.id=id; e.defer=true; head.append(e) }
+function AddModules(modules){} // tree, etc ...  let components=(o.components!=null)?o.components:null;
 function log(msg){ console.log(msg) }  function dir(obj){ console.dir(obj) }
 
 // ModifyContent -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -61,39 +61,60 @@ function OpenMenu(menuSelector){ let btn=body.querySelector('button:focus'); let
 
 // Items ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-let $items, $item,  item_id_prm;
-let item_id, item_parent, item_type, item_name, item_icon, item_content;
-let item_id_i, item_parent_i, item_type_i, item_name_i, item_icon_i, item_content_i;
-let item_i, item_parent_is, item_sibling_is, item_child_is;
-let item_i_i, item_parent_is_i, item_sibling_is_i, item_child_is_i; 
+let $items, $item,  item_id_prm;  let item_id, item_parent, item_type, item_name, item_icon, item_content;  let item_id_i, item_parent_i, item_type_i, item_name_i, item_icon_i, item_content_i;  let item_i, item_parent_is, item_sibling_is, item_child_is;  let item_i_i, item_parent_is_i, item_sibling_is_i, item_child_is_i; 
 
 
-function AddItems(o){ let item_props=$items[0];  
+function AddItems(item_id_start){ let item_props=$items[0];  
 item_props.push('item_i');  item_props.push('item_parent_is');  item_props.push('item_sibling_is');  item_props.push('item_child_is');  $items.shift();  
 item_id_i=item_props.indexOf('id'); item_parent_i=item_props.indexOf('parent'); item_type_i=item_props.indexOf('type'); item_name_i=item_props.indexOf('name'); item_icon_i=item_props.indexOf('icon'); item_content_i=item_props.indexOf('content');  
 item_i_i=item_props.indexOf('item_i');  item_parent_is_i=item_props.indexOf('item_parent_is');  item_sibling_is_i=item_props.indexOf('item_sibling_is');  item_child_is_i=item_props.indexOf('item_child_is'); 
-item_id_prm=prms.get('item');  item_id=(item_id_prm!=null)?item_id_prm:(o.item_id!=null)?o.item_id:$items[0][item_id_i];
 for(const [i,x] of $items.entries()){ let item_id_x=x[item_id_i];  let item_parent_x=x[item_parent_i];  x.push(null, [],[],[]);  x[item_i_i]=i;  let item_parent_is_x=x[item_parent_is_i];  let item_sibling_is_x=x[item_sibling_is_i];  let item_child_is_x=x[item_child_is_i];
   for(const [j,y] of $items.entries()){ let item_id_y=y[item_id_i];  let item_parent_y=y[item_parent_i];  let item_parent_is_y=y[item_parent_is_i];  if(item_parent_x===item_id_y){ item_parent_is_x.push(item_parent_is_y,j) };  if(item_parent_x===item_parent_y){ item_sibling_is_x.push(j) };  if(item_id_x===item_parent_y){ item_child_is_x.push(j) };
   } /*-for j*/
   x[item_parent_is_i]=item_parent_is_x.flat(Infinity);
 } /*-for i*/
-let components=(o.components!=null)?o.components:null;
-log($items);  AddTree();  SetItem(item_id);
+log($items);  
+item_id_prm=prms.get('item');  item_id = (item_id_prm!=null) ? item_id_prm : (item_id_start!=null && item_id_start!='') ? item_id_start : $items[0][item_id_i];
+SetItem(item_id);
 } /*-AddItems*/
 
 
-function SetItem(item_id_new){ for(const [i,x] of $items.entries()){ if(item_id_new===x[item_id_i]){ $item=x;  item_i=i;  break } };
+function SetItem(item_id_new){ 
+for(const [i,x] of $items.entries()){ if(item_id_new===x[item_id_i]){ $item=x;  item_i=i;  break } };
 item_id=$item[item_id_i]; item_parent=$item[item_parent_i]; item_type=$item[item_type_i]; item_name=$item[item_name_i]; item_icon=$item[item_icon_i]; item_content=$item[item_content_i]; item_parent_is=$item[item_parent_is_i]; item_sibling_is=$item[item_sibling_is_i]; item_child_is=$item[item_child_is_i]; 
-ModifyContent('replace-inner', '#cont_wrap', `${item_content}`);
-SetTree();
+SetTree(); SetPath(); SetContent();
 } /*-SetItem*/
+
+// Content -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function SetContent(){ ModifyContent('replace-inner', '#lay_cont', `${item_content}`) }
+
+// Path ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function SetPath(){ let path_parents_html='';  let path_items_html='';  let path_sep_html=`<x path_sep>🞂</x path_sep>`;
+for(const x of item_parent_is){ let item_x=$items[x];  path_parents_html=`${path_parents_html}<button path_item_parent path_item onclick="SetItem('${item_x[item_id_i]}')"><x path_icon>${item_x[item_icon_i]}</x path_icon><x path_name>${item_x[item_name_i]}</x path_name></button>${path_sep_html}` } /*-for x parents*/
+path_items_html=`<button path_item_current path_item><x path_icon>${item_icon}</x path_icon><x path_name>${item_name}</x path_name></button>`;
+let path_html=`<nav path_nav><x path_items>${path_parents_html}${path_items_html}</x path_items></nav path_nav>`;  
+ModifyContent('replace-inner', '#lay_path', `${path_html}`) } /*-SetPath*/
+
+
+function AddPath(){ AddStyleInternal(`
+[path_nav] { display: flex;  flex-flow: row wrap;  background-color: #202020;  border-bottom: 1px solid #808080; width: 100%; }
+[path_items] { display: flex;  flex-flow: row nowrap;  justify-content: center; }
+[path_item] { display: flex;  flex-flow: row nowrap;  padding: .5em 1em .5em 1em;  font-size: 1em; }
+[path_item]:hover { background-color: #303030; }
+[path_icon] { margin-right: .5em; }
+[path_sep] { display: flex;  flex-flow: row nowrap;  justify-content: center;  align-items: center;  user-select: none;  padding: 0 .5em 0 .5em;  color: #808080; }
+`, 'apps_path_style'); 
+} /*-AddPath*/
+
 
 // Tree ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function SetTree(){ let tree_parents_html='';  let tree_items_html='';
 
 for(const x of item_parent_is){ let item_x=$items[x];  tree_parents_html=`${tree_parents_html}<button tree_item_parent tree_item onclick="SetItem('${item_x[item_id_i]}')"><x tree_icon>${item_x[item_icon_i]}</x tree_icon><x tree_name>${item_x[item_name_i]}</x tree_name></button>` } /*-for x parents*/
+
 for(const x of item_sibling_is){ let item_x=$items[x]; 
   let tree_item_current=(item_i===item_x[item_i_i])?'tree_item_current':''; 
   let tree_item_top=(item_x[item_parent_i]==='')?'tree_item_top':''; 
@@ -102,12 +123,21 @@ for(const x of item_sibling_is){ let item_x=$items[x];
     for(const y of item_child_is){ let item_y=$items[y];  tree_items_html=`${tree_items_html}<button tree_item_child tree_item onclick="SetItem('${item_y[item_id_i]}')"><x tree_icon>${item_y[item_icon_i]}</x tree_icon><x tree_name>${item_y[item_name_i]}</x tree_name></button>` } /*-for y childs*/
   } /*-if*/
 } /*-for x siblings*/
-let tree_html=`<nav tree_nav><x tree_bar><button tree_bar_button title="Up to Top Level" onclick="SetItem('${$items[0][item_id_i]}')">⏫️</button><button tree_bar_button title="Up One Level" onclick="SetItem('${item_parent}')">🔼</button></x tree_bar><x tree_items>${tree_parents_html}${tree_items_html}</x tree_items></nav tree_nav>`;  ModifyContent('replace-inner', '#tree_wrap', tree_html);
+
+let tree_html=`<nav tree_nav><x tree_bar>
+<button tree_bar_button title="Up to Top Level" onclick="SetItem('${$items[0][item_id_i]}')">⏫️</button>
+<button tree_bar_button title="Up One Level" onclick="SetItem('${item_parent}')">🔼</button>
+<button tree_bar_button title="Tree View" onclick="SetItem('${item_parent}')">↘️</button>
+<button tree_bar_button title="List View" onclick="SetItem('${item_parent}')">⬇️</button>
+
+</x tree_bar><x tree_items>${tree_parents_html}${tree_items_html}</x tree_items></nav tree_nav>`;  
+
+ModifyContent('replace-inner', '#lay_tree', tree_html);
 } /*-SetTree*/
 
 
 function AddTree(){ AddStyleInternal(`
-[tree_nav] { display: flex;  flex-flow: column nowrap;  align-items: stretch;  width: 250px;  height: 100vh;  background-color: #202020;  border-right: 1px solid #808080;  }
+[tree_nav] { display: flex;  flex-flow: column nowrap;  align-items: stretch;  width: 250px;  height: 100vh;  bottom: 0;  background-color: #202020;  border-right: 1px solid #808080;  }
 
 [tree_bar] { display: flex;  flex-flow: row nowrap;  border-bottom: 1px solid #808080; }
 [tree_bar_button] { display: flex;  flex-flow: row nowrap;  justify-content: center;  align-items: center;  padding: .5em .75em .5em .75em; }
@@ -123,7 +153,41 @@ function AddTree(){ AddStyleInternal(`
 [tree_item_sibling] , [tree_item_top]~[tree_item_child] { padding-left: 2em; }
 [tree_item_parent] , [tree_item_top] { padding-left: .5em;  border-left: 4px inset #606060; }
 [tree_item_current] { font-weight: bold;  background-color: #404040; }
-`) } /*-AddTree*/
+`, 'apps_tree_style'); 
+} /*-AddTree*/
+
+
+// Layout --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function AddLayout(){ 
+
+let lay_html=`
+<div id="lay_page">
+  <header id="lay_header"><div>HEADER</div></header lay_header>
+  <div id="lay_middle">
+    <div id="lay_left"><div id="lay_tree"></div lay_tree></div lay_left>
+    <div id="lay_center">
+      <div id="lay_top"><div id="lay_path"></div lay_path></div lay_top>
+      <main id="lay_main"><div id="lay_cont"></div lay_cont></main lay_main>
+      <div id="lay_bottom"><div>BOTTOM</div></div lay_bottom>
+    </div lay_center>
+    <aside id="lay_right"><div>RIGHT</div></aside lay_right>
+  </div lay_middle>
+  <footer id="lay_footer"><div>FOOTER</div></footer lay_header>
+</div lay_page>
+`;  ModifyContent('add',lay_html,'body','end');
+
+let lay_css=` 
+#lay_page { display: flex;  flex-flow: column nowrap;  justify-content: center;  width: 100%; }
+  #lay_header, #lay_middle, #lay_footer { }
+  #lay_middle { display: flex;  flex-flow: row nowrap; }
+    #lay_left, #lay_center, #lay_right { }   #lay_left>#lay_tree { }
+    #lay_center { display: flex;  flex-flow: column nowrap;  flex-basis: 100%; }
+      #lay_top, #lay_main, #lay_bottom { }   #lay_top>#lay_path { }
+      #lay_main { }   #lay_cont { padding: 1em; }
+`;  AddStyleInternal(lay_css,'apps_lay_style');
+
+} /*-AddLayout*/
 
 
 /* Notes =============================================================================================================================================================================================
@@ -135,12 +199,13 @@ function AddTree(){ AddStyleInternal(`
 > Platform:  Variables, Components, Events/Listeners/Keyboard, Data-Fetch/Push, Clipboard, Selection, Location/URL, CSS, Displays  ...
 
 > Components
-Navigation/Hierarchy
+Layout+
+Navigation
   Panel/Drawer/Sidebar - slide-out|over
-  Tree-nav: hier, items
+  Tree+ - hier, items
   Menu+ - actions, context
-  Breadcrumb-nav - path
-List/Items - items, cards, repeat
+  Breadcrumb/Path+ -  sep-styles: chevron, slash/, gls>, 
+List/Items - items, cards, repeat    types: col-wrap, row-wrap, v-list, table
   Pagination-nav - subset of list
   Table - items, rows
 Item/Edit - metadata:  id, type_id, parent_ids, date_created, date_modified,  ... data:  name, title, hi,...
@@ -150,7 +215,7 @@ Item/Edit - metadata:  id, type_id, parent_ids, date_created, date_modified,  ..
   Content/Main/Article - in-array, in-var, fetch
 Dialog+ - messages, input - head(icon, title, close)  main(cont, data), foot(actions),  styles-size/position/type,  behaviors-modal/movable/resizable
 Form: controls, input, select/picker
-zMisc: button, icon, badge, progress, tag, ..
+Misc: button, icon, badge, progress, tag, ..
 ----
 Data/Storage:  Storage_API, Cookie_Store_API, Web_Storage_API, IndexedDB_API, File_System_Access_API, File_API, Cache
 Displays:  @media screen and (max-width: 767px) { ... }   @media screen and (min-width: 768px) { ... }    <=480 - 481-767 - 768-1024 - 1025-1280 - 1281=<

@@ -39,12 +39,12 @@ function List(list){ let h=``;  for(const x of list){ let n=x[0]/*name*/; let m=
   /*menu-open:*/ if(m==='+'){ h=`${h}<button litem onclick="OpenMenu()"><img icon src="https://external-content.duckduckgo.com/ip3/${(a!=='')?a:d}.ico"><x>${n} ▾</x></button litem><dialog menu onclick="CloseMenu()">`;  continue }
   /*menu-item-go:*/ if(m==='-'||m==='='){ h=`${h}<button litem onclick="Go('https://${d}/${p}')" title="${d}/${p}"><img icon src="https://external-content.duckduckgo.com/ip3/${(a!=='')?a:d}.ico"><x>${n}</x></button litem>${(m==='=')?`</dialog menu>`:``}`;  continue }  } /*-for*/  return h } /*-Items*/
 
-function HTML(){ let h=`<x content><x list link_list><button litem onclick="window.open()" title="NewTab"><img icon src="https://external-content.duckduckgo.com/ip3/earth.google.com.ico"><x>NewTab</x></button litem>${List(link_list)}</x link_list><x middle><x time id="time"></x time><form method="dialog" onsubmit="Go('https://duckduckgo.com/?q={q}&${dg}')"><input query id="query" type="text" placeholder="search"/></form><x end></x end></x middle><x list search_list>${List(search_list)}</x search_list></x content>`;  ModifyContent('add',h,'body','end') }  HTML();
+function HTML(){ let h=`<x content><x list link_list><button litem onclick="window.open('chrome-native://bookmarks/folder/458')" title="NewTab"><img icon src="https://external-content.duckduckgo.com/ip3/earth.google.com.ico"><x>NewTab</x></button litem>${List(link_list)}</x link_list><x middle><x time id="time"></x time><form method="dialog" onsubmit="Go('https://duckduckgo.com/?q={q}&${dg}')"><input query id="query" type="text" placeholder="search"/></form><x end></x end></x middle><x list search_list>${List(search_list)}</x search_list></x content>`;  ModifyContent('add',h,'body','end') }  HTML();
 
 // CSS ===============================================================================================================================================================================================
 
 function CSS(){ let css=` 
-[content] { display: flex;  flex-flow: column wrap;  justify-content: center;  margin: .5em 2em 0 2em }
+[content] { display: flex;  flex-flow: column nowrap;  justify-content: center;  margin: .5em 2em 0 2em }
   [list] { display: flex;  flex-flow: row wrap;  justify-content: left;  padding: 1em }
     [litem] { display: flex;  flex-flow: row nowrap;  align-items: center;  width: 8em;  padding: .5em 1em .5em 1em;  font-size: 1.5em;  border-radius: .33em; }  [litem]:hover { background-color: #23036A;  color: #DBB2FF;  outline: 1px solid #DBB2FF; }
       [icon] { width: 1em;  height: 1em;  margin-right: .5em }

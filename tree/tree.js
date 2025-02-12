@@ -1,9 +1,5 @@
 SetIconCharacter('🌳');  SetTitleText('Tree');  
 
-// HTML ==============================================================================================================================================================================================
-
-function HTML(){ let body_html=`<div id="page_wrap"><div id="tree_wrap"></div><div id="cont_wrap"></div></div>`;  ModifyContent('add',body_html,'body','end') }  HTML();
-
 // ITEMS ==============================================================================================================================================================================================
 
 let item_horse_html=`Kitchen.. <button onclick="SetItem('bedrooms')">to Bedrooms</button>`;
@@ -19,18 +15,35 @@ $items=[
 [`kitchen`,	`home`,	`Kitchen`,	`🍴`,	`page`,	`${item_horse_html}`,	],
 ];
 
-AddItems( { item_id:'home', components:['tree_nav','content'] } );
 
-// CSS ===============================================================================================================================================================================================
+$list_items=[
+[`id`,	`parent`,	`name`,	`icon`,	`type`,	`content`,	],
+[`bed`,	``,	`Home`,	`🏠`,	`page`,	`Home..`,	],
+];
 
-function CSS(){ let css=` 
-#page_wrap { display: flex;  flex-flow: row wrap; }
-#tree_wrap { }
-#cont_wrap { padding: 1em; }
-`;  AddStyleInternal(css) }  CSS();
+
+
+
+
+
+AddLayout();
+AddItems();
+AddTree();
+AddPath();
+
 
 /* NOTES =============================================================================================================================================================================================
 
 
+nav_items > list_items > cont_items
+
+
+content - query/fetch/variable
+
+
+direction-row|col
+wrap|nowrap
+scroll|noscroll
+template-elems/layout
 
 ====================================================================================================================================================================================================*/
