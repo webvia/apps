@@ -4,7 +4,7 @@ SetIconCharacter('🌳');  SetTitleText('Tree');
 
 let item_horse_html=`Kitchen.. <button onclick="SetItem('bedrooms')">to Bedrooms</button>`;
 
-$items=[
+$nav_items=[
 [`id`,	`parent`,	`name`,	`icon`,	`type`,	`content`,	],
 [`home`,	``,	`Home`,	`🏠`,	`page`,	`Home..`,	],
 [`bedrooms`,	`home`,	`Bedrooms`,	`🌙`,	`folder`,	`Bedrooms..`,	],
@@ -14,16 +14,6 @@ $items=[
 [`guest`,	`bedrooms`,	`Guest`,	`🛌`,	`page`,	`Guest..`,	],
 [`kitchen`,	`home`,	`Kitchen`,	`🍴`,	`page`,	`${item_horse_html}`,	],
 ];
-
-
-$list_items=[
-[`id`,	`parent`,	`name`,	`icon`,	`type`,	`content`,	],
-[`bed`,	``,	`Home`,	`🏠`,	`page`,	`Home..`,	],
-];
-
-
-
-
 
 
 AddLayout();
@@ -45,5 +35,6 @@ direction-row|col
 wrap|nowrap
 scroll|noscroll
 template-elems/layout
+align-
 
 ====================================================================================================================================================================================================*/

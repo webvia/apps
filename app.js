@@ -61,27 +61,27 @@ function OpenMenu(menuSelector){ let btn=body.querySelector('button:focus'); let
 
 // Items ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-let $items, $item,  item_id_prm;  let item_id, item_parent, item_type, item_name, item_icon, item_content;  let item_id_i, item_parent_i, item_type_i, item_name_i, item_icon_i, item_content_i;  let item_i, item_parent_is, item_sibling_is, item_child_is;  let item_i_i, item_parent_is_i, item_sibling_is_i, item_child_is_i; 
+let $nav_items, $nav_item,  item_id_prm;  let item_id, item_parent, item_type, item_name, item_icon, item_content;  let item_id_i, item_parent_i, item_type_i, item_name_i, item_icon_i, item_content_i;  let item_i, item_parent_is, item_sibling_is, item_child_is;  let item_i_i, item_parent_is_i, item_sibling_is_i, item_child_is_i; 
 
 
-function AddItems(item_id_start){ let item_props=$items[0];  
-item_props.push('item_i');  item_props.push('item_parent_is');  item_props.push('item_sibling_is');  item_props.push('item_child_is');  $items.shift();  
+function AddItems(item_id_start){ let item_props=$nav_items[0];  
+item_props.push('item_i');  item_props.push('item_parent_is');  item_props.push('item_sibling_is');  item_props.push('item_child_is');  $nav_items.shift();  
 item_id_i=item_props.indexOf('id'); item_parent_i=item_props.indexOf('parent'); item_type_i=item_props.indexOf('type'); item_name_i=item_props.indexOf('name'); item_icon_i=item_props.indexOf('icon'); item_content_i=item_props.indexOf('content');  
 item_i_i=item_props.indexOf('item_i');  item_parent_is_i=item_props.indexOf('item_parent_is');  item_sibling_is_i=item_props.indexOf('item_sibling_is');  item_child_is_i=item_props.indexOf('item_child_is'); 
-for(const [i,x] of $items.entries()){ let item_id_x=x[item_id_i];  let item_parent_x=x[item_parent_i];  x.push(null, [],[],[]);  x[item_i_i]=i;  let item_parent_is_x=x[item_parent_is_i];  let item_sibling_is_x=x[item_sibling_is_i];  let item_child_is_x=x[item_child_is_i];
-  for(const [j,y] of $items.entries()){ let item_id_y=y[item_id_i];  let item_parent_y=y[item_parent_i];  let item_parent_is_y=y[item_parent_is_i];  if(item_parent_x===item_id_y){ item_parent_is_x.push(item_parent_is_y,j) };  if(item_parent_x===item_parent_y){ item_sibling_is_x.push(j) };  if(item_id_x===item_parent_y){ item_child_is_x.push(j) };
+for(const [i,x] of $nav_items.entries()){ let item_id_x=x[item_id_i];  let item_parent_x=x[item_parent_i];  x.push(null, [],[],[]);  x[item_i_i]=i;  let item_parent_is_x=x[item_parent_is_i];  let item_sibling_is_x=x[item_sibling_is_i];  let item_child_is_x=x[item_child_is_i];
+  for(const [j,y] of $nav_items.entries()){ let item_id_y=y[item_id_i];  let item_parent_y=y[item_parent_i];  let item_parent_is_y=y[item_parent_is_i];  if(item_parent_x===item_id_y){ item_parent_is_x.push(item_parent_is_y,j) };  if(item_parent_x===item_parent_y){ item_sibling_is_x.push(j) };  if(item_id_x===item_parent_y){ item_child_is_x.push(j) };
   } /*-for j*/
   x[item_parent_is_i]=item_parent_is_x.flat(Infinity);
 } /*-for i*/
-log($items);  
-item_id_prm=prms.get('item');  item_id = (item_id_prm!=null) ? item_id_prm : (item_id_start!=null && item_id_start!='') ? item_id_start : $items[0][item_id_i];
+log($nav_items);  
+item_id_prm=prms.get('item');  item_id = (item_id_prm!=null) ? item_id_prm : (item_id_start!=null && item_id_start!='') ? item_id_start : $nav_items[0][item_id_i];
 SetItem(item_id);
 } /*-AddItems*/
 
 
 function SetItem(item_id_new){ 
-for(const [i,x] of $items.entries()){ if(item_id_new===x[item_id_i]){ $item=x;  item_i=i;  break } };
-item_id=$item[item_id_i]; item_parent=$item[item_parent_i]; item_type=$item[item_type_i]; item_name=$item[item_name_i]; item_icon=$item[item_icon_i]; item_content=$item[item_content_i]; item_parent_is=$item[item_parent_is_i]; item_sibling_is=$item[item_sibling_is_i]; item_child_is=$item[item_child_is_i]; 
+for(const [i,x] of $nav_items.entries()){ if(item_id_new===x[item_id_i]){ $nav_item=x;  item_i=i;  break } };
+item_id=$nav_item[item_id_i]; item_parent=$nav_item[item_parent_i]; item_type=$nav_item[item_type_i]; item_name=$nav_item[item_name_i]; item_icon=$nav_item[item_icon_i]; item_content=$nav_item[item_content_i]; item_parent_is=$nav_item[item_parent_is_i]; item_sibling_is=$nav_item[item_sibling_is_i]; item_child_is=$nav_item[item_child_is_i]; 
 SetTree(); SetPath(); SetContent();
 } /*-SetItem*/
 
@@ -92,7 +92,7 @@ function SetContent(){ ModifyContent('replace-inner', '#lay_cont', `${item_conte
 // Path ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function SetPath(){ let path_parents_html='';  let path_items_html='';  let path_sep_html=`<x path_sep>🞂</x path_sep>`;
-for(const x of item_parent_is){ let item_x=$items[x];  path_parents_html=`${path_parents_html}<button path_item_parent path_item onclick="SetItem('${item_x[item_id_i]}')"><x path_icon>${item_x[item_icon_i]}</x path_icon><x path_name>${item_x[item_name_i]}</x path_name></button>${path_sep_html}` } /*-for x parents*/
+for(const x of item_parent_is){ let item_x=$nav_items[x];  path_parents_html=`${path_parents_html}<button path_item_parent path_item onclick="SetItem('${item_x[item_id_i]}')"><x path_icon>${item_x[item_icon_i]}</x path_icon><x path_name>${item_x[item_name_i]}</x path_name></button>${path_sep_html}` } /*-for x parents*/
 path_items_html=`<button path_item_current path_item><x path_icon>${item_icon}</x path_icon><x path_name>${item_name}</x path_name></button>`;
 let path_html=`<nav path_nav><x path_items>${path_parents_html}${path_items_html}</x path_items></nav path_nav>`;  
 ModifyContent('replace-inner', '#lay_path', `${path_html}`) } /*-SetPath*/
@@ -113,19 +113,19 @@ function AddPath(){ AddStyleInternal(`
 
 function SetTree(){ let tree_parents_html='';  let tree_items_html='';
 
-for(const x of item_parent_is){ let item_x=$items[x];  tree_parents_html=`${tree_parents_html}<button tree_item_parent tree_item onclick="SetItem('${item_x[item_id_i]}')"><x tree_icon>${item_x[item_icon_i]}</x tree_icon><x tree_name>${item_x[item_name_i]}</x tree_name></button>` } /*-for x parents*/
+for(const x of item_parent_is){ let item_x=$nav_items[x];  tree_parents_html=`${tree_parents_html}<button tree_item_parent tree_item onclick="SetItem('${item_x[item_id_i]}')"><x tree_icon>${item_x[item_icon_i]}</x tree_icon><x tree_name>${item_x[item_name_i]}</x tree_name></button>` } /*-for x parents*/
 
-for(const x of item_sibling_is){ let item_x=$items[x]; 
+for(const x of item_sibling_is){ let item_x=$nav_items[x]; 
   let tree_item_current=(item_i===item_x[item_i_i])?'tree_item_current':''; 
   let tree_item_top=(item_x[item_parent_i]==='')?'tree_item_top':''; 
   tree_items_html=`${tree_items_html}<button tree_item_sibling ${tree_item_top} ${tree_item_current} tree_item onclick="SetItem('${item_x[item_id_i]}')"><x tree_icon>${item_x[item_icon_i]}</x tree_icon><x tree_name>${item_x[item_name_i]}</x tree_name></button>`;
   if(item_i===item_x[item_i_i]){
-    for(const y of item_child_is){ let item_y=$items[y];  tree_items_html=`${tree_items_html}<button tree_item_child tree_item onclick="SetItem('${item_y[item_id_i]}')"><x tree_icon>${item_y[item_icon_i]}</x tree_icon><x tree_name>${item_y[item_name_i]}</x tree_name></button>` } /*-for y childs*/
+    for(const y of item_child_is){ let item_y=$nav_items[y];  tree_items_html=`${tree_items_html}<button tree_item_child tree_item onclick="SetItem('${item_y[item_id_i]}')"><x tree_icon>${item_y[item_icon_i]}</x tree_icon><x tree_name>${item_y[item_name_i]}</x tree_name></button>` } /*-for y childs*/
   } /*-if*/
 } /*-for x siblings*/
 
 let tree_html=`<nav tree_nav><x tree_bar>
-<button tree_bar_button title="Up to Top Level" onclick="SetItem('${$items[0][item_id_i]}')">⏫️</button>
+<button tree_bar_button title="Up to Top Level" onclick="SetItem('${$nav_items[0][item_id_i]}')">⏫️</button>
 <button tree_bar_button title="Up One Level" onclick="SetItem('${item_parent}')">🔼</button>
 <button tree_bar_button title="Tree View" onclick="SetItem('${item_parent}')">↘️</button>
 <button tree_bar_button title="List View" onclick="SetItem('${item_parent}')">⬇️</button>

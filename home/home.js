@@ -16,10 +16,11 @@ let link_list=[
 [`ZeroHedge`,	``,	`www.zerohedge.com`,	`markets#~~`,	``,	],
 [`TradingView`,	``,	`www.tradingview.com`,	`chart/4uKzkaDw/`,	``,	],
 [`M1 Finance`,	``,	`dashboard.m1.com`,	``,	``,	],
-[`Weather`,	``,	`weather.com`,	`weather/tenday/l/f9eb3032c181663e18886051520a802768705b1d5a5027452b85c95a97985bb2`,	``,	],
+[`Weather`,	``,	`www.accuweather.com`,	`en/us/johnson-city/37604/weather-forecast/331088`,	``,	],
 [`Amazon`,	``,	`www.amazon.com`,	`hz/wishlist/ls/`,	``,	],
 [`ProtonMail`,	``,	`mail.proton.me`,	``,	``,	],
 ];
+
 
 let search_list=[
 [`DuckDuckGo`,	``,	`duckduckgo.com`,	`?q={q}&${dg}`,	``,	],
