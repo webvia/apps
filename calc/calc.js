@@ -1,15 +1,15 @@
-SetTitleText('Calc'); SetIconCharacter('🔢');
+SetTitleText$('Calc'); SetIconCharacter$('🔢');
 
 let css=` /* ch=col_head, rh=row_head, cc=col_calc, rc=row_calc, cv=col_valu */ 
 body { margin: 0; padding: 0; background-color: #121212; color: #F8F8F8; font-size: 1.25em; font-family: monospace; }  table { border-collapse: collapse; }  td { padding: .25em 1em .25em 1em }
 [pb] { position: fixed; z-index:-1; width: 100vw; height: 100vh; } [pc] { margin: 1em; }
 [ch],[rh] { font-weight: bold; }  [cc],[rc] { font-weight: bold; color: #DBB2FF; background-color: #EEEEEE }  [cv] {  }  [v0] { font-weight: bold; color: #DBB2FF; }
 [ta] { display: block; width: 99%; height: 4em; font-size: 1em; font-family: monospace; margin-bottom: 1em; padding: .5em; }  [ta]:focus { outline: none; }  [ca] {  }
-`;  SetStyleInternal(css);
+`;  SetStyleInternal$(css);
 
 /* Page =========================================================================================================================================================================================== */
 
-let h=`<div pb></div><div pc><textarea ta id="ta" autofocus></textarea><div ca></div></div>`;  SetHTML('add',h,'body','end');  //body.insertAdjacentHTML('beforeend',h);  
+let h=`<div pb></div><div pc><textarea ta id="ta" autofocus></textarea><div ca></div></div>`;  SetHTML$('add',h,'body','end');  //body.insertAdjacentHTML('beforeend',h);  
 
 let ta=body.querySelector('[ta]');  let ca=body.querySelector('[ca]');  let pb=body.querySelector('[pb]');
 

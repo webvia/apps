@@ -1,4 +1,4 @@
-SetIconCharacter('🚀');  SetTitleText('Go');  let q=prms.get('q');
+SetIconCharacter$('🚀');  SetTitleText$('Go');  let q=prms.get('q');
 
 window.onload=function(){ if(q==null){ return }; Go() }
 
@@ -15,10 +15,10 @@ let s=q.substring(0,q.indexOf('_')).toLowerCase();  let t=q.substring(q.indexOf(
 // Wikipedia  [ w ]
 else if(s=='w'){ u=`en.wikipedia.org/`;  if(t=='q'){ u=`${u}w/index.php?search=${v}` } }
 
-// YouTube  [ yt _ video, playlist, channel ]
-else if(s=='yt'){ u=`www.youtube.com/`;  if(t=='v'){ u=`${u}watch?v=${v}` }  else if(t=='p'){ u=`${u}playlist?list=${v}` }  else if(t=='c'){ u=`${u}@${v}` }  else{ u=`${u}results?search_query=${v}` } }
+// YouTube  [ yt_ v:video, p:playlist, c:channel ]
+else if(s=='yt'){ u=`www.youtube.com/`;  if(t=='v'){ u=`${u}watch?v=${v}` }  else if(t=='p'){ u=`${u}playlist?list=${v}` }  else if(t=='c'){ u=`${u}@${v}/videos` }  else if(t=='cp'){ u=`${u}@${v}/playlists` }  else if(t=='cr'){ u=`${u}@${v}/releases` }  else{ u=`${u}results?search_query=${v}` } }
 
-// Amazon  [ amz _ product, store ]
+// Amazon  [ amz_ product, store ]
 else if(s=='amz'){ u=`www.amazon.com/`;  if(t=='p'){ u=`${u}dp/${v}` }  else if(t=='s'){ u=`${u}stores/page/${v}` }  else{ u=`${u}s?k=${v}` } }
 
 // DuckDuckGo  [ ddg ]   \ddg__hello+world
