@@ -30,6 +30,12 @@ function SetModules$(modules){} // tree, etc ...  let components=(o.components!=
 function log(msg){ console.log(msg) }  function dir(obj){ console.dir(obj) }
 
 
+//function Func$(func_str$){ const func_obj$=JSON.parse(func_str$); return window[func_obj$.func$](func_obj$); };
+//let func_str = '{ "func$": "MyFunc", "arg1": "hi", "arg2": 0 }';
+//let func_return = Func$(func_str); console.log(func_return);
+//function MyFunc(args) { return args.arg1 };
+
+
 // HTML ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function SetHTML$(a,c1,c2,p,d){ if(a==null){return}
@@ -74,8 +80,8 @@ Navigation
   Panel/Drawer/Sidebar - slide-out|over
   Tree+ - hier, items
   Menu+ - actions, context
-  Breadcrumb/Path+ -  sep-styles: chevron, slash/, gls>, 
-List/Items - items, cards, repeat    types: col-wrap, row-wrap, v-list, table
+  Breadcrumb/Path+ -  sep-styles: chevron, slash/, gls>,  (derived from nav/tree)
+List/Items+ - items, cards, repeat    types: col-wrap, row-wrap, v-list, table
   Pagination-nav - subset of list
   Table - items, rows
 Item/Edit - metadata:  id, type_id, parent_ids, date_created, date_modified,  ... data:  name, title, hi,...
@@ -83,7 +89,7 @@ Item/Edit - metadata:  id, type_id, parent_ids, date_created, date_modified,  ..
   TabBar/Tabs - nav, views, subset of item
   Accordion/Expander - summary>detail
   Content/Main/Article - in-array, in-var, fetch
-Dialog+ - messages, input - head(icon, title, close)  main(cont, data), foot(actions),  styles-size/position/type,  behaviors-modal/movable/resizable
+Dialog+ - messages, input - head(icon, title, close),  main(cont, data), foot(actions),  styles-size/position/type,  behaviors-modal/movable/resizable
 Form: controls, input, select/picker
 Misc: button, icon, badge, progress, tag, ..
 ----

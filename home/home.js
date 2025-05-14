@@ -16,7 +16,7 @@ let link_list=[
 [`ZeroHedge`,	``,	`www.zerohedge.com`,	`markets#~~`,	``,	],
 [`TradingView`,	``,	`www.tradingview.com`,	`chart/4uKzkaDw/`,	``,	],
 [`M1 Finance`,	``,	`dashboard.m1.com`,	`d/home`,	``,	],
-[`42 Macro`,	``,	`app.42macro.com`,	`dashboard`,	``,	],
+[`42 Macro`,	``,	`app.42macro.com`,	`signals`,	``,	],
 [`Weather`,	``,	`www.accuweather.com`,	`en/us/johnson-city/37604/weather-forecast/331088`,	``,	],
 [`Amazon`,	``,	`www.amazon.com`,	`hz/wishlist/ls/`,	``,	],
 [`ProtonMail`,	``,	`mail.proton.me`,	``,	``,	],

@@ -1,17 +1,12 @@
 
 // Items ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-let items$;  let it_id, it_par, it_type, it_name, it_icon, it_cont;  let it_id_i, it_par_i, it_type_i, it_name_i, it_icon_i, it_cont_i;  let it_i, it_par_is, it_sib_is, it_chi_is;  let it_i_i, it_par_is_i, it_sib_is_i, it_chi_is_i; 
+let items$;  let it_id, it_par, it_type, it_name, it_icon, it_cont;  let it_i, it_par_ids, it_sib_ids, it_chi_ids;
 
 
-function SetItems$(it_id_start){ let itps=items$[0];  
+function SetItems$(it_id_start){ 
 
-itps.push('it_i');  itps.push('it_par_is');  itps.push('it_sib_is');  itps.push('it_chi_is');  items$.shift();  
-
-it_id_i=itps.indexOf('id'); it_par_i=itps.indexOf('parent'); it_type_i=itps.indexOf('type'); it_name_i=itps.indexOf('name'); it_icon_i=itps.indexOf('icon'); it_cont_i=itps.indexOf('content');  
-it_i_i=itps.indexOf('it_i');  it_par_is_i=itps.indexOf('it_par_is');  it_sib_is_i=itps.indexOf('it_sib_is');  it_chi_is_i=itps.indexOf('it_chi_is'); 
-
-for(const [i,x] of items$.entries()){ let it_id_x=x[it_id_i];  let it_par_x=x[it_par_i];  x.push(null, [],[],[]);  x[it_i_i]=i;  let it_par_is_x=x[it_par_is_i];  let it_sib_is_x=x[it_sib_is_i];  let it_chi_is_x=x[it_chi_is_i];
+for(const [i,x] of items$.entries()){ let it_id_x=x.id;  let it_par_x=x.parent;  let it_par_is_x=x[it_par_is_i];  let it_sib_is_x=x[it_sib_is_i];  let it_chi_is_x=x[it_chi_is_i];
   for(const [j,y] of items$.entries()){ let it_id_y=y[it_id_i];  let it_par_y=y[it_par_i];  let it_par_is_y=y[it_par_is_i];  if(it_par_x===it_id_y){ it_par_is_x.push(it_par_is_y,j) };  if(it_par_x===it_par_y){ it_sib_is_x.push(j) };  if(it_id_x===it_par_y){ it_chi_is_x.push(j) };
   } /*-for j*/
   x[it_par_is_i]=it_par_is_x.flat(Infinity);
@@ -153,28 +148,26 @@ let lay_css=`
 let item_kitchen_html=`Kitchen.. <button onclick="SetItem$('bedrooms')">to Bedrooms</button>`;
 
 items$=[
-[`id`,	`parent`,	`name`,	`icon`,	`type`,	`content`,	],
-[`home`,	``,	`Home`,	`🏠`,	`page`,	`Home..`,	],
-[`bedrooms`,	`home`,	`Bedrooms`,	`🌙`,	`folder`,	`Bedrooms..`,	],
-[`master`,	`bedrooms`,	`Master`,	`🛌`,	`folder`,	`Master..`,	],
-[`bath`,	`master`,	`Bath`,	`🛌`,	`folder`,	`Bath..`,	],
-[`closet`,	`master`,	`Closet`,	`🛌`,	`folder`,	`Closet..`,	],
-[`guest`,	`bedrooms`,	`Guest`,	`🛌`,	`page`,	`Guest..`,	],
-[`kitchen`,	`home`,	`Kitchen`,	`🍴`,	`page`,	`${item_kitchen_html}`,	],
+{ id:`home`,	parent:``,	name:`Home`,	icon:`🏠`,	type:`page`,	content:`Home..`,	},
+{ id:`bedrooms`,	parent:`home`,	name:`Bedrooms`,	icon:`🌙`,	type:`folder`,	content:`Bedrooms..`,	},
+{ id:`master`,	parent:`bedrooms`,	name:`Master`,	icon:`🛌`,	type:`folder`,	content:`Master..`,	},
+{ id:`bath`,	parent:`master`,	name:`Bath`,	icon:`🛌`,	type:`folder`,	content:`Bath..`,	},
+{ id:`closet`,	parent:`master`,	name:`Closet`,	icon:`🛌`,	type:`folder`,	content:`Closet..`,	},
+{ id:`guest`,	parent:`bedrooms`,	name:`Guest`,	icon:`🛌`,	type:`page`,	content:`Guest..`,	},
+{ id:`kitchen`,	parent:`home`,	name:`Kitchen`,	icon:`🍴`,	type:`page`,	content:`${item_kitchen_html}`,	},
 ];
 
 
 // List ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 let list_items=[
-[`id`,	`parent`,	`name`,	`icon`,	`type`,	`content`,	],
-[`home`,	``,	`Home`,	`🏠`,	`page`,	`Home..`,	],
-[`bedrooms`,	`home`,	`Bedrooms`,	`🌙`,	`folder`,	`Bedrooms..`,	],
-[`master`,	`bedrooms`,	`Master`,	`🛌`,	`folder`,	`Master..`,	],
-[`bath`,	`master`,	`Bath`,	`🛌`,	`folder`,	`Bath..`,	],
-[`closet`,	`master`,	`Closet`,	`🛌`,	`folder`,	`Closet..`,	],
-[`guest`,	`bedrooms`,	`Guest`,	`🛌`,	`page`,	`Guest..`,	],
-[`kitchen`,	`home`,	`Kitchen`,	`🍴`,	`page`,	`Kitchen..`,	],
+{ id:`home`,	parent:``,	name:`Home`,	icon:`🏠`,	type:`page`,	content:`Home..`,	},
+{ id:`bedrooms`,	parent:`home`,	name:`Bedrooms`,	icon:`🌙`,	type:`folder`,	content:`Bedrooms..`,	},
+{ id:`master`,	parent:`bedrooms`,	name:`Master`,	icon:`🛌`,	type:`folder`,	content:`Master..`,	},
+{ id:`bath`,	parent:`master`,	name:`Bath`,	icon:`🛌`,	type:`folder`,	content:`Bath..`,	},
+{ id:`closet`,	parent:`master`,	name:`Closet`,	icon:`🛌`,	type:`folder`,	content:`Closet..`,	},
+{ id:`guest`,	parent:`bedrooms`,	name:`Guest`,	icon:`🛌`,	type:`page`,	content:`Guest..`,	},
+{ id:`kitchen`,	parent:`home`,	name:`Kitchen`,	icon:`🍴`,	type:`page`,	content:`Kitchen`,	},
 ];
 
 let list_wrap_html=`<div>Items</div><div>%{}</div>`;
@@ -197,9 +190,17 @@ SetList$(list_items, list_wrap_html, list_item_html, list_container_id, list_css
 
 /* NOTES =============================================================================================================================================================================================
 
+Tree/Path > List/Items > Item > Props/Cont [ name:value ]    type determines target/content   add|replace items of same type
 
-Data/Items    tree > list [ items ] > item(id) > prop [ key/name : value ]
-  Content:  Items: (fetch-url(base+query))  /  Item: id  /  Rich: html/text(inline|variable)
+Item-Props:  type, id, parent(id), items(query|ref), content(html/text,query|ref), name, icon,  custom...    value-types:  obj,arr , str,num,bool,null , query,ref,url , html,text
+
+let args = { dataset_id: "<dataset_id>", action: "add|delete|replace" };  SetData$( args );  function SetData$( { dataset_id, action } );
+
+let data$ = { <dataset_id>: { nodes$: { <node_id>: { type$:"", id$:"", nodes$:{}, items$:{}, item$:{}, cont$:{} } } } };
+
+let data_prop_val = data$.<dataset_id>.data.<type__id>.<property>;
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Control - Data transform/io/mapping
 
@@ -211,24 +212,5 @@ UI/Page/View
           GroupWrap > Items
           Separator
           Item/Content - template+props
-
-
-
-Tree/Path > ListItems > ItemCont    Type determines Target/Content
-
-
-Content/Properties  content - query/fetch/variable
-
-
-
-
-direction-row|col
-wrap|nowrap
-scroll|noscroll
-align-
-style-size/border/outline/back/color
-
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 
 ====================================================================================================================================================================================================*/
