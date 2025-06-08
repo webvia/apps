@@ -16,7 +16,7 @@ let link_list=[
 [`ZeroHedge`,	``,	`www.zerohedge.com`,	`markets#~~`,	``,	],
 [`TradingView`,	``,	`www.tradingview.com`,	`chart/4uKzkaDw/`,	``,	],
 [`M1 Finance`,	``,	`dashboard.m1.com`,	`d/home`,	``,	],
-[`42 Macro`,	``,	`app.42macro.com`,	`signals`,	``,	],
+[`42 Macro`,	``,	`app.42macro.com`,	`dashboard`,	``,	],
 [`Weather`,	``,	`www.accuweather.com`,	`en/us/johnson-city/37604/weather-forecast/331088`,	``,	],
 [`Amazon`,	``,	`www.amazon.com`,	`hz/wishlist/ls/`,	``,	],
 [`ProtonMail`,	``,	`mail.proton.me`,	``,	``,	],
@@ -31,8 +31,10 @@ let search_list=[
 [`StockAnalysis`,	``,	`stockanalysis.com`,	`etf/{q}`,	``,	],
 [`PortfolioVis`,	``,	`www.portfoliovisualizer.com`,	`backtest-portfolio?s=y&startYear=&endYear=&includeYTD=true{q}`,	``,	],
 [`StackOverflow`,	``,	`duckduckgo.com`,	`?q={q}+site:stackoverflow.com/questions&${dg}`,	`stackoverflow.com`,	],
+[`Mozilla`,	``,	`duckduckgo.com`,	`?q={q}+site:developer.mozilla.org/en-US/docs&${dg}`,	`developer.mozilla.org`,	],
 [`DailyMail`,	``,	`duckduckgo.com`,	`?q={q}+site:www.dailymail.co.uk&${dg}`,	`www.dailymail.co.uk`,	],
 ];
+
 
 // HTML ==============================================================================================================================================================================================
 

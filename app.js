@@ -29,11 +29,8 @@ function SetScriptExternal$(url,id){ let e=doc.createElement('script'); e.src=ur
 function SetModules$(modules){} // tree, etc ...  let components=(o.components!=null)?o.components:null;
 function log(msg){ console.log(msg) }  function dir(obj){ console.dir(obj) }
 
-
-//function Func$(func_str$){ const func_obj$=JSON.parse(func_str$); return window[func_obj$.func$](func_obj$); };
-//let func_str = '{ "func$": "MyFunc", "arg1": "hi", "arg2": 0 }';
-//let func_return = Func$(func_str); console.log(func_return);
-//function MyFunc(args) { return args.arg1 };
+// function Func$(){}
+// function Eval$(){}
 
 
 // HTML ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
