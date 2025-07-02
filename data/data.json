@@ -1,0 +1,96 @@
+{
+    "dataset_1": {
+        "meta$": {
+            "tree_prop": [
+                "nodes"
+            ],
+            "list_prop": [
+                "items"
+            ],
+            "item_prop": [],
+            "cont_prop": []
+        },
+        "data$": {
+            "nodes": {
+                "home": {
+                    "id": "home",
+                    "name": "Home",
+                    "icon": "🏠",
+                    "type": "page",
+                    "content": "Home..",
+                    "nodes": {
+                        "bedrooms": {
+                            "id": "bedrooms",
+                            "name": "Bedrooms",
+                            "icon": "🌙",
+                            "type": "folder",
+                            "content": "Bedrooms..",
+                            "nodes": {
+                                "master": {
+                                    "id": "master",
+                                    "name": "Master",
+                                    "icon": "🛌",
+                                    "type": "folder",
+                                    "content": "Master..",
+                                    "nodes": {
+                                        "bath": {
+                                            "id": "bath",
+                                            "name": "Bath",
+                                            "icon": "🛌",
+                                            "type": "folder",
+                                            "content": "Bath.."
+                                        },
+                                        "closet": {
+                                            "id": "closet",
+                                            "name": "Closet",
+                                            "icon": "🛌",
+                                            "type": "folder",
+                                            "content": "Closet.."
+                                        },
+                                        "guest": {
+                                            "id": "guest",
+                                            "name": "Guest",
+                                            "icon": "🛌",
+                                            "type": "page",
+                                            "content": "Guest.."
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "kitchen": {
+                            "id": "kitchen",
+                            "name": "Kitchen",
+                            "icon": "🍴",
+                            "type": "page",
+                            "content": "Kitchen..",
+                            "items": {
+                                "sink": {
+                                    "id": "sink",
+                                    "name": "Sink",
+                                    "icon": "🍴",
+                                    "type": "page",
+                                    "content": "Sink.."
+                                },
+                                "oven": {
+                                    "id": "oven",
+                                    "name": "Oven",
+                                    "icon": "🍴",
+                                    "type": "folder",
+                                    "content": "Oven.."
+                                },
+                                "fridge": {
+                                    "id": "fridge",
+                                    "name": "Fridge",
+                                    "icon": "🍴",
+                                    "type": "folder",
+                                    "content": "Fridge.."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,4 +1,4 @@
-onerror=(message,source,lineno,colno,error)=>{ let err=`${message}  [ ${source} > ${lineno}-${colno} ]`;  alert(err) }
+window.onerror=(message,source,lineno,colno,error)=>{ let err=`${message}  [ ${source} > ${lineno}-${colno} ]`;  alert(err);  return true }
 
 let $={/*svc-vars*/}; let win,hist,navn,clip,lang,  doc,root,head,title,icon,base,body,h1,  cli_hgt,cli_wid,  loc,href,prot,ref,host,dom,path,srch,prms,hash,  app_url,app_js;
 let _={/*app-vars*/};  
@@ -16,7 +16,6 @@ SetStyleInternal$(` body { margin: unset;  font-family: sans-serif; }  button { 
 if(app_url!==null){ SetTitleText$(app_url); SetIconCharacter$(`🔳`); SetScriptExternal$(app_js,'app_script') } else{ SetTitleText$(`App not specified`); SetIconCharacter$(`⛔️`); body.insertAdjacentHTML('beforeend',`App not specified.`) }; 
 } /*-PreLoad*/  /*DOMContentLoaded*/
 
-
 // Functions =========================================================================================================================================================================================
 
 function SetTitleText$(txt){ doc.title=txt }
@@ -28,10 +27,6 @@ function SetStyleExternal$(url,id){ let e=doc.createElement('link'); e.rel='styl
 function SetScriptExternal$(url,id){ let e=doc.createElement('script'); e.src=url; e.id=id; e.defer=true; head.append(e) }
 function SetModules$(modules){} // tree, etc ...  let components=(o.components!=null)?o.components:null;
 function log(msg){ console.log(msg) }  function dir(obj){ console.dir(obj) }
-
-// function Func$(){}
-// function Eval$(){}
-
 
 // HTML ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -50,7 +45,6 @@ function MergeHTML$(c){ let f=new DocumentFragment();  for(const n of c){ f.appe
 function InsertHTML$(c,n,p){ if(p==='before'){ n.before(c) } else if(p==='begin'){ n.prepend(c) } else if(p==='end'){ n.append(c) } else if(p==='after'){ n.after(c) } }
 function DatafyHTML$(c,d){ if(d==null){ return c }  c=c.replaceAll('\${','${');  let cd='';  for(const di of d){ let ci=c;  for(const dp in di){ let re=new RegExp(`\\$\\{${dp}\\}`,'g');  ci=ci.replace(re, di[dp]) }  cd=cd+ci }  return cd }
 
-
 // Dialog --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function OpenDialog$(content,type,title,submitButton,closeButton){ // <button onclick="OpenDialog('<div>hi</div>','modal','Save','Cancel')">dialog</button>  // \moz_html__Element/dialog  
@@ -60,12 +54,10 @@ let h=`<dialog id="dlg" style="margin-top:0"><form id="dlg_form">${header}<artic
 body.insertAdjacentHTML('beforeend',h); SetStyleInternal$(` #dlg::backdrop { opacity: .5; } `); let d=doc.querySelector("#dlg");  if(type==='modal'){ d.showModal() } else{ d.show() }
 } /*-OpenDialog$*/   function CloseDialog$(data){ let d=doc.querySelector("#dlg"); d.close(); d.remove() }
 
-
 // Menu ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function OpenMenu$(menuSelector){ let btn=body.querySelector('button:focus'); let mnu_sel=(menuSelector!=null)?menuSelector:'button:focus+dialog'; let mnu=body.querySelector(mnu_sel); let btn_rect=btn.getBoundingClientRect(); let btn_lft=btn_rect.left; let btn_bot=btn_rect.bottom; let btn_below_hgt=cli_hgt-btn_bot; let btn_rht_wid=cli_wid-btn_lft;  let mnu_sty=mnu.style; mnu_sty.padding='unset'; mnu_sty.maxHeight=`${cli_hgt-16}px`; mnu_sty.maxWidth=`${cli_wid-16}px`;  mnu.showModal(); mnu.focus();  let mnu_rect=mnu.getBoundingClientRect(); let mnu_hgt=mnu_rect.height; let mnu_wid=mnu_rect.width;  if(mnu_hgt<btn_below_hgt){mnu_sty.marginTop=`${btn_bot}px`}else{mnu_sty.marginBottom=`${8}px`} if(mnu_wid<btn_rht_wid){mnu_sty.marginLeft=`${btn_lft}px`}else{mnu_sty.marginRight=`${8}px`}
 } /*-OpenMenu$*/   function CloseMenu$(){ let mnu=body.querySelector('dialog:focus-within');  mnu.close() }
-
 
 /* Notes =============================================================================================================================================================================================
 

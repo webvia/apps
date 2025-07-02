@@ -1,74 +1,81 @@
-
-// Data ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-let data$;  data$ = { dataset_1: { meta$: { tree_prop:["nodes"], list_prop:["items"], item_prop:[], cont_prop:[] }, nodes: {
-  home:     { id:`home`,	name:`Home`,	icon:`🏠`,	type:`page`,	content:`Home..`,	nodes: {
-    bedrooms: { id:`bedrooms`,	name:`Bedrooms`,	icon:`🌙`,	type:`folder`,	content:`Bedrooms..`,	nodes: {
-      master:   { id:`master`,	name:`Master`,	icon:`🛌`,	type:`folder`,	content:`Master..`,	nodes: {
-        bath:     { id:`bath`,	name:`Bath`,	icon:`🛌`,	type:`folder`,	content:`Bath..`,	},
-        closet:   { id:`closet`,	name:`Closet`,	icon:`🛌`,	type:`folder`,	content:`Closet..`,	},
-      guest:    { id:`guest`,	name:`Guest`,	icon:`🛌`,	type:`page`,	content:`Guest..`,	},
-      },/*nodes*/  },/*master*/
-    },/*nodes*/  },/*bedrooms*/
-    kitchen:  { id:`kitchen`,	name:`Kitchen`,	icon:`🍴`,	type:`page`,	content:`Kitchen..`,	items: {
-      sink: { id:`sink`,	name:`Sink`,	icon:`🍴`,	type:`page`,	content:`Sink..`,	},
-      oven: { id:`oven`,	name:`Oven`,	icon:`🍴`,	type:`folder`,	content:`Oven..`,	},
-      fridge:   { id:`fridge`,	name:`Fridge`,	icon:`🍴`,	type:`folder`,	content:`Fridge..`,	},
-    },/*items*/  },/*kitchen*/
-  },/*nodes*/  },/*home*/
-},/*nodes*/  },/*dataset_1*/  };/*data*/  // item_path: data$.dataset_1.nodes.home.nodes.kitchen.items.sink.content
-
-
-// Data ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-function SetItems$( args: { tree_data, list_data, item_data } ){ ... }
-
-function GetData$( args: { ... } ){ `@@ <url/fetch> <identifier> <query>(from root or cur obj)` }
-
-
 /* NOTES =============================================================================================================================================================================================
 
-Tree/Path > List/Items > Item-Props/Cont [ name:value ]    type determines target/content   add|replace items of same type   object_ids:(replace - with __ and . with $$)
+Tree/Nodes/Path > List/Items > Item-Props/Cont [ name:value ]  ,  type determines target/content  ,  add|replace items of same type  ,  object_ids:(replace - with __ and . with $$)
 
-value-types:  obj,arr , str/html,num,bool,null , query,ref,fetch,url
+> Data Referencing (id, url, path, query,  +url_data, +path_data, +query_data,  +function)
+  - Reference:  "{ "url":"data.json", "object":"myvar", "path":"subobj.subobj", "query":"...", "data":"...", "function":"..." }"  (encode in html attr val)
+    - Query:  js-boolean-expression    !!( ( name=='Bob' && age>=18) || /US/g.test(address) && isEmployed==true )
+      - Group:  ( )
+      - Join:  And( && ) , Or( || )
+      - Condition:  Property + Operator + Value
+      - Operators:  Any( ===  !==  ??-nullish)  ,  String( /rex/.test(str) )  ,  Number( >  <  >=  <= )  ,  Array ( a.includes(s), a.some/every(f) )
+      - Datatypes:  String, Number, Boolean, Null, Undefined     String Formats( '$$bool:true', bool, css, date, html, id, js, json, null, num, qry, ref, regx, str, url )
 
 ====================================================================================================================================================================================================*/
 
-// Item ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//  EscapeString$(s){'  " ' ` \  tab  '};   FetchJavascript$(){};
+function EncodeHTML$(s){ return s.replace(/[\&\<\>\"\'\/\\\=\`]/gim, function(s){ return `&#${s.charCodeAt(0)};` } ) }      // EncodeHTML$('\&\<\>\"\'\/\\\=\`');
+function DecodeHTML$(s){ return s.replace(/&#\d+;/gim, function(s){ return String.fromCharCode(s.match(/\d+/gim)[0]) } ) }  // DecodeHTML$('&#38;&#60;&#62;&#34;&#39;&#47;&#92;&#61;&#96;');
+function RemoveArrayDuplicates$(x){ x=[...new Set(x)]; return x }
+function Evaluate$(s){ let f=new Function(`return ${s}`); let r=f(); return r } // Evaluate string as function
+function ParseJSON$(x){ if(typeof x==='string'){ x=JSON.parse(x) }; return x }
+function Function$(x){ x=ParseJSON$(x); window[x.function](x) } // call function from JSON-string or JS-object
+async function FetchJSON$(x){ x=ParseJSON$(x);  if(x.url===undefined){ return x };  let r=await fetch(x.url);  if(r.ok){ let d=await r.json();  x.data=d;  Function$(x) } }
 
-function SetItem$(item_path){   //let item_prm=prms.get('item');  item_path = (item_prm!=null) ? item_prm : item_path;
+
+// Data ==============================================================================================================================================================================================
+
+let data$; 
+let data_ref=`{ "id":"d1", "url":"http://localhost/apps/github/apps/data/data.json", "path":"dataset_1/data$/nodes/home/nodes/kitchen/items", "query":"{{id}}==='sink'||{{id}}==='oven'" }`;
+SetData$(data_ref);
 
 
-// SetTree$();
-// SetPath$();
-// SetList$(list_items, list_wrap_html, list_item_html, list_container_id, list_css);
-// SetContent$();
+function SetData$(x){ x=ParseJSON$(x);  let id=x.id; let u=x.url; let p=x.path; let q=x.query; let d=x.data;
 
-} /*-SetItem$*/
+/* Fetch */
+if( u!==undefined && x.data===undefined ){ x.function='SetData$';  FetchJSON$(x);  return x };  delete x.function;  
 
+/* Path */
+if( p!==undefined ){ let pa=p.split('/');  for( const i of pa ){ d=d[i] };  x.data=d };
+
+/* Query */ 
+if( q!==undefined && d!==undefined){ let qpka=q.match(/\{\{.+?\}\}/g);  qpka=RemoveArrayDuplicates$(qpka);  
+ for( const [ik,iv] of Object.entries(d) ){ let iq = q;
+   for( const qpki in qpka ){  
+     for( const [pk,pv] of Object.entries(iv) ){ let qpk=`\{\{${pk}\}\}`; if(qpka[qpki]===qpk){ iq=iq.replaceAll( qpk, typeof pv==='string'?`'${pv}'`:pv ) }/*-if*/ }/*-for props*/
+     if( Evaluate$(iq)===false ){ delete d[ik] }/*-if query*/
+   }/*-for qpka*/
+ }/*-for items*/
+ x.data=d };
+
+/* SetTree$();  SetPath$();  SetList$();  SetContent$(); */
+
+console.log(x); }/*-SetData$*/  //let item_prm=prms.get('item');  item_path = (item_prm!=null) ? item_prm : item_path;
+
+
+// Interface =========================================================================================================================================================================================
 
 // Tree ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function SetTree$(item_path){ let tree_pars_html='';  let tree_items_html='';   //  [ path/parent > selected + siblings > children ]   // for (const [key, val] of Object.entries(obj)) { }
 
 
-
-for(const x of it_par_is){ let it_x=items$[x];  tree_pars_html=`${tree_pars_html}<button tree_item_parent tree_item onclick="SetItem$('${it_x[it_id_i]}')"><x tree_icon>${it_x[it_icon_i]}</x tree_icon><x tree_name>${it_x[it_name_i]}</x tree_name></button>` } /*-for x parents*/
+for(const x of it_par_is){ let it_x=items$[x];  tree_pars_html=`${tree_pars_html}<button tree_item_parent tree_item onclick="SetData$('${it_x[it_id_i]}')"><x tree_icon>${it_x[it_icon_i]}</x tree_icon><x tree_name>${it_x[it_name_i]}</x tree_name></button>` } /*-for x parents*/
 
 for(const x of it_sib_is){ let it_x=items$[x]; 
   let tree_it_cur=(it_i===it_x[it_i_i])?'tree_it_cur':''; 
   let tree_it_top=(it_x[it_par_i]==='')?'tree_it_top':''; 
-  tree_items_html=`${tree_items_html}<button tree_item_sibling ${tree_it_top} ${tree_it_cur} tree_item onclick="SetItem$('${it_x[it_id_i]}')"><x tree_icon>${it_x[it_icon_i]}</x tree_icon><x tree_name>${it_x[it_name_i]}</x tree_name></button>`;
+  tree_items_html=`${tree_items_html}<button tree_item_sibling ${tree_it_top} ${tree_it_cur} tree_item onclick="SetData$('${it_x[it_id_i]}')"><x tree_icon>${it_x[it_icon_i]}</x tree_icon><x tree_name>${it_x[it_name_i]}</x tree_name></button>`;
   if(it_i===it_x[it_i_i]){
-    for(const y of it_chi_is){ let it_y=items$[y];  tree_items_html=`${tree_items_html}<button tree_item_child tree_item onclick="SetItem$('${it_y[it_id_i]}')"><x tree_icon>${it_y[it_icon_i]}</x tree_icon><x tree_name>${it_y[it_name_i]}</x tree_name></button>` } /*-for y childs*/
+    for(const y of it_chi_is){ let it_y=items$[y];  tree_items_html=`${tree_items_html}<button tree_item_child tree_item onclick="SetData$('${it_y[it_id_i]}')"><x tree_icon>${it_y[it_icon_i]}</x tree_icon><x tree_name>${it_y[it_name_i]}</x tree_name></button>` } /*-for y childs*/
   } /*-if*/
 } /*-for x siblings*/
 
 let tree_html=`<nav tree_nav><x tree_bar>
-<button tree_bar_button title="Up to Top Level" onclick="SetItem$('${items$[0][it_id_i]}')">⏫️</button>
-<button tree_bar_button title="Up One Level" onclick="SetItem$('${it_par}')">🔼</button>
-<button tree_bar_button title="Tree View" onclick="SetItem$('${it_par}')">↘️</button>
-<button tree_bar_button title="List View" onclick="SetItem$('${it_par}')">⬇️</button>
+<button tree_bar_button title="Up to Top Level" onclick="SetData$('${items$[0][it_id_i]}')">⏫️</button>
+<button tree_bar_button title="Up One Level" onclick="SetData$('${it_par}')">🔼</button>
+<button tree_bar_button title="Tree View" onclick="SetData$('${it_par}')">↘️</button>
+<button tree_bar_button title="List View" onclick="SetData$('${it_par}')">⬇️</button>
 
 </x tree_bar><x tree_items>${tree_pars_html}${tree_items_html}</x tree_items></nav tree_nav>`;  
 
@@ -99,7 +106,7 @@ if(head.querySelector('#apps_tree_style')===null){ SetStyleInternal$(css, 'apps_
 // Path ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function SetPath$(){ let path_pars_html='';  let path_items_html='';  let path_sep_html=`<x path_sep>🞂</x path_sep>`;
-for(const x of it_par_is){ let it_x=items$[x];  path_pars_html=`${path_pars_html}<button path_item_parent path_item onclick="SetItem$('${it_x[it_id_i]}')"><x path_icon>${it_x[it_icon_i]}</x path_icon><x path_name>${it_x[it_name_i]}</x path_name></button>${path_sep_html}` } /*-for x parents*/
+for(const x of it_par_is){ let it_x=items$[x];  path_pars_html=`${path_pars_html}<button path_item_parent path_item onclick="SetData$('${it_x[it_id_i]}')"><x path_icon>${it_x[it_icon_i]}</x path_icon><x path_name>${it_x[it_name_i]}</x path_name></button>${path_sep_html}` } /*-for x parents*/
 path_items_html=`<button path_item_current path_item><x path_icon>${it_icon}</x path_icon><x path_name>${it_name}</x path_name></button>`;
 let path_html=`<nav path_nav><x path_items>${path_pars_html}${path_items_html}</x path_items></nav path_nav>`;  
 SetHTML$('replace-inner', '#layout_path', `${path_html}`);
@@ -126,10 +133,10 @@ SetHTML$('replace-inner','#'+list_container_id, h);
 let list_style_id='app_'+list_container_id+'_style';  if(head.querySelector('#'+list_style_id)===null){ SetStyleInternal$(list_css, list_style_id) };
 } /*-SetList$*/
 
-let list_wrap_html=`<div>Items</div><div>%{}</div>`;
-let list_item_html=`<div><span>%{name}</span></div>`;
-let list_container_id='layout_list';
-let list_css=``;
+// let list_wrap_html=`<div>Items</div><div>%{}</div>`;
+// let list_item_html=`<div><span>%{name}</span></div>`;
+// let list_container_id='layout_list';
+// let list_css=``;
 
 
 // Content -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -171,10 +178,8 @@ let lay_css=`
 
 // Functions -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-SetIconCharacter$('🌳');  SetTitleText$('Tree');  
-//SetLayout$();
-//SetData$();
-//SetItem$();
+SetIconCharacter$('🧮');  SetTitleText$('Data');  //SetLayout$();
+
 
 /* NOTES =============================================================================================================================================================================================
 
