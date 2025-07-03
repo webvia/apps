@@ -14,43 +14,75 @@ Tree/Nodes/Path > List/Items > Item-Props/Cont [ name:value ]  ,  type determine
 ====================================================================================================================================================================================================*/
 
 //  EscapeString$(s){'  " ' ` \  tab  '};   FetchJavascript$(){};
+//function HasValue$(x){ ( x!==undefined && x!==null && x!=='' && x!==[] && x!=={} )?true:false }
 function EncodeHTML$(s){ return s.replace(/[\&\<\>\"\'\/\\\=\`]/gim, function(s){ return `&#${s.charCodeAt(0)};` } ) }      // EncodeHTML$('\&\<\>\"\'\/\\\=\`');
 function DecodeHTML$(s){ return s.replace(/&#\d+;/gim, function(s){ return String.fromCharCode(s.match(/\d+/gim)[0]) } ) }  // DecodeHTML$('&#38;&#60;&#62;&#34;&#39;&#47;&#92;&#61;&#96;');
 function RemoveArrayDuplicates$(x){ x=[...new Set(x)]; return x }
 function Evaluate$(s){ let f=new Function(`return ${s}`); let r=f(); return r } // Evaluate string as function
 function ParseJSON$(x){ if(typeof x==='string'){ x=JSON.parse(x) }; return x }
 function Function$(x){ x=ParseJSON$(x); window[x.function](x) } // call function from JSON-string or JS-object
-async function FetchJSON$(x){ x=ParseJSON$(x);  if(x.url===undefined){ return x };  let r=await fetch(x.url);  if(r.ok){ let d=await r.json();  x.data=d;  Function$(x) } }
+async function FetchJSON$(x){ x=ParseJSON$(x);  if(x.url===undefined){ return x };  let r=await fetch(x.url);  if(r.ok){ let d=await r.json();  x.full_data=d;  Function$(x) } }
 
 
 // Data ==============================================================================================================================================================================================
 
-let data$; 
-let data_ref=`{ "id":"d1", "url":"http://localhost/apps/github/apps/data/data.json", "path":"dataset_1/data$/nodes/home/nodes/kitchen/items", "query":"{{id}}==='sink'||{{id}}==='oven'" }`;
+let data$;  data$ = { dataset_1: { meta$: { tree_prop:["nodes"], list_prop:["items"], item_prop:[], cont_prop:[] },/*meta$*/  data$: { nodes: {
+  home:     { id:`home`,	name:`Home`,	icon:`🏠`,	type:`page`,	content:`Home..`,	nodes: {
+    bedrooms: { id:`bedrooms`,	name:`Bedrooms`,	icon:`🌙`,	type:`folder`,	content:`Bedrooms..`,	nodes: {
+      master:   { id:`master`,	name:`Master`,	icon:`🛌`,	type:`folder`,	content:`Master..`,	nodes: {
+        bath:     { id:`bath`,	name:`Bath`,	icon:`🛌`,	type:`folder`,	content:`Bath..`,	},
+        closet:   { id:`closet`,	name:`Closet`,	icon:`🛌`,	type:`folder`,	content:`Closet..`,	},
+      guest:    { id:`guest`,	name:`Guest`,	icon:`🛌`,	type:`page`,	content:`Guest..`,	},
+      },/*nodes*/  },/*master*/
+    },/*nodes*/  },/*bedrooms*/
+    kitchen:  { id:`kitchen`,	name:`Kitchen`,	icon:`🍴`,	type:`page`,	content:`Kitchen..`,	items: {
+      sink: { id:`sink`,	name:`Sink`,	icon:`🍴`,	type:`page`,	content:`Sink..`,	},
+      oven: { id:`oven`,	name:`Oven`,	icon:`🍴`,	type:`folder`,	content:`Oven..`,	},
+      fridge:   { id:`fridge`,	name:`Fridge`,	icon:`🍴`,	type:`folder`,	content:`Fridge..`,	},
+    },/*items*/  },/*kitchen*/
+  },/*nodes*/  },/*home*/
+},/*nodes*/  },/*data$*/  },/*dataset_1*/  };/*data*/  // item_path: data$.dataset_1.nodes.home.nodes.kitchen.items.sink.content
+
+
+//let data_ref=`{ "id":"d1", "url":"http://localhost/apps/github/apps/data/data.json", "path":"dataset_1/data$/nodes/home/nodes/kitchen/items", "query":"{{id}}==='sink'||{{id}}==='oven'" }`;
+let data_ref=`{ "id":"d1", "path":"data$:dataset_1/data$/nodes/home/nodes/kitchen/items", "query":"{{id}}==='sink'||{{id}}==='oven'" }`;
 SetData$(data_ref);
 
+// Data ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function SetData$(x){ x=ParseJSON$(x);  let id=x.id; let u=x.url; let p=x.path; let q=x.query; let d=x.data;
+function SetData$(x){ x=ParseJSON$(x);  let id=x.id; let u=x.url; let p=x.path; let q=x.query;
 
-/* Fetch */
-if( u!==undefined && x.data===undefined ){ x.function='SetData$';  FetchJSON$(x);  return x };  delete x.function;  
+/* Fetch -------------------------------------- */
+if( u!==undefined && x.all_data===undefined ){ x.function='SetData$';  FetchJSON$(x);  return x };  delete x.function;  
 
-/* Path */
-if( p!==undefined ){ let pa=p.split('/');  for( const i of pa ){ d=d[i] };  x.data=d };
 
-/* Query */ 
-if( q!==undefined && d!==undefined){ let qpka=q.match(/\{\{.+?\}\}/g);  qpka=RemoveArrayDuplicates$(qpka);  
- for( const [ik,iv] of Object.entries(d) ){ let iq = q;
-   for( const qpki in qpka ){  
-     for( const [pk,pv] of Object.entries(iv) ){ let qpk=`\{\{${pk}\}\}`; if(qpka[qpki]===qpk){ iq=iq.replaceAll( qpk, typeof pv==='string'?`'${pv}'`:pv ) }/*-if*/ }/*-for props*/
-     if( Evaluate$(iq)===false ){ delete d[ik] }/*-if query*/
+/* Path --------------------------------------- */
+if( p!==undefined ){ let pd; let po; let pa=p;  pa=p.split(':');  if( pa.length>1 ){ po=pa[0]; pa.shift(); pa=pa[0] };  pa=pa.split('/');  console.log(pa); 
+
+if( x.full_data===undefined ){ x.full_data=ParseJSON$(eval(`${po}`)); pd=structuredClone(x.full_data) };
+if( x.full_data!==undefined ){ pd=structuredClone(x.full_data) };
+
+if( pa.length>1 ){ for( const i of pa ){ pd=pd[i] } };  x.path_data=pd;
+
+};
+
+
+
+/* Query -------------------------------------- */
+if( q!==undefined && x.path_data!==undefined){ let qd; qd=structuredClone(x.path_data);  let qpka=q.match(/\{\{.+?\}\}/g);  qpka=RemoveArrayDuplicates$(qpka);
+ for( let [ik,iv] of Object.entries(qd) ){ let iq=q;
+   for( let qpki in qpka ){
+     for( let [pk,pv] of Object.entries(iv) ){ let qpk=`\{\{${pk}\}\}`; if(qpka[qpki]===qpk){ iq=iq.replaceAll( qpk, typeof pv==='string'?`'${pv}'`:pv ) } }
+     if( Evaluate$(iq)===false ){ delete qd[ik] }
    }/*-for qpka*/
  }/*-for items*/
- x.data=d };
-
+x.query_data=qd;
+};/* -Query */
 /* SetTree$();  SetPath$();  SetList$();  SetContent$(); */
 
-console.log(x); }/*-SetData$*/  //let item_prm=prms.get('item');  item_path = (item_prm!=null) ? item_prm : item_path;
+console.log(x); 
+
+}/*-SetData$*/  //let item_prm=prms.get('item');  item_path = (item_prm!=null) ? item_prm : item_path;
 
 
 // Interface =========================================================================================================================================================================================
