@@ -1,32 +1,5 @@
-/* NOTES =============================================================================================================================================================================================
 
-Tree/Nodes/Path > List/Items > Item-Props/Cont [ name:value ]  ,  type determines target/content  ,  add|replace items of same type  ,  object_ids:(replace - with __ and . with $$)
-
-> Data Referencing (id, url, path, query,  +url_data, +path_data, +query_data,  +function)
-  - Reference:  "{ "url":"data.json", "object":"myvar", "path":"subobj.subobj", "query":"...", "data":"...", "function":"..." }"  (encode in html attr val)
-    - Query:  js-boolean-expression    !!( ( name=='Bob' && age>=18) || /US/g.test(address) && isEmployed==true )
-      - Group:  ( )
-      - Join:  And( && ) , Or( || )
-      - Condition:  Property + Operator + Value
-      - Operators:  Any( ===  !==  ??-nullish)  ,  String( /rex/.test(str) )  ,  Number( >  <  >=  <= )  ,  Array ( a.includes(s), a.some/every(f) )
-      - Datatypes:  String, Number, Boolean, Null, Undefined     String Formats( '$$bool:true', bool, css, date, html, id, js, json, null, num, qry, ref, regx, str, url )
-
-====================================================================================================================================================================================================*/
-
-//  EscapeString$(s){'  " ' ` \  tab  '};   FetchJavascript$(){};
-//function HasValue$(x){ ( x!==undefined && x!==null && x!=='' && x!==[] && x!=={} )?true:false }
-function EncodeHTML$(s){ return s.replace(/[\&\<\>\"\'\/\\\=\`]/gim, function(s){ return `&#${s.charCodeAt(0)};` } ) }      // EncodeHTML$('\&\<\>\"\'\/\\\=\`');
-function DecodeHTML$(s){ return s.replace(/&#\d+;/gim, function(s){ return String.fromCharCode(s.match(/\d+/gim)[0]) } ) }  // DecodeHTML$('&#38;&#60;&#62;&#34;&#39;&#47;&#92;&#61;&#96;');
-function RemoveArrayDuplicates$(x){ x=[...new Set(x)]; return x }
-function Evaluate$(s){ let f=new Function(`return ${s}`); let r=f(); return r } // Evaluate string as function
-function ParseJSON$(x){ if(typeof x==='string'){ x=JSON.parse(x) }; return x }
-function Function$(x){ x=ParseJSON$(x); window[x.function](x) } // call function from JSON-string or JS-object
-async function FetchJSON$(x){ x=ParseJSON$(x);  if(x.url===undefined){ return x };  let r=await fetch(x.url);  if(r.ok){ let d=await r.json();  x.full_data=d;  Function$(x) } }
-
-
-// Data ==============================================================================================================================================================================================
-
-let data$;  data$ = { dataset_1: { meta$: { tree_prop:["nodes"], list_prop:["items"], item_prop:[], cont_prop:[] },/*meta$*/  data$: { nodes: {
+let data$={};  data$ = { dataset_1: { meta$: { tree_prop:["nodes"], list_prop:["items"], item_prop:[], cont_prop:[] },/*meta$*/  data$: { nodes: {
   home:     { id:`home`,	name:`Home`,	icon:`🏠`,	type:`page`,	content:`Home..`,	nodes: {
     bedrooms: { id:`bedrooms`,	name:`Bedrooms`,	icon:`🌙`,	type:`folder`,	content:`Bedrooms..`,	nodes: {
       master:   { id:`master`,	name:`Master`,	icon:`🛌`,	type:`folder`,	content:`Master..`,	nodes: {
@@ -43,46 +16,55 @@ let data$;  data$ = { dataset_1: { meta$: { tree_prop:["nodes"], list_prop:["ite
   },/*nodes*/  },/*home*/
 },/*nodes*/  },/*data$*/  },/*dataset_1*/  };/*data*/  // item_path: data$.dataset_1.nodes.home.nodes.kitchen.items.sink.content
 
+// Utils =============================================================================================================================================================================================
 
-//let data_ref=`{ "id":"d1", "url":"http://localhost/apps/github/apps/data/data.json", "path":"dataset_1/data$/nodes/home/nodes/kitchen/items", "query":"{{id}}==='sink'||{{id}}==='oven'" }`;
-let data_ref=`{ "id":"d1", "path":"data$:dataset_1/data$/nodes/home/nodes/kitchen/items", "query":"{{id}}==='sink'||{{id}}==='oven'" }`;
+/*Test*/ function HasValue$(x){ return ![undefined,null,{},[],''].includes(x) }   function IsNotNull$(x){ return ![undefined,null].includes(x) }  function IsDefined$(x){ return x!==undefined }   function IsJSON$(x){ return /^\s*(\{|\[)/.test(x) }
+
+function RenameObject$(obj,old_key,new_key){ obj[new_key]=obj[old_key]; delete obj[old_key]; }   // ?  Object.assign(obj,{[new_key]:obj[old_key]}); delete obj[old_key];
+function EncodeHTML$(s){ return s.replace(/[\&\<\>\"\'\/\\\=\`]/gim, function(s){ return `&#${s.charCodeAt(0)};` } ) }  // EncodeHTML$('\&\<\>\"\'\/\\\=\`'); // EscapeString$(s){ " ' ` \  \t }
+function DecodeHTML$(s){ return s.replace(/&#\d+;/gim, function(s){ return String.fromCharCode(s.match(/\d+/gim)[0]) } ) }  // DecodeHTML$('&#38;&#60;&#62;&#34;&#39;&#47;&#92;&#61;&#96;');
+function RemoveArrayDuplicates$(x){ x=[...new Set(x)]; return x }
+function Evaluate$(s){ let f=new Function(`return ${s}`); let r=f(); return r } // Evaluate string as function
+function ParseJSON$(x){ if(typeof x==='string'){ x=JSON.parse(x) }; return x }
+function Function$(x){ x=ParseJSON$(x); window[x.function](x) } // call function from JSON-string or JS-object
+async function FetchJSON$(x){ x=ParseJSON$(x);  if( !HasValue$(x.url) ){ return x };  let r=await fetch(x.url);  if(r.ok){ let d=await r.text();  if(IsJSON$(d)){ d=ParseJSON$(d) };  x.data=d;  Function$(x) } }
+
+// Data ==============================================================================================================================================================================================
+
+//let data_ref=`{ "url":"http://localhost/apps/github/apps/data/data.json", "path":"dataset_1.data$.nodes.home.nodes.kitchen.items", "query":"{{id}}==='sink'||{{id}}==='oven'" }`;
+let data_ref=`{ "url":"", "object":"data$", "path":"dataset_1.data$.nodes.home.nodes.kitchen.items", "query":"{{id}}==='sink'||{{id}}==='oven'", "id":"d1", "type":"data", "action":"get" }`;
 SetData$(data_ref);
 
-// Data ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// SetData -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function SetData$(x){ x=ParseJSON$(x);  let id=x.id; let u=x.url; let p=x.path; let q=x.query;
+function SetData$(x){ x=ParseJSON$(x);  let u=x.url; let o=x.object; let p=x.path; let q=x.query;  let i=x.id; let t=x.type; let a=x.action; 
 
-/* Fetch -------------------------------------- */
-if( u!==undefined && x.all_data===undefined ){ x.function='SetData$';  FetchJSON$(x);  return x };  delete x.function;  
+// URL ---------------------------------------------------------------------------------------------
+if( HasValue$(u) && !HasValue$(x.data) ){ x.function='SetData$';  FetchJSON$(x);  return x };  delete x.function;
 
+// Object ------------------------------------------------------------------------------------------
+if( HasValue$(o) ){ let od;  if( !HasValue$(x.data) ){ x.data=ParseJSON$(eval(`${o}`)); od=structuredClone(x.data) };  x.object_data=od };  
 
-/* Path --------------------------------------- */
-if( p!==undefined ){ let pd; let po; let pa=p;  pa=p.split(':');  if( pa.length>1 ){ po=pa[0]; pa.shift(); pa=pa[0] };  pa=pa.split('/');  console.log(pa); 
+// Path --------------------------------------------------------------------------------------------
+if( HasValue$(p) ){ let pd;  if( HasValue$(x.object_data) ){ pd=structuredClone(x.object_data) }  else{ pd=structuredClone(x.data) };  let pa=p.split('.');  for( let pai of pa ){ pd=pd[pai] };  x.path_data=pd };
 
-if( x.full_data===undefined ){ x.full_data=ParseJSON$(eval(`${po}`)); pd=structuredClone(x.full_data) };
-if( x.full_data!==undefined ){ pd=structuredClone(x.full_data) };
+// Query -------------------------------------------------------------------------------------------
+if( HasValue$(q) && ( HasValue$(x.path_data) || HasValue$(x.data) ) ){ let qd;  
+  if( HasValue$(x.path_data) ){ qd=structuredClone(x.path_data) } else{ qd=structuredClone(x.data) };  let qpka=q.match(/\{\{.+?\}\}/g);  qpka=RemoveArrayDuplicates$(qpka);
+  for( let [ik,iv] of Object.entries(qd) ){ let iq=q;
+    for( let qpki in qpka ){
+      for( let [pk,pv] of Object.entries(iv) ){ let qpk=`\{\{${pk}\}\}`; if(qpka[qpki]===qpk){ iq=iq.replaceAll( qpk, typeof pv==='string'?`'${pv}'`:pv ) } }/*-for props*/
+      if( Evaluate$(iq)===false ){ delete qd[ik] }
+    }/*-for qkeys*/
+  }/*-for items*/
+  x.query_data=qd };
 
-if( pa.length>1 ){ for( const i of pa ){ pd=pd[i] } };  x.path_data=pd;
-
-};
-
-
-
-/* Query -------------------------------------- */
-if( q!==undefined && x.path_data!==undefined){ let qd; qd=structuredClone(x.path_data);  let qpka=q.match(/\{\{.+?\}\}/g);  qpka=RemoveArrayDuplicates$(qpka);
- for( let [ik,iv] of Object.entries(qd) ){ let iq=q;
-   for( let qpki in qpka ){
-     for( let [pk,pv] of Object.entries(iv) ){ let qpk=`\{\{${pk}\}\}`; if(qpka[qpki]===qpk){ iq=iq.replaceAll( qpk, typeof pv==='string'?`'${pv}'`:pv ) } }
-     if( Evaluate$(iq)===false ){ delete qd[ik] }
-   }/*-for qpka*/
- }/*-for items*/
-x.query_data=qd;
-};/* -Query */
-/* SetTree$();  SetPath$();  SetList$();  SetContent$(); */
-
-console.log(x); 
-
+// UseData -----------------------------------------------------------------------------------------
+console.log(x);
+//UseData$(x)
 }/*-SetData$*/  //let item_prm=prms.get('item');  item_path = (item_prm!=null) ? item_prm : item_path;
+
+//function UseData$(x){ x=ParseJSON$(x);  /* SetTree$();  SetPath$();  SetList$();  SetContent$(); */  }
 
 
 // Interface =========================================================================================================================================================================================
@@ -214,6 +196,14 @@ SetIconCharacter$('🧮');  SetTitleText$('Data');  //SetLayout$();
 
 
 /* NOTES =============================================================================================================================================================================================
+
+> Data Reference
+  { id, type, action(get|add(bef|beg|end|aft)|replace/inner|remove/inner),  url, object, path, query,  +data, +object_data, +path_data, +query_data,  +function }  (encode in html attr val)
+  - Query:  js-boolean-expression    !!( ( name=='Bob' && age>=18) || /US/g.test(address) && isEmployed==true )
+     - Group:  ( )  //  Join:  And( && ) , Or( || )  //  Condition:  Property + Operator + Value  //  Operators:  Any( ===  !==  ??-nullish)  ,  String( /rex/.test(str) )  ,  Number( >  <  >=  <= )  ,  Array ( a.includes(s), a.some/every(f) )  //  Datatypes:  String, Number, Boolean, Null, Undefined  //  String Formats( '$$bool:true', bool, css, date, html, id, js, json, null, num, qry, ref, regx, str, url )
+
+
+Tree/Nodes/Path > List/Items > Item-Props/Cont [ name:value ]  ,  type determines target/content  ,  add|replace items of same type  ,  object_ids:(replace - with __ and . with $$)
 
 UI/Page/View
   Container - parent for component

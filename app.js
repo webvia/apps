@@ -3,6 +3,11 @@ window.onerror=(message,source,lineno,colno,error)=>{ let err=`${message}  [ ${s
 let $={/*svc-vars*/}; let win,hist,navn,clip,lang,  doc,root,head,title,icon,base,body,h1,  cli_hgt,cli_wid,  loc,href,prot,ref,host,dom,path,srch,prms,hash,  app_url,app_js;
 let _={/*app-vars*/};  
 
+
+// Utils =============================================================================================================================================================================================
+
+
+
 // PreLoad ===========================================================================================================================================================================================
 
 PreLoad$(); function PreLoad$(){
@@ -26,6 +31,7 @@ function SetStyleInternal$(css,id){ let e=doc.createElement('style'); e.textCont
 function SetStyleExternal$(url,id){ let e=doc.createElement('link'); e.rel='stylesheet'; e.href=url; e.id=id; head.append(e) }
 function SetScriptExternal$(url,id){ let e=doc.createElement('script'); e.src=url; e.id=id; e.defer=true; head.append(e) }
 function SetModules$(modules){} // tree, etc ...  let components=(o.components!=null)?o.components:null;
+function NodeHasChildren$(node){ return (typeof node === 'object') && (typeof node.children !== 'undefined') && (node.children.length > 0) }
 function log(msg){ console.log(msg) }  function dir(obj){ console.dir(obj) }
 
 // HTML ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

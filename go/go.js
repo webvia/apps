@@ -8,7 +8,7 @@ function Go(){
 
 if(q.startsWith('_')) { q=q.substring(1);  GoTo(`en.wikipedia.org/wiki/Category:${q}`);  return };  if(!q.includes('__')){ GoTo(`en.wikipedia.org/wiki/${q}`);  return }; 
 
-let s=q.substring(0,q.indexOf('_')).toLowerCase();  let t=q.substring(q.indexOf('_')+1,q.indexOf('__')).toLowerCase();  if(t=='_'){ t='' };  let v=q.substring(q.indexOf('__')+2);  let u='';  if(s===''){ return }  /* q=query, s=site, t=type, u=url, v=value */   // http://localhost/apps/apps.html?app=go&q=$(CURRENT_WORD)
+let s=q.substring(0,q.indexOf('_')).toLowerCase();  let t=q.substring(q.indexOf('_')+1,q.indexOf('__')).toLowerCase();  if(t=='_'){ t='' };  let v=q.substring(q.indexOf('__')+2);  let u='';  if(s===''){ return }  /* q=query, s=site, t=type, u=url, v=value */   // http://localhost/apps/github/apps/app.html?app=go&q=$(CURRENT_WORD)
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -27,11 +27,20 @@ else if(s=='ddg'){ u=`duckduckgo.com/`;  if(t=='i'){ u=`external-content.${u}iu/
 // Mozilla  [ api|moz _ js, js_ref, js_guide, html, css ]
 else if(s=='api'||s=='moz'){ u=`developer.mozilla.org/en-US/docs/`;  if(t==''){ u=`${u}Web/API/${v}` }  else if(t=='js'){ u=`${u}Web/JavaScript/${v}` }  else if(t=='js_ref'){ u=`${u}Web/JavaScript/Reference/${v}` }  else if(t=='js_guide'){ u=`${u}Web/JavaScript/Guide/${v}` }  else if(t=='html'){ u=`${u}Web/HTML/${v}` }  else if(t=='css'){ u=`${u}Web/CSS/${v}` }  else if(t=='learn'){ u=`${u}Learn/${v}` } }
 
+// X-Twitter  [ x_  ]
+else if(s=='x'){ u=`x.com/${v}` }
+
+
+GoTo(u) }
+
+
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function GoTo(u){ location.replace(`https://${u}`) }  GoTo(u) }
+function GoTo(u){ u=`https://${u}${hash}`;  location.replace(u) }
+
 
 /* Notes =============================================================================================================================================================================================
 
+function GoTo(u){ let u_hash;  if( HasValue$(hash) ){ u_hash = hash } else{ u_hash = '' }  u=`https://${u}${u_hash}`;  location.replace(u) }
 
 ====================================================================================================================================================================================================*/
