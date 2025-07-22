@@ -27,7 +27,7 @@ function RemoveArrayDuplicates$(x){ x=[...new Set(x)]; return x }
 function Evaluate$(s){ let f=new Function(`return ${s}`); let r=f(); return r } // Evaluate string as function
 function ParseJSON$(x){ if(typeof x==='string'){ x=JSON.parse(x) }; return x }
 function Function$(x){ x=ParseJSON$(x); window[x.function](x) } // call function from JSON-string or JS-object
-async function FetchJSON$(x){ x=ParseJSON$(x);  if( !HasValue$(x.url) ){ return x };  let r=await fetch(x.url);  if(r.ok){ let d=await r.text();  if(IsJSON$(d)){ d=ParseJSON$(d) };  x.data=d;  Function$(x) } }
+async function Fetch$(x){ x=ParseJSON$(x);  if( !HasValue$(x.url) ){ return x };  let r=await fetch(x.url);  if(r.ok){ let d=await r.text();  if(IsJSON$(d)){ d=ParseJSON$(d) };  x.data=d;  Function$(x) } }
 
 // Data ==============================================================================================================================================================================================
 
@@ -40,7 +40,7 @@ SetData$(data_ref);
 function SetData$(x){ x=ParseJSON$(x);  let u=x.url; let o=x.object; let p=x.path; let q=x.query;  let i=x.id; let t=x.type; let a=x.action; 
 
 // URL ---------------------------------------------------------------------------------------------
-if( HasValue$(u) && !HasValue$(x.data) ){ x.function='SetData$';  FetchJSON$(x);  return x };  delete x.function;
+if( HasValue$(u) && !HasValue$(x.data) ){ x.function='SetData$';  Fetch$(x);  return x };  delete x.function;
 
 // Object ------------------------------------------------------------------------------------------
 if( HasValue$(o) ){ let od;  if( !HasValue$(x.data) ){ x.data=ParseJSON$(eval(`${o}`)); od=structuredClone(x.data) };  x.object_data=od };  
@@ -49,13 +49,12 @@ if( HasValue$(o) ){ let od;  if( !HasValue$(x.data) ){ x.data=ParseJSON$(eval(`$
 if( HasValue$(p) ){ let pd;  if( HasValue$(x.object_data) ){ pd=structuredClone(x.object_data) }  else{ pd=structuredClone(x.data) };  let pa=p.split('.');  for( let pai of pa ){ pd=pd[pai] };  x.path_data=pd };
 
 // Query -------------------------------------------------------------------------------------------
-if( HasValue$(q) && ( HasValue$(x.path_data) || HasValue$(x.data) ) ){ let qd;  
-  if( HasValue$(x.path_data) ){ qd=structuredClone(x.path_data) } else{ qd=structuredClone(x.data) };  let qpka=q.match(/\{\{.+?\}\}/g);  qpka=RemoveArrayDuplicates$(qpka);
+if( HasValue$(q) && ( HasValue$(x.path_data) || HasValue$(x.data) ) ){ let qd;  if( HasValue$(x.path_data) ){ qd=structuredClone(x.path_data) } else{ qd=structuredClone(x.data) };  let qpka=q.match(/\{\{.+?\}\}/g);  qpka=RemoveArrayDuplicates$(qpka);
   for( let [ik,iv] of Object.entries(qd) ){ let iq=q;
     for( let qpki in qpka ){
       for( let [pk,pv] of Object.entries(iv) ){ let qpk=`\{\{${pk}\}\}`; if(qpka[qpki]===qpk){ iq=iq.replaceAll( qpk, typeof pv==='string'?`'${pv}'`:pv ) } }/*-for props*/
       if( Evaluate$(iq)===false ){ delete qd[ik] }
-    }/*-for qkeys*/
+    }/*-for q keys*/
   }/*-for items*/
   x.query_data=qd };
 

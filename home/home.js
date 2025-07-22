@@ -1,9 +1,8 @@
 // DATA ==============================================================================================================================================================================================
-let dg=`kl=us-en&kp=-2&kz=-1&kav=1&kn=1&kd=-1&kg=p&kae=d&kw=s&k1=-1`;
 
 let link_list=[
 /*Name	Menu	 Domain	 Path	AltIcon	*/
-[`DuckDuckGo`,	``,	`duckduckgo.com`,	`?${dg}`,	``,	],
+[`DuckDuckGo`,	``,	`duckduckgo.com`,	``,	``,	],
 [`YouTube`,	`+`,	`www.youtube.com`,	``,	``,	],
 [`New`,	`-`,	`www.youtube.com`,	`feed/subscriptions`,	``,	],
 [`Watch`,	`-`,	`www.youtube.com`,	`playlist?list=WL`,	``,	],
@@ -25,15 +24,15 @@ let link_list=[
 
 
 let search_list=[
-[`DuckDuckGo`,	``,	`duckduckgo.com`,	`?q={q}&${dg}`,	``,	],
-[`Wikipedia`,	``,	`duckduckgo.com`,	`?q={q}+site:en.wikipedia.org/wiki&${dg}`,	`en.wikipedia.org`,	],
+[`DuckDuckGo`,	``,	`duckduckgo.com`,	`?q={q}`,	``,	],
+[`Wikipedia`,	``,	`duckduckgo.com`,	`?q={q}+site:en.wikipedia.org/wiki`,	`en.wikipedia.org`,	],
 [`YouTube`,	``,	`www.youtube.com`,	`results?search_query={q}`,	``,	],
 [`Amazon`,	``,	`www.amazon.com`,	`s?k={q}`,	``,	],
 [`StockAnalysis`,	``,	`stockanalysis.com`,	`etf/{q}`,	``,	],
 [`PortfolioVis`,	``,	`www.portfoliovisualizer.com`,	`backtest-portfolio?s=y&startYear=&endYear=&includeYTD=true{q}`,	``,	],
-[`StackOverflow`,	``,	`duckduckgo.com`,	`?q={q}+site:stackoverflow.com/questions&${dg}`,	`stackoverflow.com`,	],
-[`Mozilla`,	``,	`duckduckgo.com`,	`?q={q}+site:developer.mozilla.org/en-US/docs&${dg}`,	`developer.mozilla.org`,	],
-[`DailyMail`,	``,	`duckduckgo.com`,	`?q={q}+site:www.dailymail.co.uk&${dg}`,	`www.dailymail.co.uk`,	],
+[`StackOverflow`,	``,	`duckduckgo.com`,	`?q={q}+site:stackoverflow.com/questions`,	`stackoverflow.com`,	],
+[`Mozilla`,	``,	`duckduckgo.com`,	`?q={q}+site:developer.mozilla.org/en-US/docs`,	`developer.mozilla.org`,	],
+[`DailyMail`,	``,	`duckduckgo.com`,	`?q={q}+site:www.dailymail.co.uk`,	`www.dailymail.co.uk`,	],
 ];
 
 
@@ -48,7 +47,7 @@ function HTML(){ let h=`
 <x content><x list link_list><button litem onclick="window.open()" title="NewTab"><img icon src="https://external-content.duckduckgo.com/ip3/earth.google.com.ico"><x>NewTab</x></button litem>${List(link_list)}</x link_list>
 <x middle>
   <x time id="time"></x time>
-  <form method="dialog" onsubmit="Go('https://duckduckgo.com/?q={q}&${dg}')"><input query id="query" type="text" placeholder="search"/></form>
+  <form method="dialog" onsubmit="Go('https://duckduckgo.com/?q={q}')"><input query id="query" type="text" placeholder="search"/></form>
   <x date id="date"></x date>
 </x middle>
 <x list search_list>${List(search_list)}</x search_list></x content>`;  SetHTML$('add',h,'body','end') }  HTML();
