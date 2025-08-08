@@ -38,7 +38,7 @@ function Items(){ let h=``;  for(const x of items){ let n=x[0]/*name*/; let m=x[
 
 function HTML(){ let h=`
 <x content>
-  <x top><x time id="time"></x time><form method="dialog" onsubmit="Go('https://duckduckgo.com/?q={q}')"><input query id="query" type="text" placeholder="search"/></form><x date id="date"></x date></x top>
+  <x top><x time id="time"></x time><form method="dialog" onsubmit="Go('duckduckgo.com','','duckduckgo.com/?q={qry}')"><input query id="query" type="text" placeholder="search"/></form><x date id="date"></x date></x top>
   <x items><button item onclick="window.open()" title="NewTab"><img icon src="https://external-content.duckduckgo.com/ip3/earth.google.com.ico"><x>NewTab</x></button item>${Items()}</x items>
 </x content>`;  
 SetHTML$('add',h,'body','end') }  HTML();
@@ -83,7 +83,7 @@ function Clear(){ qi.value='';  Focus() }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-let time_el=body.querySelector('#time'); setInterval(Time_,30000); Time_(); function Time_(){ time_el.textContent=new Intl.DateTimeFormat(lang,{hour:'numeric',minute:'2-digit'}).format(new Date()).split(' ')[0] }
+let time_el=body.querySelector('#time'); setInterval(Time_,20000); Time_(); function Time_(){ time_el.textContent=new Intl.DateTimeFormat(lang,{hour:'numeric',minute:'2-digit'}).format(new Date()).split(' ')[0] }
 
 let date_el=body.querySelector('#date'); setInterval(Date_,600000); Date_(); function Date_(){ date_el.textContent=new Intl.DateTimeFormat(lang,{weekday:'short',month:'short',day:'numeric'}).format(new Date()) }
 
