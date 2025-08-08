@@ -1,12 +1,9 @@
-window.onerror=(message,source,lineno,colno,error)=>{ let err=`${message}  [ ${source} > ${lineno}-${colno} ]`;  alert(err);  return true }
+window.onerror=(message,source,linenum,colnum,error)=>{ let err=`${message}  [ ${source} > ${linenum}-${colnum} ]`;  alert(err);  return true }
 
-let $={/*svc-vars*/}; let win,hist,navn,clip,lang,  doc,root,head,title,icon,base,body,h1,  cli_hgt,cli_wid,  loc,href,prot,ref,host,dom,path,srch,prms,hash,  app_url,app_js;
+let $={/*svc-vars*/};  $.data={};  let win,hist,navn,clip,lang,  doc,root,head,title,icon,base,body,h1,  cli_hgt,cli_wid,  loc,href,prot,ref,host,dom,path,srch,prms,hash,  app_url,app_js;
 let _={/*app-vars*/};  
 
-
 // Utils =============================================================================================================================================================================================
-
-
 
 // PreLoad ===========================================================================================================================================================================================
 

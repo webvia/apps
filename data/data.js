@@ -1,5 +1,4 @@
-
-let data$={};  data$ = { dataset_1: { meta$: { tree_prop:["nodes"], list_prop:["items"], item_prop:[], cont_prop:[] },/*meta$*/  data$: { nodes: {
+_.my_data = { dataset_1: { meta$: { tree_prop:["nodes"], list_prop:["items"], item_prop:[], cont_prop:[] },/*meta$*/  data$: { nodes: {
   home:     { id:`home`,	name:`Home`,	icon:`🏠`,	type:`page`,	content:`Home..`,	nodes: {
     bedrooms: { id:`bedrooms`,	name:`Bedrooms`,	icon:`🌙`,	type:`folder`,	content:`Bedrooms..`,	nodes: {
       master:   { id:`master`,	name:`Master`,	icon:`🛌`,	type:`folder`,	content:`Master..`,	nodes: {
@@ -18,7 +17,7 @@ let data$={};  data$ = { dataset_1: { meta$: { tree_prop:["nodes"], list_prop:["
 
 // Utils =============================================================================================================================================================================================
 
-/*Test*/ function HasValue$(x){ return ![undefined,null,{},[],''].includes(x) }   function IsNotNull$(x){ return ![undefined,null].includes(x) }  function IsDefined$(x){ return x!==undefined }   function IsJSON$(x){ return /^\s*(\{|\[)/.test(x) }
+function HasValue$(x){ return ![undefined,null,{},[],''].includes(x) }  function IsNotNull$(x){ return ![undefined,null].includes(x) }  function IsDefined$(x){ return x!==undefined }  function IsJSON$(x){ return /^\s*(\{|\[)/.test(x) }
 
 function RenameObject$(obj,old_key,new_key){ obj[new_key]=obj[old_key]; delete obj[old_key]; }   // ?  Object.assign(obj,{[new_key]:obj[old_key]}); delete obj[old_key];
 function EncodeHTML$(s){ return s.replace(/[\&\<\>\"\'\/\\\=\`]/gim, function(s){ return `&#${s.charCodeAt(0)};` } ) }  // EncodeHTML$('\&\<\>\"\'\/\\\=\`'); // EscapeString$(s){ " ' ` \  \t }
@@ -30,12 +29,14 @@ function Function$(x){ x=ParseJSON$(x); window[x.function](x) } // call function
 async function Fetch$(x){ x=ParseJSON$(x);  if( !HasValue$(x.url) ){ return x };  let r=await fetch(x.url);  if(r.ok){ let d=await r.text();  if(IsJSON$(d)){ d=ParseJSON$(d) };  x.data=d;  Function$(x) } }
 
 // Data ==============================================================================================================================================================================================
+// ref$:{ url,object,path,query,  target(path in $.data),  action(get |add(bef|beg|end|aft) |replace/in |remove/in),  id, type=data }
+//          if no url or object, $.data assumed.  query on set of objects with same parent.  
 
-//let data_ref=`{ "url":"http://localhost/apps/github/apps/data/data.json", "path":"dataset_1.data$.nodes.home.nodes.kitchen.items", "query":"{{id}}==='sink'||{{id}}==='oven'" }`;
-let data_ref=`{ "url":"", "object":"data$", "path":"dataset_1.data$.nodes.home.nodes.kitchen.items", "query":"{{id}}==='sink'||{{id}}==='oven'", "id":"d1", "type":"data", "action":"get" }`;
-SetData$(data_ref);
+// let data_ref=`{ "url":"http://localhost/apps/github/apps/data/data.json", "path":"dataset_1.(data$.)nodes.home.nodes.kitchen.items", "query":"{{id}}==='sink'||{{id}}==='oven'" }`;
+let data_ref=`{ "object":"(_.)my_data", "path":"dataset_1.(data$).nodes.home.nodes.kitchen.items", "query":"{{id}}==='sink'||{{id}}==='oven'" }`;
 
 // SetData -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SetData$(data_ref);
 
 function SetData$(x){ x=ParseJSON$(x);  let u=x.url; let o=x.object; let p=x.path; let q=x.query;  let i=x.id; let t=x.type; let a=x.action; 
 
@@ -70,7 +71,8 @@ console.log(x);
 
 // Tree ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function SetTree$(item_path){ let tree_pars_html='';  let tree_items_html='';   //  [ path/parent > selected + siblings > children ]   // for (const [key, val] of Object.entries(obj)) { }
+// path to nodes
+function SetTree$(data, path){ let tree_pars_html='';  let tree_items_html='';   //  [ path/parent > selected + siblings > children ]   // for (const [key, val] of Object.entries(obj)) { }
 
 
 for(const x of it_par_is){ let it_x=items$[x];  tree_pars_html=`${tree_pars_html}<button tree_item_parent tree_item onclick="SetData$('${it_x[it_id_i]}')"><x tree_icon>${it_x[it_icon_i]}</x tree_icon><x tree_name>${it_x[it_name_i]}</x tree_name></button>` } /*-for x parents*/
@@ -197,7 +199,6 @@ SetIconCharacter$('🧮');  SetTitleText$('Data');  //SetLayout$();
 /* NOTES =============================================================================================================================================================================================
 
 > Data Reference
-  { id, type, action(get|add(bef|beg|end|aft)|replace/inner|remove/inner),  url, object, path, query,  +data, +object_data, +path_data, +query_data,  +function }  (encode in html attr val)
   - Query:  js-boolean-expression    !!( ( name=='Bob' && age>=18) || /US/g.test(address) && isEmployed==true )
      - Group:  ( )  //  Join:  And( && ) , Or( || )  //  Condition:  Property + Operator + Value  //  Operators:  Any( ===  !==  ??-nullish)  ,  String( /rex/.test(str) )  ,  Number( >  <  >=  <= )  ,  Array ( a.includes(s), a.some/every(f) )  //  Datatypes:  String, Number, Boolean, Null, Undefined  //  String Formats( '$$bool:true', bool, css, date, html, id, js, json, null, num, qry, ref, regx, str, url )
 
@@ -212,6 +213,10 @@ UI/Page/View
           GroupWrap > Items
           Separator
           Item/Content - template+props
+
+
+Path: Type_RootId/Type_AncestorId/Type_ParentId/Type_ThisId
+
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
