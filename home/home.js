@@ -59,29 +59,25 @@ function CSS(){ let css=`
 
 // FUNC ==============================================================================================================================================================================================
 
-SetIconCharacter$('⭐️');  SetTitleText$('Home');  let qi=body.querySelector('#query');  qi.addEventListener('focus', Focus);  qi.addEventListener('keyup', KeyUp);  qi.addEventListener('input', Input);
+SetIconCharacter$('⭐️');  SetTitleText$('Home');  let qi=body.querySelector('#query');  qi.addEventListener('focus', Focus);  qi.addEventListener('keypress', Input);  let recall='';
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function Go(d,p,s){ let qv=qi.value;  recall=qv;  qi.value='';  if(qv===null||qv===''){ let link=`https://${d}/${p}`;  win.open(link);  return };  if(s===''){ return };
+function Go(d,p,s){ let qv=qi.value.toLowerCase();  recall=qv;  qi.value='';  if(qv===null||qv===''){ let link=`https://${d}/${p}`;  win.open(link);  return };  if(s===''){ return };
   if(d==='www.portfoliovisualizer.com'){ let qu=``;  let qs=qv.split(' ');  if(qs.length>0){ qu=qu+`&symbol1=${qs[0]}&allocation1_1=100` };  if(qs.length>1){ qu=qu+`&symbol2=${qs[1]}&allocation2_2=100` };  if(qs.length>2){ qu=qu+`&symbol3=${qs[2]}&allocation3_3=100` };  qv=qu; }
   qv.replace(' ','+').toLowerCase();  s=`https://${s}`.replace('{qry}',qv);  win.open(s); 
 }/*-Go*/
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function KeyUp(){ let k=event.key;
-/*tab*/   if(k==='Tab'){ event.preventDefault();  qi.setRangeText('\t',this.selectionStart,this.selectionEnd,'end') }
-/*calc*/  else if(k==='='){ event.preventDefault();  Calc() }
-/*clear*/ else if(k==='Delete'){ event.preventDefault();  Clear() }
-/*recal*/ else if(k==='?'){ event.preventDefault();  Recall() }
+function Input(){ let k=event.key;  if(k===null){return}
+/*tab*/   else if(k==='Tab'){ event.preventDefault();  qi.setRangeText('\t',this.selectionStart,this.selectionEnd,'end') }
+/*calc*/  else if(k==='='){ event.preventDefault();  let v=qi.value;  let c=eval(v);  qi.value=`${v} = ${c}` }
+/*clear*/ else if(k==='Delete'){ event.preventDefault();  qi.value='';  Focus() }
+/*recal*/ else if(k==='?'){ event.preventDefault();  qi.value=recall;  Focus() }
 }/*-KeyUp*/
 
-function Input(){ qi.value=qi.value.toLowerCase() }
 function Focus(){ qi.focus();  qi.select() }
-function Calc(){ let v=qi.value;  let c=eval(v);  qi.value=`${v} = ${c}` }
-function Clear(){ qi.value='';  Focus() }
-function Recall(){ qi.value=recall;  Focus() }  let recall='';
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -90,6 +86,13 @@ let time_el=body.querySelector('#time'); setInterval(Time_,20000); Time_(); func
 let date_el=body.querySelector('#date'); setInterval(Date_,600000); Date_(); function Date_(){ date_el.textContent=new Intl.DateTimeFormat(lang,{weekday:'short',month:'short',day:'numeric'}).format(new Date()) }
 
 /* NOTES =============================================================================================================================================================================================
+
+keyup
+input :  every time the value of the element changes.
+change :  fires when the value is committed
+
+
+
 
 
 function AddDateTime$(x){ 
