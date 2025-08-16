@@ -63,7 +63,7 @@ SetIconCharacter$('⭐️');  SetTitleText$('Home');  let qi=body.querySelector(
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function Go(d,p,s){ let qv=qi.value;  qi.value='';  if(qv===null||qv===''){ let link=`https://${d}/${p}`;  win.open(link);  return };  if(s===''){ return };
+function Go(d,p,s){ let qv=qi.value;  recall=qv;  qi.value='';  if(qv===null||qv===''){ let link=`https://${d}/${p}`;  win.open(link);  return };  if(s===''){ return };
   if(d==='www.portfoliovisualizer.com'){ let qu=``;  let qs=qv.split(' ');  if(qs.length>0){ qu=qu+`&symbol1=${qs[0]}&allocation1_1=100` };  if(qs.length>1){ qu=qu+`&symbol2=${qs[1]}&allocation2_2=100` };  if(qs.length>2){ qu=qu+`&symbol3=${qs[2]}&allocation3_3=100` };  qv=qu; }
   qv.replace(' ','+').toLowerCase();  s=`https://${s}`.replace('{qry}',qv);  win.open(s); 
 }/*-Go*/
@@ -74,12 +74,14 @@ function KeyDown(){ let k=event.key;
 /*tab*/   if(k==='Tab'){ event.preventDefault();  qi.setRangeText('\t',this.selectionStart,this.selectionEnd,'end') }
 /*calc*/  else if(k==='='){ event.preventDefault();  Calc() }
 /*clear*/ else if(k==='Delete'){ event.preventDefault();  Clear() }
+/*recal*/ else if(k==='?'){ event.preventDefault();  Recall() }
 }/*-KeyDown*/
 
 function Input(){ qi.value=qi.value.toLowerCase() }
 function Focus(){ qi.focus();  qi.select() }
 function Calc(){ let v=qi.value;  let c=eval(v);  qi.value=`${v} = ${c}` }
 function Clear(){ qi.value='';  Focus() }
+function Recall(){ qi.value=recall;  Focus() }  let recall='';
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -90,10 +92,13 @@ let date_el=body.querySelector('#date'); setInterval(Date_,600000); Date_(); fun
 /* NOTES =============================================================================================================================================================================================
 
 
-function DisplayDateTime$(x){ let f=x.format;  let e=body.querySelector(x.element);  let i=x.interval;  setInterval(function(){ e.textContent=new Intl.DateTimeFormat(lang,f).format(new Date()) },i) }
-DisplayDateTime$( { format:{ hour:'numeric', minute:'2-digit' }, element:'#time', interval:30000 } );
-DisplayDateTime$( { format:{ weekday:'short', month:'short', day:'numeric' }, element:'#date', interval:600000 } );
-
+function AddDateTime$(x){ 
+let f=x.format;  
+let e=body.querySelector(x.element);  
+let i=x.interval;  
+setInterval( function(){ e.textContent=new Intl.DateTimeFormat(lang,f).format(new Date()) } , i ); 
+}/-AddDateTime/
+AddDateTime$( [ { format:{ hour:'numeric', minute:'2-digit' }, element:'#time', interval:30000 } , { format:{ weekday:'short', month:'short', day:'numeric' }, element:'#date', interval:600000 }  ] );
 
 
 

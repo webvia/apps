@@ -1,20 +1,3 @@
-_.my_data = { dataset_1: { meta$: { tree_prop:["nodes"], list_prop:["items"], item_prop:[], cont_prop:[] },/*meta$*/  data$: { nodes: {
-  home:     { id:`home`,	name:`Home`,	icon:`🏠`,	type:`page`,	content:`Home..`,	nodes: {
-    bedrooms: { id:`bedrooms`,	name:`Bedrooms`,	icon:`🌙`,	type:`folder`,	content:`Bedrooms..`,	nodes: {
-      master:   { id:`master`,	name:`Master`,	icon:`🛌`,	type:`folder`,	content:`Master..`,	nodes: {
-        bath:     { id:`bath`,	name:`Bath`,	icon:`🛌`,	type:`folder`,	content:`Bath..`,	},
-        closet:   { id:`closet`,	name:`Closet`,	icon:`🛌`,	type:`folder`,	content:`Closet..`,	},
-      guest:    { id:`guest`,	name:`Guest`,	icon:`🛌`,	type:`page`,	content:`Guest..`,	},
-      },/*nodes*/  },/*master*/
-    },/*nodes*/  },/*bedrooms*/
-    kitchen:  { id:`kitchen`,	name:`Kitchen`,	icon:`🍴`,	type:`page`,	content:`Kitchen..`,	items: {
-      sink: { id:`sink`,	name:`Sink`,	icon:`🍴`,	type:`page`,	content:`Sink..`,	},
-      oven: { id:`oven`,	name:`Oven`,	icon:`🍴`,	type:`folder`,	content:`Oven..`,	},
-      fridge:   { id:`fridge`,	name:`Fridge`,	icon:`🍴`,	type:`folder`,	content:`Fridge..`,	},
-    },/*items*/  },/*kitchen*/
-  },/*nodes*/  },/*home*/
-},/*nodes*/  },/*data$*/  },/*dataset_1*/  };/*data*/  // item_path: data$.dataset_1.nodes.home.nodes.kitchen.items.sink.content
-
 // Utils =============================================================================================================================================================================================
 
 function HasValue$(x){ return ![undefined,null,{},[],''].includes(x) }  function IsNotNull$(x){ return ![undefined,null].includes(x) }  function IsDefined$(x){ return x!==undefined }  function IsJSON$(x){ return /^\s*(\{|\[)/.test(x) }
@@ -29,26 +12,39 @@ function Function$(x){ x=ParseJSON$(x); window[x.function](x) } // call function
 async function Fetch$(x){ x=ParseJSON$(x);  if( !HasValue$(x.url) ){ return x };  let r=await fetch(x.url);  if(r.ok){ let d=await r.text();  if(IsJSON$(d)){ d=ParseJSON$(d) };  x.data=d;  Function$(x) } }
 
 // Data ==============================================================================================================================================================================================
+
+_.my_data = { meta: { tree_prop:["nodes"], list_prop:["items"], item_prop:[], cont_prop:[] },/*meta$*/  data: { nodes: {
+  home:     { id:`home`,	name:`Home`,	icon:`🏠`,	type:`page`,	content:`Home..`,	nodes: {
+    bedrooms: { id:`bedrooms`,	name:`Bedrooms`,	icon:`🌙`,	type:`folder`,	content:`Bedrooms..`,	nodes: {
+      master:   { id:`master`,	name:`Master`,	icon:`🛌`,	type:`folder`,	content:`Master..`,	nodes: {
+        bath:     { id:`bath`,	name:`Bath`,	icon:`🛌`,	type:`folder`,	content:`Bath..`,	},
+        closet:   { id:`closet`,	name:`Closet`,	icon:`🛌`,	type:`folder`,	content:`Closet..`,	},
+      guest:    { id:`guest`,	name:`Guest`,	icon:`🛌`,	type:`page`,	content:`Guest..`,	},
+      },/*nodes*/  },/*master*/
+    },/*nodes*/  },/*bedrooms*/
+    kitchen:  { id:`kitchen`,	name:`Kitchen`,	icon:`🍴`,	type:`page`,	content:`Kitchen..`,	items: {
+      sink: { id:`sink`,	name:`Sink`,	icon:`🍴`,	type:`page`,	content:`Sink..`,	},
+      oven: { id:`oven`,	name:`Oven`,	icon:`🍴`,	type:`folder`,	content:`Oven..`,	},
+      fridge:   { id:`fridge`,	name:`Fridge`,	icon:`🍴`,	type:`folder`,	content:`Fridge..`,	},
+    },/*items*/  },/*kitchen*/
+  },/*nodes*/  },/*home*/
+},/*nodes*/  },/*data*/  };/*my_data*/  // item_path:  _.my_data.data.nodes.home.nodes.kitchen.items.sink.content
+
 // ref$:{ url,object,path,query,  target(path in $.data),  action(get |add(bef|beg|end|aft) |replace/in |remove/in),  id, type=data }
 //          if no url or object, $.data assumed.  query on set of objects with same parent.  
 
 // let data_ref=`{ "url":"http://localhost/apps/github/apps/data/data.json", "path":"dataset_1.(data$.)nodes.home.nodes.kitchen.items", "query":"{{id}}==='sink'||{{id}}==='oven'" }`;
-let data_ref=`{ "object":"(_.)my_data", "path":"dataset_1.(data$).nodes.home.nodes.kitchen.items", "query":"{{id}}==='sink'||{{id}}==='oven'" }`;
+let data_ref=`{ "object":"_.my_data", "path":"data.nodes.home.nodes.kitchen.items", "query":"{{id}}==='sink'||{{id}}==='oven'" }`;
 
 // SetData -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 SetData$(data_ref);
-
 function SetData$(x){ x=ParseJSON$(x);  let u=x.url; let o=x.object; let p=x.path; let q=x.query;  let i=x.id; let t=x.type; let a=x.action; 
-
 // URL ---------------------------------------------------------------------------------------------
 if( HasValue$(u) && !HasValue$(x.data) ){ x.function='SetData$';  Fetch$(x);  return x };  delete x.function;
-
 // Object ------------------------------------------------------------------------------------------
 if( HasValue$(o) ){ let od;  if( !HasValue$(x.data) ){ x.data=ParseJSON$(eval(`${o}`)); od=structuredClone(x.data) };  x.object_data=od };  
-
 // Path --------------------------------------------------------------------------------------------
 if( HasValue$(p) ){ let pd;  if( HasValue$(x.object_data) ){ pd=structuredClone(x.object_data) }  else{ pd=structuredClone(x.data) };  let pa=p.split('.');  for( let pai of pa ){ pd=pd[pai] };  x.path_data=pd };
-
 // Query -------------------------------------------------------------------------------------------
 if( HasValue$(q) && ( HasValue$(x.path_data) || HasValue$(x.data) ) ){ let qd;  if( HasValue$(x.path_data) ){ qd=structuredClone(x.path_data) } else{ qd=structuredClone(x.data) };  let qpka=q.match(/\{\{.+?\}\}/g);  qpka=RemoveArrayDuplicates$(qpka);
   for( let [ik,iv] of Object.entries(qd) ){ let iq=q;
@@ -71,9 +67,22 @@ console.log(x);
 
 // Tree ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// path to nodes
-function SetTree$(data, path){ let tree_pars_html='';  let tree_items_html='';   //  [ path/parent > selected + siblings > children ]   // for (const [key, val] of Object.entries(obj)) { }
 
+function AddTreeNodeHTML$(n){ let ns=n.nodes;  let h='';  if(IsNotNull$(n)){ return h }
+
+
+`nodes: {`
+
+
+
+
+return h;
+}
+
+
+
+// path to nodes
+function SetTree$(data_obj){ let tree_pars_html='';  let tree_items_html='';   //  [ path/parent > selected + siblings > children ]   // for (const [key, val] of Object.entries(obj)) { }
 
 for(const x of it_par_is){ let it_x=items$[x];  tree_pars_html=`${tree_pars_html}<button tree_item_parent tree_item onclick="SetData$('${it_x[it_id_i]}')"><x tree_icon>${it_x[it_icon_i]}</x tree_icon><x tree_name>${it_x[it_name_i]}</x tree_name></button>` } /*-for x parents*/
 
