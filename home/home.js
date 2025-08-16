@@ -59,7 +59,7 @@ function CSS(){ let css=`
 
 // FUNC ==============================================================================================================================================================================================
 
-SetIconCharacter$('⭐️');  SetTitleText$('Home');  let qi=body.querySelector('#query');  qi.addEventListener('focus', Focus);  qi.addEventListener('keydown', KeyDown);  qi.addEventListener('input', Input);
+SetIconCharacter$('⭐️');  SetTitleText$('Home');  let qi=body.querySelector('#query');  qi.addEventListener('focus', Focus);  qi.addEventListener('keyup', KeyUp);  qi.addEventListener('input', Input);
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -70,12 +70,12 @@ function Go(d,p,s){ let qv=qi.value;  recall=qv;  qi.value='';  if(qv===null||qv
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function KeyDown(){ let k=event.key;
+function KeyUp(){ let k=event.key;
 /*tab*/   if(k==='Tab'){ event.preventDefault();  qi.setRangeText('\t',this.selectionStart,this.selectionEnd,'end') }
 /*calc*/  else if(k==='='){ event.preventDefault();  Calc() }
 /*clear*/ else if(k==='Delete'){ event.preventDefault();  Clear() }
 /*recal*/ else if(k==='?'){ event.preventDefault();  Recall() }
-}/*-KeyDown*/
+}/*-KeyUp*/
 
 function Input(){ qi.value=qi.value.toLowerCase() }
 function Focus(){ qi.focus();  qi.select() }
