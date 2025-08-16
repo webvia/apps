@@ -59,7 +59,7 @@ function CSS(){ let css=`
 
 // FUNC ==============================================================================================================================================================================================
 
-SetIconCharacter$('⭐️');  SetTitleText$('Home');  let qi=body.querySelector('#query');  qi.addEventListener('focus', Focus);  qi.addEventListener('keypress', Input);  let recall='';
+SetIconCharacter$('⭐️');  SetTitleText$('Home');  let qi=body.querySelector('#query');  qi.addEventListener('focus', Focus);  qi.addEventListener('keydown', Input);  let recall='';
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
