@@ -41,7 +41,7 @@ function HTML(){ let h=`
   <x top><x time id="time"></x time><form method="dialog" onsubmit="Go('duckduckgo.com','','duckduckgo.com/?q={qry}')"><input query id="query" type="text" placeholder="search"/></form><x date id="date"></x date></x top>
   <x items><button item onclick="window.open()" title="NewTab"><img icon src="https://external-content.duckduckgo.com/ip3/earth.google.com.ico"><x>NewTab</x></button item>${Items()}</x items>
 </x content>`;  
-SetHTML$('add',h,'body','end') }  HTML();
+SetHTML$('add',h,'body','end') }  HTML();   SetIconCharacter$('⭐️');  SetTitleText$('Home');  let qi=body.querySelector('#query');  
 
 // CSS ===============================================================================================================================================================================================
 
@@ -59,10 +59,6 @@ function CSS(){ let css=`
 
 // FUNC ==============================================================================================================================================================================================
 
-SetIconCharacter$('⭐️');  SetTitleText$('Home');  let qi=body.querySelector('#query');  qi.addEventListener('focus', Focus);  qi.addEventListener('keydown', Input);  let recall='';
-
-// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 function Go(d,p,s){ let qv=qi.value.toLowerCase();  recall=qv;  qi.value='';  if(qv===null||qv===''){ let link=`https://${d}/${p}`;  win.open(link);  return };  if(s===''){ return };
   if(d==='www.portfoliovisualizer.com'){ let qu=``;  let qs=qv.split(' ');  if(qs.length>0){ qu=qu+`&symbol1=${qs[0]}&allocation1_1=100` };  if(qs.length>1){ qu=qu+`&symbol2=${qs[1]}&allocation2_2=100` };  if(qs.length>2){ qu=qu+`&symbol3=${qs[2]}&allocation3_3=100` };  qv=qu; }
   qv.replace(' ','+').toLowerCase();  s=`https://${s}`.replace('{qry}',qv);  win.open(s); 
@@ -70,12 +66,16 @@ function Go(d,p,s){ let qv=qi.value.toLowerCase();  recall=qv;  qi.value='';  if
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function Input(){ let k=event.key;  if(k===null){return}
+qi.addEventListener('input', Input);  qi.addEventListener('focus', Focus);  let recall='';
+
+
+function Input(){ let i = event.target;  let s = i.selectionStart;  let k = i.value.substr(s-1, 1);  if(k===null){return}
 /*tab*/   else if(k==='Tab'){ event.preventDefault();  qi.setRangeText('\t',this.selectionStart,this.selectionEnd,'end') }
 /*calc*/  else if(k==='='){ event.preventDefault();  let v=qi.value;  let c=eval(v);  qi.value=`${v} = ${c}` }
 /*clear*/ else if(k==='Delete'){ event.preventDefault();  qi.value='';  Focus() }
 /*recal*/ else if(k==='?'){ event.preventDefault();  qi.value=recall;  Focus() }
 }/*-KeyUp*/
+
 
 function Focus(){ qi.focus();  qi.select() }
 
