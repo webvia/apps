@@ -66,18 +66,14 @@ function Go(d,p,s){ let qv=qi.value.toLowerCase();  recall=qv;  qi.value='';  if
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-qi.addEventListener('input', Input);  qi.addEventListener('focus', Focus);  let recall='';
+qi.addEventListener('keydown', Key);  let recall='';
 
-
-function Input(){ let i = event.target;  let s = i.selectionStart;  let k = i.value.substr(s-1, 1);  if(k===null){return}
+function Key(){ let k=null;  if(event.keyCode!==229){ k=event.key } else{ k=qi.value.substr(qi.selectionStart-1,1) };  if(k===null){return}  
 /*tab*/   else if(k==='Tab'){ event.preventDefault();  qi.setRangeText('\t',this.selectionStart,this.selectionEnd,'end') }
 /*calc*/  else if(k==='='){ event.preventDefault();  let v=qi.value;  let c=eval(v);  qi.value=`${v} = ${c}` }
-/*clear*/ else if(k==='Delete'){ event.preventDefault();  qi.value='';  Focus() }
-/*recal*/ else if(k==='?'){ event.preventDefault();  qi.value=recall;  Focus() }
-}/*-KeyUp*/
-
-
-function Focus(){ qi.focus();  qi.select() }
+/*clear*/ else if(k==='Delete'){ event.preventDefault();  qi.value='';  qi.select() }
+/*recal*/ else if(k==='?'){ event.preventDefault();  qi.value=recall;  qi.select() }
+}/*-Key*/
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
