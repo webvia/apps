@@ -40,8 +40,8 @@ function HTML(){ let h=`
 <x content>
   <x top><x time id="time"></x time><form method="dialog" onsubmit="Go('duckduckgo.com','','duckduckgo.com/?q={qry}')"><input query id="query" type="text" placeholder="search"/></form><x date id="date"></x date></x top>
   <x items><button item onclick="window.open()" title="NewTab"><img icon src="https://external-content.duckduckgo.com/ip3/earth.google.com.ico"><x>NewTab</x></button item>${Items()}</x items>
-</x content>`;  
-SetHTML$('add',h,'body','end') }  HTML();   SetIconCharacter$('⭐️');  SetTitleText$('Home');  let qi=body.querySelector('#query');  
+</x content>
+`;  SetHTML$('add',h,'body','end') }  HTML();
 
 // CSS ===============================================================================================================================================================================================
 
@@ -59,6 +59,8 @@ function CSS(){ let css=`
 
 // FUNC ==============================================================================================================================================================================================
 
+let qi=body.querySelector('#query');  let recall='';  SetIconCharacter$('⭐️');  SetTitleText$('Home');  
+
 function Go(d,p,s){ let qv=qi.value.toLowerCase();  recall=qv;  qi.value='';  if(qv===null||qv===''){ let link=`https://${d}/${p}`;  win.open(link);  return };  if(s===''){ return };
   if(d==='www.portfoliovisualizer.com'){ let qu=``;  let qs=qv.split(' ');  if(qs.length>0){ qu=qu+`&symbol1=${qs[0]}&allocation1_1=100` };  if(qs.length>1){ qu=qu+`&symbol2=${qs[1]}&allocation2_2=100` };  if(qs.length>2){ qu=qu+`&symbol3=${qs[2]}&allocation3_3=100` };  qv=qu; }
   qv.replace(' ','+').toLowerCase();  s=`https://${s}`.replace('{qry}',qv);  win.open(s); 
@@ -66,13 +68,15 @@ function Go(d,p,s){ let qv=qi.value.toLowerCase();  recall=qv;  qi.value='';  if
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-qi.addEventListener('keydown', Key);  let recall='';
+if(agent.includes('Android')){ qi.addEventListener('input', Key) } else{ qi.addEventListener('keydown', Key) }
 
-function Key(){ let k=null;  if(event.keyCode!==229){ k=event.key } else{ k=qi.value.substr(qi.selectionStart-1,1) };  if(k===null){return}  
-/*tab*/   else if(k==='Tab'){ event.preventDefault();  qi.setRangeText('\t',this.selectionStart,this.selectionEnd,'end') }
-/*calc*/  else if(k==='='){ event.preventDefault();  let v=qi.value;  let c=eval(v);  qi.value=`${v} = ${c}` }
-/*clear*/ else if(k==='Delete'){ event.preventDefault();  qi.value='';  qi.select() }
-/*recal*/ else if(k==='?'){ event.preventDefault();  qi.value=recall;  qi.select() }
+function Key(ev){ let k=null;  if(ev.keyCode!==229){ k=ev.key } else{ k=qi.value.substr(qi.selectionStart-1,1) };  
+
+               if(k===null){return}  
+/*tab*/   else if(k==='Tab'){ ev.preventDefault();  qi.setRangeText('\t',this.selectionStart,this.selectionEnd,'end') }
+/*calc*/  else if(k==='='){ ev.preventDefault();  let v=qi.value;  let c=eval(v);  qi.value=`${v} = ${c}` }
+/*clear*/ else if(k==='Delete'){ ev.preventDefault();  qi.value='';  qi.select() }
+/*recal*/ else if(k==='?'){ ev.preventDefault();  qi.value=recall;  qi.select() }
 }/*-Key*/
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

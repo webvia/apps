@@ -1,6 +1,6 @@
 window.onerror=(message,source,linenum,colnum,error)=>{ let err=`${message}  [ ${source} > ${linenum}-${colnum} ]`;  alert(err);  return true }
 
-let $={/*svc-vars*/};  $.data={};  let win,hist,navn,clip,lang,  doc,root,head,title,icon,base,body,h1,  cli_hgt,cli_wid,  loc,href,prot,ref,host,dom,path,srch,prms,hash,  app_url,app_js;
+let $={/*svc-vars*/};  $.data={};  let win,hist,navn,clip,lang,agent,  doc,root,head,title,icon,base,body,h1,  cli_hgt,cli_wid,  loc,href,prot,ref,host,dom,path,srch,prms,hash,  app_url,app_js;
 let _={/*app-vars*/};  
 
 // Utils =============================================================================================================================================================================================
@@ -8,7 +8,7 @@ let _={/*app-vars*/};
 // PreLoad ===========================================================================================================================================================================================
 
 PreLoad$(); function PreLoad$(){
-win=window; hist=win.history; navn=win.navigation; clip=navigator.clipboard; lang=navigator.language; doc=win.document; root=doc.documentElement; title=doc.title; head=doc.head; body=doc.body;
+win=window; hist=win.history; navn=win.navigation; clip=navigator.clipboard; lang=navigator.language; agent=navigator.userAgent; doc=win.document; root=doc.documentElement; title=doc.title; head=doc.head; body=doc.body;
 loc=doc.location; href=loc.href; prot=loc.protocol+'://'; host=loc.host; path=loc.pathname; srch=loc.search; prms=new URLSearchParams(srch); hash=loc.hash;
 ref=href.replace(/^.+\/\/www\.|.+\/\//,''); dom=ref.substring(0,ref.indexOf('/')); dom=dom.substring(0,dom.lastIndexOf('.')); //href(ref)=prot/host(dom)/path/?srch&prms#hash
 app_url=prms.get('app'); app_js=app_url+'.js';  icon=head.querySelector('#app_icon');  base=head.querySelector('#app_base').setAttribute('href',app_url+'/'); 
