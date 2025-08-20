@@ -70,7 +70,7 @@ function Go(d,p,s){ let qv=qi.value.toLowerCase();  recall=qv;  qi.value='';  if
 
 if(agent_is_mobile$){ qi.addEventListener('input', Key) } else{ qi.addEventListener('keydown', Key) };
 
-alert(agent);
+qi.value=agent; alert(agent);
 function Key(ev){ let k=null;  if(agent_is_mobile$){ k=ev.data } else{ k=ev.key }    // let k=qi.value.substr(qi.selectionStart-1,1);  
 
                if(!HasValue$(k)){return}  
