@@ -68,9 +68,10 @@ function Go(d,p,s){ let qv=qi.value.toLowerCase();  recall=qv;  qi.value='';  if
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-qi.addEventListener('keydown', Key);
+if(agent_is_mobile$){ qi.addEventListener('input', Key) } else{ qi.addEventListener('keydown', Key) };
 
-function Key(ev){ let k=ev.key;             // let k=ev.data;    let k=qi.value.substr(qi.selectionStart-1,1);  
+
+function Key(ev){ let k=null;  if(agent_is_mobile$){ k=ev.data } else{ k=ev.key }    // let k=qi.value.substr(qi.selectionStart-1,1);  
 
                if(!HasValue$(k)){return}  
 /*recal*/ else if(k==='?'){ ev.preventDefault();  qi.value=recall;  qi.select() }
@@ -88,8 +89,7 @@ let date_el=body.querySelector('#date'); setInterval(Date_,600000); Date_(); fun
 /* NOTES =============================================================================================================================================================================================
 
 
-if(agent.includes('Android')){ qi.addEventListener('input', Key) } else{ qi.addEventListener('keydown', Key) }   function Key(ev){ let k=null;  if(ev.keyCode!==229){ k=ev.key } else{ k=qi.value.substr(qi.selectionStart-1,1) };  
-
+  function Key(ev){ let k=null;  if(ev.keyCode!==229){ k=ev.key } else{ k=qi.value.substr(qi.selectionStart-1,1) };  
 
 
 function AddDateTime$(x){ 
