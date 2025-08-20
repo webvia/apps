@@ -1,6 +1,6 @@
 window.onerror=(message,source,linenum,colnum,error)=>{ let err=`${message}  [ ${source} > ${linenum}-${colnum} ]`;  alert(err);  return true }
 
-let $={/*svc-vars*/};  $.data={};  let win,hist,navn,clip,lang,agent,  doc,root,head,title,icon,base,body,h1,  cli_hgt,cli_wid,  loc,href,prot,ref,host,dom,path,srch,prms,hash,  app_url,app_js,  agent_is_mobile$;
+let $={/*svc-vars*/};  $.data={};  let win,hist,navn,clip,lang,agent,  doc,root,head,title,icon,base,body,h1,  cli_hgt,cli_wid,  loc,href,prot,ref,host,dom,path,srch,prms,hash,  app_url,app_js,  agent_is_mobile$, agent_is_linux$;
 let _={/*app-vars*/};  
 
 // Utils =============================================================================================================================================================================================
@@ -13,7 +13,7 @@ loc=doc.location; href=loc.href; prot=loc.protocol+'://'; host=loc.host; path=lo
 ref=href.replace(/^.+\/\/www\.|.+\/\//,''); dom=ref.substring(0,ref.indexOf('/')); dom=dom.substring(0,dom.lastIndexOf('.')); //href(ref)=prot/host(dom)/path/?srch&prms#hash
 app_url=prms.get('app'); app_js=app_url+'.js';  icon=head.querySelector('#app_icon');  base=head.querySelector('#app_base').setAttribute('href',app_url+'/'); 
 cli_hgt=root.clientHeight; cli_wid=root.clientWidth; 
-agent_is_mobile$=(agent.includes('Mobile'))?true:false;
+agent_is_mobile$=(agent.includes('Mobile'))?true:false;  agent_is_linux$=(agent.includes('Linux'))?true:false;
 doc.querySelector('noscript').remove();
 SetStyleInternal$(` body { margin: unset;  font-family: sans-serif; }  button { all: unset;  user-select: none;  cursor: pointer; }  table { border-collapse: collapse; } `, 'apps_style'); 
 if(app_url!==null){ SetTitleText$(app_url); SetIconCharacter$(`🔳`); SetScriptExternal$(app_js,'app_script') } else{ SetTitleText$(`App not specified`); SetIconCharacter$(`⛔️`); body.insertAdjacentHTML('beforeend',`App not specified.`) }; 
