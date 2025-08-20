@@ -70,7 +70,6 @@ function Go(d,p,s){ let qv=qi.value.toLowerCase();  recall=qv;  qi.value='';  if
 
 if(agent_is_linux$){ qi.addEventListener('input', Key) } else{ qi.addEventListener('keydown', Key) };
 
-qi.value=agent; alert(agent);
 function Key(ev){ let k=null;  if(agent_is_linux$){ k=ev.data } else{ k=ev.key }    // let k=qi.value.substr(qi.selectionStart-1,1);  
 
                if(!HasValue$(k)){return}  
