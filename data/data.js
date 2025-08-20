@@ -1,7 +1,5 @@
 // Utils =============================================================================================================================================================================================
 
-function HasValue$(x){ return ![undefined,null,{},[],''].includes(x) }  function IsNotNull$(x){ return ![undefined,null].includes(x) }  function IsDefined$(x){ return x!==undefined }  function IsJSON$(x){ return /^\s*(\{|\[)/.test(x) }
-
 function RenameObject$(obj,old_key,new_key){ obj[new_key]=obj[old_key]; delete obj[old_key]; }   // ?  Object.assign(obj,{[new_key]:obj[old_key]}); delete obj[old_key];
 function EncodeHTML$(s){ return s.replace(/[\&\<\>\"\'\/\\\=\`]/gim, function(s){ return `&#${s.charCodeAt(0)};` } ) }  // EncodeHTML$('\&\<\>\"\'\/\\\=\`'); // EscapeString$(s){ " ' ` \  \t }
 function DecodeHTML$(s){ return s.replace(/&#\d+;/gim, function(s){ return String.fromCharCode(s.match(/\d+/gim)[0]) } ) }  // DecodeHTML$('&#38;&#60;&#62;&#34;&#39;&#47;&#92;&#61;&#96;');

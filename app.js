@@ -30,6 +30,7 @@ function SetScriptExternal$(url,id){ let e=doc.createElement('script'); e.src=ur
 function SetModules$(modules){} // tree, etc ...  let components=(o.components!=null)?o.components:null;
 function NodeHasChildren$(node){ return (typeof node === 'object') && (typeof node.children !== 'undefined') && (node.children.length > 0) }
 function log(msg){ console.log(msg) }  function dir(obj){ console.dir(obj) }
+function HasValue$(x){ return ![undefined,null,{},[],''].includes(x) }  function IsNotNull$(x){ return ![undefined,null].includes(x) }  function IsDefined$(x){ return x!==undefined }  function IsJSON$(x){ return /^\s*(\{|\[)/.test(x) }
 
 // HTML ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
