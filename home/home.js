@@ -68,11 +68,14 @@ function Go(d,p,s){ let qv=qi.value.toLowerCase();  recall=qv;  qi.value='';  if
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-if(agent_is_linux$){ qi.addEventListener('input', Key) } else{ qi.addEventListener('keydown', Key) };
+let virtual_keyboard_is_open=false;  qi.addEventListener('keydown', Key);
+if ('virtualKeyboard' in navigator) { navigator.virtualKeyboard.overlaysContent=true;
+  navigator.virtualKeyboard.addEventListener('geometrychange', (event) => { const { x, y, width, height } = event.target.boundingRect;
+  if(height>0){ virtual_keyboard_is_open=true; qi.removeEventListener('keydown', Key); qi.addEventListener('input', Key) } else{ virtual_keyboard_is_open=false; qi.removeEventListener('input', Key);  qi.addEventListener('keydown', Key) }
+}) };
 
-function Key(ev){ let k=null;  if(agent_is_linux$){ k=ev.data } else{ k=ev.key }    // let k=qi.value.substr(qi.selectionStart-1,1);  
 
-               if(!HasValue$(k)){return}  
+function Key(ev){ let k=null;  if(virtual_keyboard_is_open){ k=ev.data } else{ k=ev.key };  if(!HasValue$(k)){return}  
 /*recal*/ else if(k==='?'){ ev.preventDefault();  qi.value=recall;  qi.select() }
 /*calc*/  else if(k==='='){ ev.preventDefault();  let v=qi.value.replace('=','');  let c=eval(v);  qi.value=`${v} = ${c}` }
 /*tab*/   else if(k==='Tab'){ ev.preventDefault();  qi.setRangeText('\t',this.selectionStart,this.selectionEnd,'end') }
@@ -88,7 +91,21 @@ let date_el=body.querySelector('#date'); setInterval(Date_,600000); Date_(); fun
 /* NOTES =============================================================================================================================================================================================
 
 
-  function Key(ev){ let k=null;  if(ev.keyCode!==229){ k=ev.key } else{ k=qi.value.substr(qi.selectionStart-1,1) };  
+let ua_type=(/Macintosh|Windows/.test(ua))?'desktop':(/X11/.test(ua))?'mobile-desktop':'mobile';
+
+if(ua_type==='mobile-desktop'){ qi.addEventListener('input', Key) } else{ qi.addEventListener('keydown', Key) };
+
+function Key(ev){ let k=null;  if(ua_type==='mobile-desktop'){ k=ev.data } else{ k=ev.key };  if(!HasValue$(k)){return}  
+
+
+
+
+if ('virtualKeyboard' in navigator) { navigator.virtualKeyboard.overlaysContent = true;
+  navigator.virtualKeyboard.addEventListener('geometrychange', (event) => { const { x, y, width, height } = event.target.boundingRect;
+  virtual_keyboard_is_open = (height > 0) ? true : false;
+}) };
+
+
 
 
 function AddDateTime$(x){ 
