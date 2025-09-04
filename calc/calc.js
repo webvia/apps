@@ -9,7 +9,7 @@ body { margin: 0; padding: 0; background-color: #121212; color: #F8F8F8; font-si
 
 /* Page =========================================================================================================================================================================================== */
 
-let h=`<div pb></div><div pc><textarea ta id="ta" autofocus></textarea><div ca></div></div>`;  SetHTML$('add',h,'body','end');  //body.insertAdjacentHTML('beforeend',h);  
+let h=`<div pb></div><div pc><textarea ta id="ta" autofocus></textarea><div ca></div></div>`;  SetHTML$( { action:'add', content1:h, content2:body, position:'end' } );
 
 let ta=body.querySelector('[ta]');  let ca=body.querySelector('[ca]');  let pb=body.querySelector('[pb]');
 

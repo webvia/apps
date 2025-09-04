@@ -1,107 +1,99 @@
-// Utils =============================================================================================================================================================================================
+// Data ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function RenameObject$(obj,old_key,new_key){ obj[new_key]=obj[old_key]; delete obj[old_key]; }   // ?  Object.assign(obj,{[new_key]:obj[old_key]}); delete obj[old_key];
-function EncodeHTML$(s){ return s.replace(/[\&\<\>\"\'\/\\\=\`]/gim, function(s){ return `&#${s.charCodeAt(0)};` } ) }  // EncodeHTML$('\&\<\>\"\'\/\\\=\`'); // EscapeString$(s){ " ' ` \  \t }
-function DecodeHTML$(s){ return s.replace(/&#\d+;/gim, function(s){ return String.fromCharCode(s.match(/\d+/gim)[0]) } ) }  // DecodeHTML$('&#38;&#60;&#62;&#34;&#39;&#47;&#92;&#61;&#96;');
-function RemoveArrayDuplicates$(x){ x=[...new Set(x)]; return x }
-function Evaluate$(s){ let f=new Function(`return ${s}`); let r=f(); return r } // Evaluate string as function
-function ParseJSON$(x){ if(typeof x==='string'){ x=JSON.parse(x) }; return x }
-function Function$(x){ x=ParseJSON$(x); window[x.function](x) } // call function from JSON-string or JS-object
-async function Fetch$(x){ x=ParseJSON$(x);  if( !HasValue$(x.url) ){ return x };  let r=await fetch(x.url);  if(r.ok){ let d=await r.text();  if(IsJSON$(d)){ d=ParseJSON$(d) };  x.data=d;  Function$(x) } }
+let item_kitchen_html=`Kitchen.. <button onclick="SetItem$('bedrooms')">to Bedrooms</button>`;
 
-// Data ==============================================================================================================================================================================================
+$.data = {
+'node..path_ids..parent_id..node_id': { 'type': `node`, 'parent': ``,	'id': `home`,	'name': `Home`,	'icon': `🏠`,	'content': `Home..`,	},
+'node..path_ids..parent_id..node_id': { 'type': `node`, 'parent': `home`,	'id': `bedrooms`,	'name': `Bedrooms`,	'icon': `🌙`,	'content': `Bedrooms..`,	},
+'node..path_ids..parent_id..node_id': { 'type': `node`, 'parent': `bedrooms`,	'id': `master`,	'name': `Master`,	'icon': `🛌`,	'content': `Master..`,	},
+'node..path_ids..parent_id..node_id': { 'type': `node`, 'parent': `master`,	'id': `bath`,	'name': `Bath`,	'icon': `🛌`,	'content': `Bath..`,	},
+'node..path_ids..parent_id..node_id': { 'type': `node`, 'parent': `master`,	'id': `closet`,	'name': `Closet`,	'icon': `🛌`,	'content': `Closet..`,	},
+'node..path_ids..parent_id..node_id': { 'type': `node`, 'parent': `bedrooms`,	'id': `guest`,	'name': `Guest`,	'icon': `🛌`,	'content': `Guest..`,	},
+'node..path_ids..parent_id..node_id': { 'type': `node`, 'parent': `home`,	'id': `kitchen`,	'name': `Kitchen`,	'icon': `🍴`,	'content': `${item_kitchen_html}`,	},
+'item..path_ids..parent_id~~item_id': { 'type': `item`, 'parent': ``,	'id': `home`,	'name': `Home`,	'icon': `🏠`,	'content': `Home..`,	},
+'item..path_ids..parent_id~~item_id': { 'type': `item`, 'parent': `home`,	'id': `bedrooms`,	'name': `Bedrooms`,	'icon': `🌙`,	'content': `Bedrooms..`,	},
+'item..path_ids..parent_id~~item_id': { 'type': `item`, 'parent': `bedrooms`,	'id': `master`,	'name': `Master`,	'icon': `🛌`,	'content': `Master..`,	},
+'item..path_ids..parent_id~~item_id': { 'type': `item`, 'parent': `master`,	'id': `bath`,	'name': `Bath`,	'icon': `🛌`,	'content': `Bath..`,	},
+'item..path_ids..parent_id~~item_id': { 'type': `item`, 'parent': `master`,	'id': `closet`,	'name': `Closet`,	'icon': `🛌`,	'content': `Closet..`,	},
+'item..path_ids..parent_id~~item_id': { 'type': `item`, 'parent': `bedrooms`,	'id': `guest`,	'name': `Guest`,	'icon': `🛌`,	'content': `Guest..`,	},
+'item..path_ids..parent_id~~item_id': { 'type': `item`, 'parent': `home`,	'id': `kitchen`,	'name': `Kitchen`,	'icon': `🍴`,	'content': `Kitchen..`,	},
+};
 
-_.my_data = { meta: { tree_prop:["nodes"], list_prop:["items"], item_prop:[], cont_prop:[] },/*meta$*/  data: { nodes: {
-  home:     { id:`home`,	name:`Home`,	icon:`🏠`,	type:`page`,	content:`Home..`,	nodes: {
-    bedrooms: { id:`bedrooms`,	name:`Bedrooms`,	icon:`🌙`,	type:`folder`,	content:`Bedrooms..`,	nodes: {
-      master:   { id:`master`,	name:`Master`,	icon:`🛌`,	type:`folder`,	content:`Master..`,	nodes: {
-        bath:     { id:`bath`,	name:`Bath`,	icon:`🛌`,	type:`folder`,	content:`Bath..`,	},
-        closet:   { id:`closet`,	name:`Closet`,	icon:`🛌`,	type:`folder`,	content:`Closet..`,	},
-      guest:    { id:`guest`,	name:`Guest`,	icon:`🛌`,	type:`page`,	content:`Guest..`,	},
-      },/*nodes*/  },/*master*/
-    },/*nodes*/  },/*bedrooms*/
-    kitchen:  { id:`kitchen`,	name:`Kitchen`,	icon:`🍴`,	type:`page`,	content:`Kitchen..`,	items: {
-      sink: { id:`sink`,	name:`Sink`,	icon:`🍴`,	type:`page`,	content:`Sink..`,	},
-      oven: { id:`oven`,	name:`Oven`,	icon:`🍴`,	type:`folder`,	content:`Oven..`,	},
-      fridge:   { id:`fridge`,	name:`Fridge`,	icon:`🍴`,	type:`folder`,	content:`Fridge..`,	},
-    },/*items*/  },/*kitchen*/
-  },/*nodes*/  },/*home*/
-},/*nodes*/  },/*data*/  };/*my_data*/  // item_path:  _.my_data.data.nodes.home.nodes.kitchen.items.sink.content
-
-// ref$:{ url,object,path,query,  target(path in $.data),  action(get |add(bef|beg|end|aft) |replace/in |remove/in),  id, type=data }
-//          if no url or object, $.data assumed.  query on set of objects with same parent.  
-
-// let data_ref=`{ "url":"http://localhost/apps/github/apps/data/data.json", "path":"dataset_1.(data$.)nodes.home.nodes.kitchen.items", "query":"{{id}}==='sink'||{{id}}==='oven'" }`;
-let data_ref=`{ "object":"_.my_data", "path":"data.nodes.home.nodes.kitchen.items", "query":"{{id}}==='sink'||{{id}}==='oven'" }`;
-
-// SetData -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-SetData$(data_ref);
-function SetData$(x){ x=ParseJSON$(x);  let u=x.url; let o=x.object; let p=x.path; let q=x.query;  let i=x.id; let t=x.type; let a=x.action; 
-// URL ---------------------------------------------------------------------------------------------
-if( HasValue$(u) && !HasValue$(x.data) ){ x.function='SetData$';  Fetch$(x);  return x };  delete x.function;
-// Object ------------------------------------------------------------------------------------------
-if( HasValue$(o) ){ let od;  if( !HasValue$(x.data) ){ x.data=ParseJSON$(eval(`${o}`)); od=structuredClone(x.data) };  x.object_data=od };  
-// Path --------------------------------------------------------------------------------------------
-if( HasValue$(p) ){ let pd;  if( HasValue$(x.object_data) ){ pd=structuredClone(x.object_data) }  else{ pd=structuredClone(x.data) };  let pa=p.split('.');  for( let pai of pa ){ pd=pd[pai] };  x.path_data=pd };
-// Query -------------------------------------------------------------------------------------------
-if( HasValue$(q) && ( HasValue$(x.path_data) || HasValue$(x.data) ) ){ let qd;  if( HasValue$(x.path_data) ){ qd=structuredClone(x.path_data) } else{ qd=structuredClone(x.data) };  let qpka=q.match(/\{\{.+?\}\}/g);  qpka=RemoveArrayDuplicates$(qpka);
-  for( let [ik,iv] of Object.entries(qd) ){ let iq=q;
-    for( let qpki in qpka ){
-      for( let [pk,pv] of Object.entries(iv) ){ let qpk=`\{\{${pk}\}\}`; if(qpka[qpki]===qpk){ iq=iq.replaceAll( qpk, typeof pv==='string'?`'${pv}'`:pv ) } }/*-for props*/
-      if( Evaluate$(iq)===false ){ delete qd[ik] }
-    }/*-for q keys*/
-  }/*-for items*/
-  x.query_data=qd };
-
-// UseData -----------------------------------------------------------------------------------------
-console.log(x);
-//UseData$(x)
-}/*-SetData$*/  //let item_prm=prms.get('item');  item_path = (item_prm!=null) ? item_prm : item_path;
-
-//function UseData$(x){ x=ParseJSON$(x);  /* SetTree$();  SetPath$();  SetList$();  SetContent$(); */  }
+// <elem data-data="object..node..path--items_query~~item">   ?app=data&data=object..node..path--items_query~~item    // { object:`node|item|content`, parent, id, name, icon, type, content, ... }
 
 
-// Interface =========================================================================================================================================================================================
+// Items ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+let it_id, it_par, it_type, it_name, it_icon, it_cont;  let it_id_i, it_par_i, it_type_i, it_name_i, it_icon_i, it_cont_i;  let it_i, it_par_is, it_sib_is, it_chi_is;  let it_i_i, it_par_is_i, it_sib_is_i, it_chi_is_i; 
+
+
+function SetItems$(it_id_start){ let itps=items$[0];  
+
+itps.push('it_i');  itps.push('it_par_is');  itps.push('it_sib_is');  itps.push('it_chi_is');  items$.shift();  
+
+it_id_i=itps.indexOf('id'); it_par_i=itps.indexOf('parent'); it_type_i=itps.indexOf('type'); it_name_i=itps.indexOf('name'); it_icon_i=itps.indexOf('icon'); it_cont_i=itps.indexOf('content');  
+it_i_i=itps.indexOf('it_i');  it_par_is_i=itps.indexOf('it_par_is');  it_sib_is_i=itps.indexOf('it_sib_is');  it_chi_is_i=itps.indexOf('it_chi_is'); 
+
+for(const [i,x] of items$.entries()){ let it_id_x=x[it_id_i];  let it_par_x=x[it_par_i];  x.push(null, [],[],[]);  x[it_i_i]=i;  let it_par_is_x=x[it_par_is_i];  let it_sib_is_x=x[it_sib_is_i];  let it_chi_is_x=x[it_chi_is_i];
+  for(const [j,y] of items$.entries()){ let it_id_y=y[it_id_i];  let it_par_y=y[it_par_i];  let it_par_is_y=y[it_par_is_i];  if(it_par_x===it_id_y){ it_par_is_x.push(it_par_is_y,j) };  if(it_par_x===it_par_y){ it_sib_is_x.push(j) };  if(it_id_x===it_par_y){ it_chi_is_x.push(j) };
+  } /*-for j*/
+  x[it_par_is_i]=it_par_is_x.flat(Infinity);
+} /*-for i*/
+
+let it_id_prm=prms.get('item');  it_id = (it_id_prm!=null) ? it_id_prm : (it_id_start!=null && it_id_start!='') ? it_id_start : items$[0][it_id_i];
+
+SetItem$(it_id);
+
+} /*-SetItems$*/
+
+
+function SetItem$(it_id_new){ let it;
+for(const [i,x] of items$.entries()){ if(it_id_new===x[it_id_i]){ it=x;  it_i=i;  break } };
+it_id=it[it_id_i]; it_par=it[it_par_i]; it_type=it[it_type_i]; it_name=it[it_name_i]; it_icon=it[it_icon_i]; it_cont=it[it_cont_i]; it_par_is=it[it_par_is_i]; it_sib_is=it[it_sib_is_i]; it_chi_is=it[it_chi_is_i]; 
+SetTree$(); SetPath$(); SetContent$();
+} /*-SetItem$*/
+
+
+// List ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function SetList$(list_items, list_wrap_html, list_item_html, list_container_id, list_css){  let h=``;  let list_props=list_items[0];  list_items.shift();
+for(const [i,x] of list_items.entries()){ let hi=list_item_html;  for(const [j,y] of list_props.entries()){ hi=hi.replace('%{'+y+'}', x[j]) } /*-for j*/  h=h+hi } /*-for i*/
+h=list_wrap_html.replace('%{}', h);
+SetHTML$({ action:'replace-inner', content1:'#'+list_container_id, content2:h });
+let list_style_id='app_'+list_container_id+'_style';  if(head.querySelector('#'+list_style_id)===null){ SetStyleInternal$(list_css, list_style_id) };
+} /*-SetList$*/
+
+
+let list_wrap_html=`<div>Items</div><div>%{}</div>`;
+let list_item_html=`<div><span>%{name}</span></div>`;
+let list_container_id='layout_list';
+let list_css=``;
+
 
 // Tree ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+function SetTree$(){ let tree_pars_html='';  let tree_items_html='';
 
-function AddTreeNodeHTML$(n){ let ns=n.nodes;  let h='';  if(IsNotNull$(n)){ return h }
-
-
-`nodes: {`
-
-
-
-
-return h;
-}
-
-
-
-// path to nodes
-function SetTree$(data_obj){ let tree_pars_html='';  let tree_items_html='';   //  [ path/parent > selected + siblings > children ]   // for (const [key, val] of Object.entries(obj)) { }
-
-for(const x of it_par_is){ let it_x=items$[x];  tree_pars_html=`${tree_pars_html}<button tree_item_parent tree_item onclick="SetData$('${it_x[it_id_i]}')"><x tree_icon>${it_x[it_icon_i]}</x tree_icon><x tree_name>${it_x[it_name_i]}</x tree_name></button>` } /*-for x parents*/
+for(const x of it_par_is){ let it_x=items$[x];  tree_pars_html=`${tree_pars_html}<button tree_item_parent tree_item onclick="SetItem$('${it_x[it_id_i]}')"><x tree_icon>${it_x[it_icon_i]}</x tree_icon><x tree_name>${it_x[it_name_i]}</x tree_name></button>` } /*-for x parents*/
 
 for(const x of it_sib_is){ let it_x=items$[x]; 
   let tree_it_cur=(it_i===it_x[it_i_i])?'tree_it_cur':''; 
   let tree_it_top=(it_x[it_par_i]==='')?'tree_it_top':''; 
-  tree_items_html=`${tree_items_html}<button tree_item_sibling ${tree_it_top} ${tree_it_cur} tree_item onclick="SetData$('${it_x[it_id_i]}')"><x tree_icon>${it_x[it_icon_i]}</x tree_icon><x tree_name>${it_x[it_name_i]}</x tree_name></button>`;
+  tree_items_html=`${tree_items_html}<button tree_item_sibling ${tree_it_top} ${tree_it_cur} tree_item onclick="SetItem$('${it_x[it_id_i]}')"><x tree_icon>${it_x[it_icon_i]}</x tree_icon><x tree_name>${it_x[it_name_i]}</x tree_name></button>`;
   if(it_i===it_x[it_i_i]){
-    for(const y of it_chi_is){ let it_y=items$[y];  tree_items_html=`${tree_items_html}<button tree_item_child tree_item onclick="SetData$('${it_y[it_id_i]}')"><x tree_icon>${it_y[it_icon_i]}</x tree_icon><x tree_name>${it_y[it_name_i]}</x tree_name></button>` } /*-for y childs*/
+    for(const y of it_chi_is){ let it_y=items$[y];  tree_items_html=`${tree_items_html}<button tree_item_child tree_item onclick="SetItem$('${it_y[it_id_i]}')"><x tree_icon>${it_y[it_icon_i]}</x tree_icon><x tree_name>${it_y[it_name_i]}</x tree_name></button>` } /*-for y childs*/
   } /*-if*/
 } /*-for x siblings*/
 
 let tree_html=`<nav tree_nav><x tree_bar>
-<button tree_bar_button title="Up to Top Level" onclick="SetData$('${items$[0][it_id_i]}')">⏫️</button>
-<button tree_bar_button title="Up One Level" onclick="SetData$('${it_par}')">🔼</button>
-<button tree_bar_button title="Tree View" onclick="SetData$('${it_par}')">↘️</button>
-<button tree_bar_button title="List View" onclick="SetData$('${it_par}')">⬇️</button>
+<button tree_bar_button title="Up to Top Level" onclick="SetItem$('${items$[0][it_id_i]}')">⏫️</button>
+<button tree_bar_button title="Up One Level" onclick="SetItem$('${it_par}')">🔼</button>
+<button tree_bar_button title="Tree View" onclick="SetItem$('${it_par}')">↘️</button>
+<button tree_bar_button title="List View" onclick="SetItem$('${it_par}')">⬇️</button>
 
 </x tree_bar><x tree_items>${tree_pars_html}${tree_items_html}</x tree_items></nav tree_nav>`;  
 
-SetHTML$('replace-inner', '#layout_tree', tree_html);
+SetHTML$({ action:'replace-inner', content1:'#layout_tree', content2:tree_html });
 
 let css=`
 [tree_nav] { display: flex;  flex-flow: column nowrap;  align-items: stretch;  width: 250px;  height: 100vh;  bottom: 0;  background-color: #202020;  border-right: 1px solid #808080;  }
@@ -125,13 +117,14 @@ if(head.querySelector('#apps_tree_style')===null){ SetStyleInternal$(css, 'apps_
 
 } /*-SetTree$*/
 
+
 // Path ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function SetPath$(){ let path_pars_html='';  let path_items_html='';  let path_sep_html=`<x path_sep>🞂</x path_sep>`;
-for(const x of it_par_is){ let it_x=items$[x];  path_pars_html=`${path_pars_html}<button path_item_parent path_item onclick="SetData$('${it_x[it_id_i]}')"><x path_icon>${it_x[it_icon_i]}</x path_icon><x path_name>${it_x[it_name_i]}</x path_name></button>${path_sep_html}` } /*-for x parents*/
+for(const x of it_par_is){ let it_x=items$[x];  path_pars_html=`${path_pars_html}<button path_item_parent path_item onclick="SetItem$('${it_x[it_id_i]}')"><x path_icon>${it_x[it_icon_i]}</x path_icon><x path_name>${it_x[it_name_i]}</x path_name></button>${path_sep_html}` } /*-for x parents*/
 path_items_html=`<button path_item_current path_item><x path_icon>${it_icon}</x path_icon><x path_name>${it_name}</x path_name></button>`;
 let path_html=`<nav path_nav><x path_items>${path_pars_html}${path_items_html}</x path_items></nav path_nav>`;  
-SetHTML$('replace-inner', '#layout_path', `${path_html}`);
+SetHTML$({ action:'replace-inner', content1:'#layout_path', content2:`${path_html}` });
 
 let css=`
 [path_nav] { display: flex;  flex-flow: row wrap;  background-color: #202020;  border-bottom: 1px solid #808080; width: 100%; }
@@ -146,24 +139,9 @@ if(head.querySelector('#apps_path_style')===null){ SetStyleInternal$(css, 'apps_
 } /*-SetPath$*/
 
 
-// List ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-function SetList$(list_items, list_wrap_html, list_item_html, list_container_id, list_css){  let h=``;  let list_props=list_items[0];  list_items.shift();
-for(const [i,x] of list_items.entries()){ let hi=list_item_html;  for(const [j,y] of list_props.entries()){ hi=hi.replace('%{'+y+'}', x[j]) } /*-for j*/  h=h+hi } /*-for i*/
-h=list_wrap_html.replace('%{}', h);
-SetHTML$('replace-inner','#'+list_container_id, h);
-let list_style_id='app_'+list_container_id+'_style';  if(head.querySelector('#'+list_style_id)===null){ SetStyleInternal$(list_css, list_style_id) };
-} /*-SetList$*/
-
-// let list_wrap_html=`<div>Items</div><div>%{}</div>`;
-// let list_item_html=`<div><span>%{name}</span></div>`;
-// let list_container_id='layout_list';
-// let list_css=``;
-
-
 // Content -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function SetContent$(cont){ SetHTML$('replace-inner', '#layout_cont', `${cont}`) }
+function SetContent$(){ SetHTML$({ action:'replace-inner', content1:'#layout_cont', content2:`${it_cont}` }) }
 
 
 // Layout --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -184,7 +162,7 @@ let lay_html=`
   </div layout_middle>
   <footer id="layout_footer"><div>FOOTER</div></footer layout_header>
 </div layout_page>
-`;  SetHTML$('add',lay_html,'body','end');
+`;  SetHTML$({ action:'add', content1:lay_html, content2:'body', position:'end' });
 
 let lay_css=` 
 #layout_page { display: flex;  flex-flow: column nowrap;  justify-content: center;  width: 100%; }
@@ -198,33 +176,58 @@ let lay_css=`
 
 } /*-SetLayout$*/
 
+
 // Functions -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-SetIconCharacter$('🧮');  SetTitleText$('Data');  //SetLayout$();
+SetIconCharacter$('🧮');  SetTitleText$('Data');  
+
+SetLayout$();
+
+SetItems$();
+SetTree$();
+SetPath$();
+SetList$(list_items, list_wrap_html, list_item_html, list_container_id, list_css);
 
 
 /* NOTES =============================================================================================================================================================================================
 
-> Data Reference
-  - Query:  js-boolean-expression    !!( ( name=='Bob' && age>=18) || /US/g.test(address) && isEmployed==true )
-     - Group:  ( )  //  Join:  And( && ) , Or( || )  //  Condition:  Property + Operator + Value  //  Operators:  Any( ===  !==  ??-nullish)  ,  String( /rex/.test(str) )  ,  Number( >  <  >=  <= )  ,  Array ( a.includes(s), a.some/every(f) )  //  Datatypes:  String, Number, Boolean, Null, Undefined  //  String Formats( '$$bool:true', bool, css, date, html, id, js, json, null, num, qry, ref, regx, str, url )
+> Structure
+    UI/Page/View
+      Container - parent for component
+        Component - premade|custom   (apps.component.items)
+          Wrap - functionality for items | NoItems
+            Items/List
+              GroupWrap > Items
+              Separator
+              Item/Content - template+props
 
 
-Tree/Nodes/Path > List/Items > Item-Props/Cont [ name:value ]  ,  type determines target/content  ,  add|replace items of same type  ,  object_ids:(replace - with __ and . with $$)
 
-UI/Page/View
-  Container - parent for component
-    Component - premade|custom   (apps.component.items)
-      Wrap - functionality for items | NoItems
-        Items/List
-          GroupWrap > Items
-          Separator
-          Item/Content - template+props
+Items:  Tree/Path > List > Item > Props/Cont [ name:value ]    type determines target/content   add|replace items of same type
+  Item-Prop:  id, type, parent(id), items(query|ref), content(html/text,query|ref), name, icon,  custom...
+    Prop-Types:  string, query, ref
 
 
-Path: Type_RootId/Type_AncestorId/Type_ParentId/Type_ThisId
+> Data :  let data = new Map( [ [ 'obj~path~parent~id', { parent, id, name, icon, type, content, ... } ] , [ ... ] ] );
+
+
+
+> Query:  js-boolean-expression    !!( ( name=='Bob' && age>=18) || /US/g.test(address) && isEmployed==true )
+   - Group:  ( )  //  Join:  And( && ) , Or( || )  //  Condition:  Property + Operator + Value  //  Operators:  Any( ===  !==  ??-nullish)  ,  String( /rex/.test(str) )  ,  Number( >  <  >=  <= )  ,  Array ( a.includes(s), a.some/every(f) )  //  Datatypes:  String, Number, Boolean, Null, Undefined  //  String Formats( '$$bool:true', bool, css, date, html, id, js, json, null, num, qry, ref, regx, str, url )
+
+
+
+> Path: Type_RootId/Type_AncestorId/Type_ParentId/Type_ThisId
+
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ref$:{ url,object,path,query,  target(path in $.data),  action(get |add(bef|beg|end|aft) |replace/in |remove/in),  id, type=data }
+if no url or object, $.data assumed.  query on set of objects with same parent.  
+
+let data_ref=`{ "url":"http://localhost/apps/github/apps/data/data.json", "path":"dataset_1.(data$.)nodes.home.nodes.kitchen.items", "query":"{{id}}==='sink'||{{id}}==='oven'" }`;
+let data_ref=`{ "object":"_.my_data", "path":"data.nodes.home.nodes.kitchen.items", "query":"{{id}}==='sink'||{{id}}==='oven'" }`;
+
 
 ====================================================================================================================================================================================================*/

@@ -3,8 +3,6 @@ window.onerror=(message,source,linenum,colnum,error)=>{ let err=`${message}  [ $
 let $={/*svc-vars*/};  $.data={};  let win,hist,navn,clip,lang,ua,  doc,root,head,title,icon,base,body,h1,  cli_hgt,cli_wid,  loc,href,prot,ref,host,dom,path,srch,prms,hash,  app_url,app_js;
 let _={/*app-vars*/};  
 
-// Utils =============================================================================================================================================================================================
-
 // PreLoad ===========================================================================================================================================================================================
 
 PreLoad$(); function PreLoad$(){
@@ -21,34 +19,52 @@ if(app_url!==null){ SetTitleText$(app_url); SetIconCharacter$(`🔳`); SetScript
 
 // Functions =========================================================================================================================================================================================
 
-function SetTitleText$(txt){ doc.title=txt }
-function SetIconURL$(url){ icon.href=url }
+function SetTitleText$(txt){ doc.title=txt } // SetDocumentTitle(txt)
+function SetIconURL$(url){ icon.href=url } // SetDocumentIcon(char|imgurl)
 function SetIconCharacter$(chr){ icon.href=`data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text x=%22-.1em%22 y=%22.9em%22 font-size=%2280%22>${chr}</text></svg>` }
-function SetStyleInline$(css,elem){ elem.style=css }
-function SetStyleInternal$(css,id){ let e=doc.createElement('style'); e.textContent=css; e.id=id; head.append(e) }
-function SetStyleExternal$(url,id){ let e=doc.createElement('link'); e.rel='stylesheet'; e.href=url; e.id=id; head.append(e) }
+
+function SetStyleInline$(css,elem){ elem.style=css } // SetElementStyleCSS
+function SetStyleInternal$(css,id){ let e=doc.createElement('style'); e.textContent=css; e.id=id; head.append(e) } // SetPageStyleCSS
+function SetStyleExternal$(url,id){ let e=doc.createElement('link'); e.rel='stylesheet'; e.href=url; e.id=id; head.append(e) } // SetPageStyleURL
+// SetStyle( { style:'css|url', element:'document|elem', id:'id' } );
+
 function SetScriptExternal$(url,id){ let e=doc.createElement('script'); e.src=url; e.id=id; e.defer=true; head.append(e) }
-function SetModules$(modules){} // tree, etc ...  let components=(o.components!=null)?o.components:null;
+
+// function SetModules$(modules){} // tree, etc ...  let components=(o.components!=null)?o.components:null;
 function NodeHasChildren$(node){ return (typeof node === 'object') && (typeof node.children !== 'undefined') && (node.children.length > 0) }
 function log(msg){ console.log(msg) }  function dir(obj){ console.dir(obj) }
-function HasValue$(x){ return ![undefined,null,{},[],''].includes(x) }  function IsNotNull$(x){ return ![undefined,null].includes(x) }  function IsDefined$(x){ return x!==undefined }  function IsJSON$(x){ return /^\s*(\{|\[)/.test(x) }
+
+function HasValue$(x){ return ![undefined,null,{},[],''].includes(x) }  function IsNotNull$(x){ return ![undefined,null].includes(x) }  function IsDefined$(x){ return x!==undefined }  function IsJSON$(x){ return /^\s*(\{|\[)/.test(x) }  function IsHTML$(x){ return /<[a-z]/i.test(x) }  // /<[^>]+>/i ?
+
+function RenameObject$(obj,old_key,new_key){ obj[new_key]=obj[old_key]; delete obj[old_key]; }   // ?  Object.assign(obj,{[new_key]:obj[old_key]}); delete obj[old_key];
+function RemoveArrayDuplicates$(x){ x=[...new Set(x)]; return x }
+function Evaluate$(s){ let f=new Function(`return ${s}`); let r=f(); return r } // Evaluate string as function
+function ParseJSON$(x){ if(typeof x==='string'){ x=JSON.parse(x) }; return x }
+function Function$(x){ x=ParseJSON$(x); window[x.function](x) } // call function from JSON-string or JS-object
+async function Fetch$(x){ x=ParseJSON$(x);  if( !HasValue$(x.url) ){ return x };  let r=await fetch(x.url);  if(r.ok){ let d=await r.text();  if(IsJSON$(d)){ d=ParseJSON$(d) };  x.data=d;  Function$(x) } }
+
+// SetEvent( { action:'add|remove|toggle', event:'event', element:'window|document|selector', function:'function', data:{alert:'hi'} } );
+// function SetEvent(x){ if(IsJSON$(x)){ x=ParseJSON$(x) };  let el=body.querySelector(x.element);  if(x.action==='add'){ el.addEventListener(x.event, window[x.function].bind(this, x.data)) } }
 
 // HTML ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function SetHTML$(a,c1,c2,p,d){ if(a==null){return}
-  else if(a==='add'){ c1=DatafyHTML$(c1,d);  c1=ConvertHTML$(c1);  c2=doc.querySelectorAll(c2);  for(const c2n of c2){ let c1c=c1.cloneNode(true);  InsertHTML$(c1c, c2n, p) } }
-  else if(a==='copy'){ c1=doc.querySelectorAll(c1);  c1=MergeHTML$(c1);  c2=doc.querySelectorAll(c2);  for(const c2n of c2){ let c1c=c1.cloneNode(true);  InsertHTML$(c1c, c2n, p) } }
-  else if(a==='move'){ c1=doc.querySelectorAll(c1);  c2=doc.querySelector(c2);  for(const c1n of c1){ InsertHTML$(c1n, c2, p) } }
-  else if(a==='remove'){ c1=doc.querySelectorAll(c1);  for(const c1n of c1){ c1n.replaceWith() } }
-  else if(a==='remove-inner'){ c1=doc.querySelectorAll(c1);  for(const c1n of c1){ c1n.replaceChildren() } }
-  else if(a==='replace'){ c1=doc.querySelectorAll(c1);  c2=DatafyHTML$(c2,p);  c2=ConvertHTML$(c2);  for(const c1n of c1){ let c2c=c2.cloneNode(true);  c1n.replaceWith(c2c) } }
-  else if(a==='replace-inner'){ c1=doc.querySelectorAll(c1);  c2=DatafyHTML$(c2,p);  c2=ConvertHTML$(c2);  for(const c1n of c1){ let c2c=c2.cloneNode(true);  c1n.replaceChildren(c2c) } }
+// { action:'add|..', content1:'sel|html|node', content2:'sel|html|node', position:'before|begin|end|after|self?|inner?', data:{[{k:v},{k:v}]} }
+
+function SetHTML$(x){ let a=x.action; let c1=x.content1; let c2=x.content2; let p=x.position; let d=x.data;  if(a==null){return}
+  else if(a==='add'){ c1=DatafyHTML$(c1,d);  c1=ConvertHTML$(c1);  c2=GetHTML$(c2);  for(const c2n of c2){ let c1c=c1.cloneNode(true);  InsertHTML$(c1c, c2n, p) } }
+  else if(a==='copy'){ c1=GetHTML$(c1);  c1=MergeHTML$(c1);  c2=GetHTML$(c2);  for(const c2n of c2){ let c1c=c1.cloneNode(true);  InsertHTML$(c1c, c2n, p) } }
+  else if(a==='move'){ c1=GetHTML$(c1);  c2=doc.querySelector(c2);  for(const c1n of c1){ InsertHTML$(c1n, c2, p) } }
+  else if(a==='remove'){ c1=GetHTML$(c1);  for(const c1n of c1){ c1n.replaceWith() } }
+  else if(a==='remove-inner'){ c1=GetHTML$(c1);  for(const c1n of c1){ c1n.replaceChildren() } }
+  else if(a==='replace'){ c1=GetHTML$(c1);  c2=DatafyHTML$(c2,p);  c2=ConvertHTML$(c2);  for(const c1n of c1){ let c2c=c2.cloneNode(true);  c1n.replaceWith(c2c) } }
+  else if(a==='replace-inner'){ c1=GetHTML$(c1);  c2=DatafyHTML$(c2,p);  c2=ConvertHTML$(c2);  for(const c1n of c1){ let c2c=c2.cloneNode(true);  c1n.replaceChildren(c2c) } }
 } /*-SetHTML$*/
 
+function GetHTML$(c){ if(typeof c!=='string'){ return [c] } else { return doc.querySelectorAll(c) } }
 function ConvertHTML$(c){ if(typeof c!=='string'){ return c }  let t=doc.createElement('template');  t.innerHTML=c;  f=t.content;  t.remove();  return f }
 function MergeHTML$(c){ let f=new DocumentFragment();  for(const n of c){ f.append(n.cloneNode(true)) };  return f }
 function InsertHTML$(c,n,p){ if(p==='before'){ n.before(c) } else if(p==='begin'){ n.prepend(c) } else if(p==='end'){ n.append(c) } else if(p==='after'){ n.after(c) } }
-function DatafyHTML$(c,d){ if(d==null){ return c }  c=c.replaceAll('\${','${');  let cd='';  for(const di of d){ let ci=c;  for(const dp in di){ let re=new RegExp(`\\$\\{${dp}\\}`,'g');  ci=ci.replace(re, di[dp]) }  cd=cd+ci }  return cd }
+function DatafyHTML$(c,d){ if(d==null){ return c }  let cd='';  for(const di of d){ let ci=c;  for(const dp in di){ let re=new RegExp(`\\$\\{${dp}\\}`,'g');  ci=ci.replace(re, di[dp]) }  cd=cd+ci }  return cd }
 
 // Dialog --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -89,17 +105,6 @@ Misc: button, icon, badge, progress, tag, ..
 ----
 Data/Storage:  Storage_API, Cookie_Store_API, Web_Storage_API, IndexedDB_API, File_System_Access_API, File_API, Cache
 Displays:  @media screen and (max-width: 767px) { ... }   @media screen and (min-width: 768px) { ... }    <=480 - 481-767 - 768-1024 - 1025-1280 - 1281=<
-
---------------------------------------------------------------------------------------------------------------
-
-// ACTION ___________  CONTENT-1 __ CONTENT-2 ___ POS __ DATA     Position:before|begin|end|after|self|inner
-// move                what:sels    where:sel     pos    ----
-// copy                what:sels    where:sels    pos    ????
-// add                 what:h|n     where:sels    pos    data     '\${x}'
-// replace             what:sels    with:h|n      dat    data
-// replace-inner       what:sels    with:h|n      dat    data
-// remove              what:sels    ----------    ---    ----
-// remove-inner        what:sels    ----------    ---    ----
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -38,10 +38,10 @@ function Items(){ let h=``;  for(const x of items){ let n=x[0]/*name*/; let m=x[
 
 function HTML(){ let h=`
 <x content>
-  <x top><x time id="time"></x time><form method="dialog" onsubmit="Go('duckduckgo.com','','duckduckgo.com/?q={qry}')"><input query id="query" type="search" enterkeyhint="search" placeholder="search"/></form><x date id="date"></x date></x top>
+  <x top><x time id="time"></x time><form method="dialog" onsubmit="Go('duckduckgo.com','','duckduckgo.com/?q={qry}')"><input query id="query" type="search" enterkeyhint="search" placeholder="search" autocapitalize="off"/></form><x date id="date"></x date></x top>
   <x items><button item onclick="window.open()" title="NewTab"><img icon src="https://external-content.duckduckgo.com/ip3/earth.google.com.ico"><x>NewTab</x></button item>${Items()}</x items>
 </x content>
-`;  SetHTML$('add',h,'body','end') }  HTML();
+`;  SetHTML$( { action:'add', content1:h, content2:body, position:'end' } ) }  HTML();
 
 // CSS ===============================================================================================================================================================================================
 
@@ -68,18 +68,12 @@ function Go(d,p,s){ let qv=qi.value.toLowerCase();  recall=qv;  qi.value='';  if
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-let virtual_keyboard_is_open=false;  qi.addEventListener('keydown', Key);
-if ('virtualKeyboard' in navigator) { navigator.virtualKeyboard.overlaysContent=true;
-  navigator.virtualKeyboard.addEventListener('geometrychange', (event) => { const { x, y, width, height } = event.target.boundingRect;
-  if(height>0){ virtual_keyboard_is_open=true; qi.removeEventListener('keydown', Key); qi.addEventListener('input', Key) } else{ virtual_keyboard_is_open=false; qi.removeEventListener('input', Key);  qi.addEventListener('keydown', Key) }
-}) };
+qi.addEventListener('input', Key);   // let res = str.slice(0, 1) + ch + str.slice(1);   ev.target.selectionStart   // if '', recall. 
 
-
-function Key(ev){ let k=null;  if(virtual_keyboard_is_open){ k=ev.data } else{ k=ev.key };  if(!HasValue$(k)){return}  
-/*recal*/ else if(k==='?'){ ev.preventDefault();  qi.value=recall;  qi.select() }
-/*calc*/  else if(k==='='){ ev.preventDefault();  let v=qi.value.replace('=','');  let c=eval(v);  qi.value=`${v} = ${c}` }
-/*tab*/   else if(k==='Tab'){ ev.preventDefault();  qi.setRangeText('\t',this.selectionStart,this.selectionEnd,'end') }
-/*clear*/ else if(k==='Delete'){ ev.preventDefault();  qi.value='';  qi.select() }
+function Key(){ let ev=event;  let k=ev.data;  if(![ '?' , '=' , '!' , ',' ].includes(k)){return};  ev.preventDefault();  if(k===''){return}
+/* ? recall  */  else if(k==='?'){ qi.value=recall;  qi.select() }
+/* = calc    */  else if(k==='='){ let v=qi.value.replace('=','');  let c=eval(v);  qi.value=`${v} = ${c}` }
+/* ! , clear */  else if(k==='!'||k===','){ qi.value='';  qi.select() }
 }/*-Key*/
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -91,33 +85,14 @@ let date_el=body.querySelector('#date'); setInterval(Date_,600000); Date_(); fun
 /* NOTES =============================================================================================================================================================================================
 
 
-let ua_type=(/Macintosh|Windows/.test(ua))?'desktop':(/X11/.test(ua))?'mobile-desktop':'mobile';
 
-if(ua_type==='mobile-desktop'){ qi.addEventListener('input', Key) } else{ qi.addEventListener('keydown', Key) };
-
-function Key(ev){ let k=null;  if(ua_type==='mobile-desktop'){ k=ev.data } else{ k=ev.key };  if(!HasValue$(k)){return}  
+> Virtual Keyboard :  let virtual_keyboard_is_open=false;  qi.addEventListener('keydown', Key);  if ('virtualKeyboard' in navigator) { navigator.virtualKeyboard.overlaysContent=true;  navigator.virtualKeyboard.addEventListener('geometrychange',(event)=>{ const{x,y,width,height}=event.target.boundingRect;  if(height>0){ virtual_keyboard_is_open=true; qi.removeEventListener('keydown', Key); qi.addEventListener('input', Key) } else{ virtual_keyboard_is_open=false; qi.removeEventListener('input', Key);  qi.addEventListener('keydown', Key) } }) };
 
 
+> User Agent Type :  let ua_type=(/Macintosh|Windows/.test(ua))?'desktop':(/X11/.test(ua))?'mobile-desktop':'mobile';
 
 
-if ('virtualKeyboard' in navigator) { navigator.virtualKeyboard.overlaysContent = true;
-  navigator.virtualKeyboard.addEventListener('geometrychange', (event) => { const { x, y, width, height } = event.target.boundingRect;
-  virtual_keyboard_is_open = (height > 0) ? true : false;
-}) };
+> DateTime (broken) :  function AddDateTime$(x){ let f=x.format;  let e=body.querySelector(x.element);  let i=x.interval;  setInterval( function(){ e.textContent=new Intl.DateTimeFormat(lang,f).format(new Date()) } , i ); }/-AddDateTime/   AddDateTime$( [ { format:{ hour:'numeric', minute:'2-digit' }, element:'#time', interval:30000 } , { format:{ weekday:'short', month:'short', day:'numeric' }, element:'#date', interval:600000 }  ] );
 
-
-
-
-function AddDateTime$(x){ 
-let f=x.format;  
-let e=body.querySelector(x.element);  
-let i=x.interval;  
-setInterval( function(){ e.textContent=new Intl.DateTimeFormat(lang,f).format(new Date()) } , i ); 
-}/-AddDateTime/
-AddDateTime$( [ { format:{ hour:'numeric', minute:'2-digit' }, element:'#time', interval:30000 } , { format:{ weekday:'short', month:'short', day:'numeric' }, element:'#date', interval:600000 }  ] );
-
-
-
-https://www.portfoliovisualizer.com/backtest-portfolio?s=y&startYear=&endYear=&includeYTD=true&symbol1=voo&allocation1_1=100
 
 ====================================================================================================================================================================================================*/
