@@ -14,7 +14,7 @@ app_url=prms.get('app'); app_js=app_url+'.js';  icon=head.querySelector('#app_ic
 cli_hgt=root.clientHeight; cli_wid=root.clientWidth; 
 doc.querySelector('noscript').remove();
 SetStyleInternal$(` body { margin: unset;  font-family: sans-serif; }  button { all: unset;  user-select: none;  cursor: pointer; }  table { border-collapse: collapse; } `, 'apps_style'); 
-if(app_url!==null){ SetTitleText$(app_url); SetIconCharacter$(`🔳`); SetScriptExternal$(app_js,'app_script') } else{ SetTitleText$(`App not specified`); SetIconCharacter$(`⛔️`); body.insertAdjacentHTML('beforeend',`App not specified.`) }; 
+if(app_url!==null){ SetScriptExternal$(app_js,'app_script') } else{ SetTitleText$(`App not specified`); SetIconCharacter$(`⛔️`); body.insertAdjacentHTML('beforeend',`App not specified.`) }; 
 } /*-PreLoad*/  /*DOMContentLoaded*/
 
 // Functions =========================================================================================================================================================================================
@@ -52,19 +52,31 @@ async function Fetch$(x){ x=ParseJSON$(x);  if( !HasValue$(x.url) ){ return x };
 
 function SetHTML$(x){ let a=x.action; let c1=x.content1; let c2=x.content2; let p=x.position; let d=x.data;  if(a==null){return}
   else if(a==='add'){ c1=DatafyHTML$(c1,d);  c1=ConvertHTML$(c1);  c2=GetHTML$(c2);  for(const c2n of c2){ let c1c=c1.cloneNode(true);  InsertHTML$(c1c, c2n, p) } }
-  else if(a==='copy'){ c1=GetHTML$(c1);  c1=MergeHTML$(c1);  c2=GetHTML$(c2);  for(const c2n of c2){ let c1c=c1.cloneNode(true);  InsertHTML$(c1c, c2n, p) } }
-  else if(a==='move'){ c1=GetHTML$(c1);  c2=doc.querySelector(c2);  for(const c1n of c1){ InsertHTML$(c1n, c2, p) } }
+  else if(a==='replace'){ c1=GetHTML$(c1);  c2=DatafyHTML$(c2,d);  c2=ConvertHTML$(c2);  for(const c1n of c1){ let c2c=c2.cloneNode(true);  c1n.replaceWith(c2c) } }
+  else if(a==='replace-inner'){ c1=GetHTML$(c1);  c2=DatafyHTML$(c2,d);  c2=ConvertHTML$(c2);  for(const c1n of c1){ let c2c=c2.cloneNode(true);  c1n.replaceChildren(c2c) } }
   else if(a==='remove'){ c1=GetHTML$(c1);  for(const c1n of c1){ c1n.replaceWith() } }
   else if(a==='remove-inner'){ c1=GetHTML$(c1);  for(const c1n of c1){ c1n.replaceChildren() } }
-  else if(a==='replace'){ c1=GetHTML$(c1);  c2=DatafyHTML$(c2,p);  c2=ConvertHTML$(c2);  for(const c1n of c1){ let c2c=c2.cloneNode(true);  c1n.replaceWith(c2c) } }
-  else if(a==='replace-inner'){ c1=GetHTML$(c1);  c2=DatafyHTML$(c2,p);  c2=ConvertHTML$(c2);  for(const c1n of c1){ let c2c=c2.cloneNode(true);  c1n.replaceChildren(c2c) } }
+  else if(a==='move'){ c1=GetHTML$(c1);  c2=doc.querySelector(c2);  for(const c1n of c1){ InsertHTML$(c1n, c2, p) } }
+  else if(a==='copy'){ c1=GetHTML$(c1);  c1=MergeHTML$(c1);  c2=GetHTML$(c2);  for(const c2n of c2){ let c1c=c1.cloneNode(true);  InsertHTML$(c1c, c2n, p) } }
 } /*-SetHTML$*/
 
 function GetHTML$(c){ if(typeof c!=='string'){ return [c] } else { return doc.querySelectorAll(c) } }
 function ConvertHTML$(c){ if(typeof c!=='string'){ return c }  let t=doc.createElement('template');  t.innerHTML=c;  f=t.content;  t.remove();  return f }
 function MergeHTML$(c){ let f=new DocumentFragment();  for(const n of c){ f.append(n.cloneNode(true)) };  return f }
 function InsertHTML$(c,n,p){ if(p==='before'){ n.before(c) } else if(p==='begin'){ n.prepend(c) } else if(p==='end'){ n.append(c) } else if(p==='after'){ n.after(c) } }
-function DatafyHTML$(c,d){ if(d==null){ return c }  let cd='';  for(const di of d){ let ci=c;  for(const dp in di){ let re=new RegExp(`\\$\\{${dp}\\}`,'g');  ci=ci.replace(re, di[dp]) }  cd=cd+ci }  return cd }
+
+
+
+function DatafyHTML$(c,d){ if(d==null){ return c }  let cd='';  
+  for(const [ik,iv] of d){ let di=d[ik];  let ci=c;  
+    for(const [pk,pv] in di){ ci=ci.replaceAll(`{%${pk}}`, pv) }
+    cd=cd+ci }  
+  return cd } // data:{ a:{ k:v } , b:{ k:v } }
+
+
+
+// function DatafyHTML$(c,d){ if(d==null){ return c }  let cd='';  for(const di of d){ let ci=c;  for(const dp in di){ let re=new RegExp(`\{\%${dp}\}`,'g');  ci=ci.replace(re, di[dp]) }  cd=cd+ci }  return cd } // data:{[{k:v},{k:v}]}   for(const [i,x] of items$.entries()){ 
+
 
 // Dialog --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

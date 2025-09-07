@@ -61,9 +61,9 @@ function CSS(){ let css=`
 
 let qi=body.querySelector('#query');  let recall='';  SetIconCharacter$('⭐️');  SetTitleText$('Home');  
 
-function Go(d,p,s){ let qv=qi.value.toLowerCase();  recall=qv;  qi.value='';  if(qv===null||qv===''){ let link=`https://${d}/${p}`;  win.open(link);  return };  if(s===''){ return };
+function Go(d,p,s){ let qv=qi.value;  recall=qv;  qi.value='';  if(qv===null||qv===''){ let link=`https://${d}/${p}`;  win.open(link);  return };  if(s===''){ return };
   if(d==='www.portfoliovisualizer.com'){ let qu=``;  let qs=qv.split(' ');  if(qs.length>0){ qu=qu+`&symbol1=${qs[0]}&allocation1_1=100` };  if(qs.length>1){ qu=qu+`&symbol2=${qs[1]}&allocation2_2=100` };  if(qs.length>2){ qu=qu+`&symbol3=${qs[2]}&allocation3_3=100` };  qv=qu; }
-  qv.replace(' ','+').toLowerCase();  s=`https://${s}`.replace('{qry}',qv);  win.open(s); 
+  qv.replace(' ','+');  s=`https://${s}`.replace('{qry}',qv);  win.open(s); 
 }/*-Go*/
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

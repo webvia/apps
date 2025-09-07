@@ -2,22 +2,22 @@
 
 let item_kitchen_html=`Kitchen.. <button onclick="SetItem$('bedrooms')">to Bedrooms</button>`;
 
-$.data = {
-'node..path_ids..parent_id..node_id': { 'type': `node`, 'parent': ``,	'id': `home`,	'name': `Home`,	'icon': `🏠`,	'content': `Home..`,	},
-'node..path_ids..parent_id..node_id': { 'type': `node`, 'parent': `home`,	'id': `bedrooms`,	'name': `Bedrooms`,	'icon': `🌙`,	'content': `Bedrooms..`,	},
-'node..path_ids..parent_id..node_id': { 'type': `node`, 'parent': `bedrooms`,	'id': `master`,	'name': `Master`,	'icon': `🛌`,	'content': `Master..`,	},
-'node..path_ids..parent_id..node_id': { 'type': `node`, 'parent': `master`,	'id': `bath`,	'name': `Bath`,	'icon': `🛌`,	'content': `Bath..`,	},
-'node..path_ids..parent_id..node_id': { 'type': `node`, 'parent': `master`,	'id': `closet`,	'name': `Closet`,	'icon': `🛌`,	'content': `Closet..`,	},
-'node..path_ids..parent_id..node_id': { 'type': `node`, 'parent': `bedrooms`,	'id': `guest`,	'name': `Guest`,	'icon': `🛌`,	'content': `Guest..`,	},
-'node..path_ids..parent_id..node_id': { 'type': `node`, 'parent': `home`,	'id': `kitchen`,	'name': `Kitchen`,	'icon': `🍴`,	'content': `${item_kitchen_html}`,	},
-'item..path_ids..parent_id~~item_id': { 'type': `item`, 'parent': ``,	'id': `home`,	'name': `Home`,	'icon': `🏠`,	'content': `Home..`,	},
-'item..path_ids..parent_id~~item_id': { 'type': `item`, 'parent': `home`,	'id': `bedrooms`,	'name': `Bedrooms`,	'icon': `🌙`,	'content': `Bedrooms..`,	},
-'item..path_ids..parent_id~~item_id': { 'type': `item`, 'parent': `bedrooms`,	'id': `master`,	'name': `Master`,	'icon': `🛌`,	'content': `Master..`,	},
-'item..path_ids..parent_id~~item_id': { 'type': `item`, 'parent': `master`,	'id': `bath`,	'name': `Bath`,	'icon': `🛌`,	'content': `Bath..`,	},
-'item..path_ids..parent_id~~item_id': { 'type': `item`, 'parent': `master`,	'id': `closet`,	'name': `Closet`,	'icon': `🛌`,	'content': `Closet..`,	},
-'item..path_ids..parent_id~~item_id': { 'type': `item`, 'parent': `bedrooms`,	'id': `guest`,	'name': `Guest`,	'icon': `🛌`,	'content': `Guest..`,	},
-'item..path_ids..parent_id~~item_id': { 'type': `item`, 'parent': `home`,	'id': `kitchen`,	'name': `Kitchen`,	'icon': `🍴`,	'content': `Kitchen..`,	},
-};
+$.data = new Map([
+[ 'node..path_ids..parent_id..node_id',	{ 'type': `node`, 'parent': ``,	'id': `home`,	'name': `Home`,	'icon': `🏠`,	'content': `Home..`,	} ],
+[ 'node..path_ids..parent_id..node_id',	{ 'type': `node`, 'parent': `home`,	'id': `bedrooms`,	'name': `Bedrooms`,	'icon': `🌙`,	'content': `Bedrooms..`,	} ],
+[ 'node..path_ids..parent_id..node_id',	{ 'type': `node`, 'parent': `bedrooms`,	'id': `master`,	'name': `Master`,	'icon': `🛌`,	'content': `Master..`,	} ],
+[ 'node..path_ids..parent_id..node_id',	{ 'type': `node`, 'parent': `master`,	'id': `bath`,	'name': `Bath`,	'icon': `🛌`,	'content': `Bath..`,	} ],
+[ 'node..path_ids..parent_id..node_id',	{ 'type': `node`, 'parent': `master`,	'id': `closet`,	'name': `Closet`,	'icon': `🛌`,	'content': `Closet..`,	} ],
+[ 'node..path_ids..parent_id..node_id',	{ 'type': `node`, 'parent': `bedrooms`,	'id': `guest`,	'name': `Guest`,	'icon': `🛌`,	'content': `Guest..`,	} ],
+[ 'node..path_ids..parent_id..node_id',	{ 'type': `node`, 'parent': `home`,	'id': `kitchen`,	'name': `Kitchen`,	'icon': `🍴`,	'content': `${item_kitchen_html}`,	} ],
+[ 'item..path_ids..parent_id~~item_id',	{ 'type': `item`, 'parent': ``,	'id': `home`,	'name': `Home`,	'icon': `🏠`,	'content': `Home..`,	} ],
+[ 'item..path_ids..parent_id~~item_id',	{ 'type': `item`, 'parent': `home`,	'id': `bedrooms`,	'name': `Bedrooms`,	'icon': `🌙`,	'content': `Bedrooms..`,	} ],
+[ 'item..path_ids..parent_id~~item_id',	{ 'type': `item`, 'parent': `bedrooms`,	'id': `master`,	'name': `Master`,	'icon': `🛌`,	'content': `Master..`,	} ],
+[ 'item..path_ids..parent_id~~item_id',	{ 'type': `item`, 'parent': `master`,	'id': `bath`,	'name': `Bath`,	'icon': `🛌`,	'content': `Bath..`,	} ],
+[ 'item..path_ids..parent_id~~item_id',	{ 'type': `item`, 'parent': `master`,	'id': `closet`,	'name': `Closet`,	'icon': `🛌`,	'content': `Closet..`,	} ],
+[ 'item..path_ids..parent_id~~item_id',	{ 'type': `item`, 'parent': `bedrooms`,	'id': `guest`,	'name': `Guest`,	'icon': `🛌`,	'content': `Guest..`,	} ],
+[ 'item..path_ids..parent_id~~item_id',	{ 'type': `item`, 'parent': `home`,	'id': `kitchen`,	'name': `Kitchen`,	'icon': `🍴`,	'content': `Kitchen..`,	} ],
+]);
 
 // <elem data-data="object..node..path--items_query~~item">   ?app=data&data=object..node..path--items_query~~item    // { object:`node|item|content`, parent, id, name, icon, type, content, ... }
 
@@ -64,10 +64,10 @@ let list_style_id='app_'+list_container_id+'_style';  if(head.querySelector('#'+
 } /*-SetList$*/
 
 
-let list_wrap_html=`<div>Items</div><div>%{}</div>`;
-let list_item_html=`<div><span>%{name}</span></div>`;
-let list_container_id='layout_list';
-let list_css=``;
+// let list_wrap_html=`<div>Items</div><div>%{}</div>`;
+// let list_item_html=`<div><span>%{name}</span></div>`;
+// let list_container_id='layout_list';
+// let list_css=``;
 
 
 // Tree ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -183,10 +183,19 @@ SetIconCharacter$('🧮');  SetTitleText$('Data');
 
 SetLayout$();
 
-SetItems$();
-SetTree$();
-SetPath$();
-SetList$(list_items, list_wrap_html, list_item_html, list_container_id, list_css);
+// SetItems$();
+// SetTree$();
+// SetPath$();
+// SetList$(list_items, list_wrap_html, list_item_html, list_container_id, list_css);
+
+
+let list_data= new Map([ [ '1', {'name':`hello`} ] , [ '2', {'name':`world`} ] ]);
+let list_item_html=`<div><span>{%name}</span></div>`;
+let list_container='#layout_list';
+let list_css=``;
+
+SetHTML$({ action:'replace-inner', content1:list_container, content2:list_item_html, position:'end', data:list_data });
+
 
 
 /* NOTES =============================================================================================================================================================================================
