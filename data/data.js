@@ -2,146 +2,115 @@
 
 let item_kitchen_html=`Kitchen.. <button onclick="SetItem$('bedrooms')">to Bedrooms</button>`;
 
-$.data = new Map([
-[ 'node..path_ids..parent_id..node_id',	{ 'type': `node`, 'parent': ``,	'id': `home`,	'name': `Home`,	'icon': `🏠`,	'content': `Home..`,	} ],
-[ 'node..path_ids..parent_id..node_id',	{ 'type': `node`, 'parent': `home`,	'id': `bedrooms`,	'name': `Bedrooms`,	'icon': `🌙`,	'content': `Bedrooms..`,	} ],
-[ 'node..path_ids..parent_id..node_id',	{ 'type': `node`, 'parent': `bedrooms`,	'id': `master`,	'name': `Master`,	'icon': `🛌`,	'content': `Master..`,	} ],
-[ 'node..path_ids..parent_id..node_id',	{ 'type': `node`, 'parent': `master`,	'id': `bath`,	'name': `Bath`,	'icon': `🛌`,	'content': `Bath..`,	} ],
-[ 'node..path_ids..parent_id..node_id',	{ 'type': `node`, 'parent': `master`,	'id': `closet`,	'name': `Closet`,	'icon': `🛌`,	'content': `Closet..`,	} ],
-[ 'node..path_ids..parent_id..node_id',	{ 'type': `node`, 'parent': `bedrooms`,	'id': `guest`,	'name': `Guest`,	'icon': `🛌`,	'content': `Guest..`,	} ],
-[ 'node..path_ids..parent_id..node_id',	{ 'type': `node`, 'parent': `home`,	'id': `kitchen`,	'name': `Kitchen`,	'icon': `🍴`,	'content': `${item_kitchen_html}`,	} ],
-[ 'item..path_ids..parent_id~~item_id',	{ 'type': `item`, 'parent': ``,	'id': `home`,	'name': `Home`,	'icon': `🏠`,	'content': `Home..`,	} ],
-[ 'item..path_ids..parent_id~~item_id',	{ 'type': `item`, 'parent': `home`,	'id': `bedrooms`,	'name': `Bedrooms`,	'icon': `🌙`,	'content': `Bedrooms..`,	} ],
-[ 'item..path_ids..parent_id~~item_id',	{ 'type': `item`, 'parent': `bedrooms`,	'id': `master`,	'name': `Master`,	'icon': `🛌`,	'content': `Master..`,	} ],
-[ 'item..path_ids..parent_id~~item_id',	{ 'type': `item`, 'parent': `master`,	'id': `bath`,	'name': `Bath`,	'icon': `🛌`,	'content': `Bath..`,	} ],
-[ 'item..path_ids..parent_id~~item_id',	{ 'type': `item`, 'parent': `master`,	'id': `closet`,	'name': `Closet`,	'icon': `🛌`,	'content': `Closet..`,	} ],
-[ 'item..path_ids..parent_id~~item_id',	{ 'type': `item`, 'parent': `bedrooms`,	'id': `guest`,	'name': `Guest`,	'icon': `🛌`,	'content': `Guest..`,	} ],
-[ 'item..path_ids..parent_id~~item_id',	{ 'type': `item`, 'parent': `home`,	'id': `kitchen`,	'name': `Kitchen`,	'icon': `🍴`,	'content': `Kitchen..`,	} ],
-]);
+$.data={
+	datasets:{
+		'dataset':{
+			nodesets:{
+				'nodeset':{
+					nodes:{
+						'home':{ id:`home`, name:`Home`, icon:`🏠`, items:`?`, nodes:{
+							'kitchen':{ id:`kitchen`, name:`Kitchen`, icon:`🍴`, items:`?`, nodes:{}, },
+							'bedrooms':{ id:`bedrooms`, name:`Bedrooms`, icon:`🌙`, items:`?`, nodes:{
+								'guest':{ id:`guest`, name:`Guest`, icon:`🛌`, items:`?`, nodes:{}, },
+								'master':{ id:`master`, name:`Master`, icon:`🛌`, items:`?`, nodes:{
+									'bath':{ id:`bath`, name:`Bath`, icon:`🛌`, items:`?`, nodes:{}, },
+									'closet':{ id:`closet`, name:`Closet`, icon:`🛌`, items:`?`, nodes:{}, },
+								}, },
+							}, },
+						}, },
+					},
+				},
+			},
+			itemsets:{
+				'itemset':{
+					items:{
+						'sink':{ id:`sink`, parent:`bath`, name:`Sink`, icon:`🏠`, content:`Sink..`, },
+						'shower':{ id:`shower`, parent:`bath`, name:`Shower`, icon:`🌙`, content:`Shower..`, },
+						'dresser':{ id:`dresser`, parent:`closet`, name:`Dresser`, icon:`🛌`, content:`Dresser..`, },
+						'shelves':{ id:`shelves`, parent:`closet`, name:`Shelves`, icon:`🛌`, content:`Shelves..`, },
+					},
+				},
+			},
+		},
+	},
+};
 
-// <elem data-data="object..node..path--items_query~~item">   ?app=data&data=object..node..path--items_query~~item    // { object:`node|item|content`, parent, id, name, icon, type, content, ... }
+// Init ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+SetIconCharacter$('🧮');  SetTitleText$('Data');  SetLayout$();  
 
-// Items ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+let nodes=$.data.datasets['dataset'].nodesets['nodeset'];  let key_prm=prms.get('key');  SetCont$(key_prm);
 
-let it_id, it_par, it_type, it_name, it_icon, it_cont;  let it_id_i, it_par_i, it_type_i, it_name_i, it_icon_i, it_cont_i;  let it_i, it_par_is, it_sib_is, it_chi_is;  let it_i_i, it_par_is_i, it_sib_is_i, it_chi_is_i; 
+// Cont ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+function SetCont$(key_str){ SetURL$( { action:'history.replaceState', url:href, params:[ { key:'key', value:key_str } ] } );  key_prm=prms.get('key');  let tree_html='';
 
-function SetItems$(it_id_start){ let itps=items$[0];  
+let nks=key_str.split('~~')[0];  let nki=key_str.split('~~')[1];  let nka=nks.split('--');  nka.shift();  let n=nodes;  let current_node={};  let tree_item_type='';
 
-itps.push('it_i');  itps.push('it_par_is');  itps.push('it_sib_is');  itps.push('it_chi_is');  items$.shift();  
+/*current,parents*/
+for( let i=0, len=nka.length; i<len; i++ ){ n=n.nodes[nka[i]];  let nkc=`--${nka.slice(0,i).join('--')}`;
+  if( i===len-1 ){ current_node=n;
+    tree_html=`${tree_html}<button tree_item tree_item_current onclick="SetCont$('${nkc}')"><x tree_icon>${n.icon}</x tree_icon><x tree_name>${n.name}</x tree_name></button>`;
+  }
+  else{ 
+    tree_html=`${tree_html}<button tree_item tree_item_parent onclick="SetCont$('${nkc}')"><x tree_icon>${n.icon}</x tree_icon><x tree_name>${n.name}</x tree_name></button>`;
+  } /*-if parent or current*/
+}; /*-for parents,current*/
 
-it_id_i=itps.indexOf('id'); it_par_i=itps.indexOf('parent'); it_type_i=itps.indexOf('type'); it_name_i=itps.indexOf('name'); it_icon_i=itps.indexOf('icon'); it_cont_i=itps.indexOf('content');  
-it_i_i=itps.indexOf('it_i');  it_par_is_i=itps.indexOf('it_par_is');  it_sib_is_i=itps.indexOf('it_sib_is');  it_chi_is_i=itps.indexOf('it_chi_is'); 
-
-for(const [i,x] of items$.entries()){ let it_id_x=x[it_id_i];  let it_par_x=x[it_par_i];  x.push(null, [],[],[]);  x[it_i_i]=i;  let it_par_is_x=x[it_par_is_i];  let it_sib_is_x=x[it_sib_is_i];  let it_chi_is_x=x[it_chi_is_i];
-  for(const [j,y] of items$.entries()){ let it_id_y=y[it_id_i];  let it_par_y=y[it_par_i];  let it_par_is_y=y[it_par_is_i];  if(it_par_x===it_id_y){ it_par_is_x.push(it_par_is_y,j) };  if(it_par_x===it_par_y){ it_sib_is_x.push(j) };  if(it_id_x===it_par_y){ it_chi_is_x.push(j) };
-  } /*-for j*/
-  x[it_par_is_i]=it_par_is_x.flat(Infinity);
-} /*-for i*/
-
-let it_id_prm=prms.get('item');  it_id = (it_id_prm!=null) ? it_id_prm : (it_id_start!=null && it_id_start!='') ? it_id_start : items$[0][it_id_i];
-
-SetItem$(it_id);
-
-} /*-SetItems$*/
-
-
-function SetItem$(it_id_new){ let it;
-for(const [i,x] of items$.entries()){ if(it_id_new===x[it_id_i]){ it=x;  it_i=i;  break } };
-it_id=it[it_id_i]; it_par=it[it_par_i]; it_type=it[it_type_i]; it_name=it[it_name_i]; it_icon=it[it_icon_i]; it_cont=it[it_cont_i]; it_par_is=it[it_par_is_i]; it_sib_is=it[it_sib_is_i]; it_chi_is=it[it_chi_is_i]; 
-SetTree$(); SetPath$(); SetContent$();
-} /*-SetItem$*/
-
-
-// List ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-function SetList$(list_items, list_wrap_html, list_item_html, list_container_id, list_css){  let h=``;  let list_props=list_items[0];  list_items.shift();
-for(const [i,x] of list_items.entries()){ let hi=list_item_html;  for(const [j,y] of list_props.entries()){ hi=hi.replace('%{'+y+'}', x[j]) } /*-for j*/  h=h+hi } /*-for i*/
-h=list_wrap_html.replace('%{}', h);
-SetHTML$({ action:'replace-inner', content1:'#'+list_container_id, content2:h });
-let list_style_id='app_'+list_container_id+'_style';  if(head.querySelector('#'+list_style_id)===null){ SetStyleInternal$(list_css, list_style_id) };
-} /*-SetList$*/
-
-
-// let list_wrap_html=`<div>Items</div><div>%{}</div>`;
-// let list_item_html=`<div><span>%{name}</span></div>`;
-// let list_container_id='layout_list';
-// let list_css=``;
+/*children*/
+if( HasValue$(current_node.nodes) ){ for( let [key, value] of Object.entries(current_node.nodes) ){ let cn=value;
+    tree_html=`${tree_html}<button tree_item tree_item_child onclick="SetCont$('${cn.key}')"><x tree_icon>${cn.icon}</x tree_icon><x tree_name>${cn.name}</x tree_name></button>`;
+  }; /*-for children*/
+}; /*-if has children*/
 
 
-// Tree ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*siblings*/
 
-function SetTree$(){ let tree_pars_html='';  let tree_items_html='';
-
-for(const x of it_par_is){ let it_x=items$[x];  tree_pars_html=`${tree_pars_html}<button tree_item_parent tree_item onclick="SetItem$('${it_x[it_id_i]}')"><x tree_icon>${it_x[it_icon_i]}</x tree_icon><x tree_name>${it_x[it_name_i]}</x tree_name></button>` } /*-for x parents*/
-
-for(const x of it_sib_is){ let it_x=items$[x]; 
-  let tree_it_cur=(it_i===it_x[it_i_i])?'tree_it_cur':''; 
-  let tree_it_top=(it_x[it_par_i]==='')?'tree_it_top':''; 
-  tree_items_html=`${tree_items_html}<button tree_item_sibling ${tree_it_top} ${tree_it_cur} tree_item onclick="SetItem$('${it_x[it_id_i]}')"><x tree_icon>${it_x[it_icon_i]}</x tree_icon><x tree_name>${it_x[it_name_i]}</x tree_name></button>`;
-  if(it_i===it_x[it_i_i]){
-    for(const y of it_chi_is){ let it_y=items$[y];  tree_items_html=`${tree_items_html}<button tree_item_child tree_item onclick="SetItem$('${it_y[it_id_i]}')"><x tree_icon>${it_y[it_icon_i]}</x tree_icon><x tree_name>${it_y[it_name_i]}</x tree_name></button>` } /*-for y childs*/
-  } /*-if*/
-} /*-for x siblings*/
-
-let tree_html=`<nav tree_nav><x tree_bar>
-<button tree_bar_button title="Up to Top Level" onclick="SetItem$('${items$[0][it_id_i]}')">⏫️</button>
-<button tree_bar_button title="Up One Level" onclick="SetItem$('${it_par}')">🔼</button>
-<button tree_bar_button title="Tree View" onclick="SetItem$('${it_par}')">↘️</button>
-<button tree_bar_button title="List View" onclick="SetItem$('${it_par}')">⬇️</button>
-
-</x tree_bar><x tree_items>${tree_pars_html}${tree_items_html}</x tree_items></nav tree_nav>`;  
 
 SetHTML$({ action:'replace-inner', content1:'#layout_tree', content2:tree_html });
 
-let css=`
-[tree_nav] { display: flex;  flex-flow: column nowrap;  align-items: stretch;  width: 250px;  height: 100vh;  bottom: 0;  background-color: #202020;  border-right: 1px solid #808080;  }
+return;
 
-[tree_bar] { display: flex;  flex-flow: row nowrap;  border-bottom: 1px solid #808080; }
-[tree_bar_button] { display: flex;  flex-flow: row nowrap;  justify-content: center;  align-items: center;  padding: .5em .75em .5em .75em; }
-[tree_bar_button]:hover { background-color: #303030; }
 
-[tree_items] { display: flex;  flex-flow: column nowrap;  align-items: stretch; }
+tree_html=`<nav tree_nav><x tree_bar>
+<button tree_bar_button title="Up to Top Level" onclick="SetCont$('${items$[0][it_id_i]}')">⏫️</button>
+<button tree_bar_button title="Up One Level" onclick="SetCont$('${it_par}')">🔼</button>
+<button tree_bar_button title="Tree View" onclick="SetCont$('${it_par}')">↘️</button>
+<button tree_bar_button title="List View" onclick="SetCont$('${it_par}')">⬇️</button>
+</x tree_bar><x tree_items>${tree_html}</x tree_items></nav tree_nav>`;  
 
-[tree_item] { display: flex;  flex-flow: row nowrap;  padding: .5em 0em .5em 0em;  font-size: 1em; }
-[tree_item]:hover { background-color: #303030; }
-[tree_icon] { margin-right: .5em; }
-
-[tree_item_child]  { padding-left: 3.5em; }
-[tree_item_sibling] , [tree_item_top]~[tree_item_child] { padding-left: 2em; }
-[tree_item_parent] , [tree_item_top] { padding-left: .5em;  border-left: 4px inset #606060; }
-[tree_item_current] { font-weight: bold;  background-color: #404040; }
-`;
-if(head.querySelector('#apps_tree_style')===null){ SetStyleInternal$(css, 'apps_tree_style') };
-
-} /*-SetTree$*/
+SetHTML$({ action:'replace-inner', content1:'#layout_tree', content2:tree_html });
 
 
 // Path ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-function SetPath$(){ let path_pars_html='';  let path_items_html='';  let path_sep_html=`<x path_sep>🞂</x path_sep>`;
-for(const x of it_par_is){ let it_x=items$[x];  path_pars_html=`${path_pars_html}<button path_item_parent path_item onclick="SetItem$('${it_x[it_id_i]}')"><x path_icon>${it_x[it_icon_i]}</x path_icon><x path_name>${it_x[it_name_i]}</x path_name></button>${path_sep_html}` } /*-for x parents*/
+let path_pars_html='';  let path_items_html='';  let path_sep_html=`<x path_sep>🞂</x path_sep>`;
+for(let x of it_par_is){ let it_x=items$[x];  path_pars_html=`${path_pars_html}<button path_item_parent path_item onclick="SetItem$('${it_x[it_id_i]}')"><x path_icon>${it_x[it_icon_i]}</x path_icon><x path_name>${it_x[it_name_i]}</x path_name></button>${path_sep_html}` } /*-for x parents*/
 path_items_html=`<button path_item_current path_item><x path_icon>${it_icon}</x path_icon><x path_name>${it_name}</x path_name></button>`;
 let path_html=`<nav path_nav><x path_items>${path_pars_html}${path_items_html}</x path_items></nav path_nav>`;  
 SetHTML$({ action:'replace-inner', content1:'#layout_path', content2:`${path_html}` });
 
-let css=`
-[path_nav] { display: flex;  flex-flow: row wrap;  background-color: #202020;  border-bottom: 1px solid #808080; width: 100%; }
-[path_items] { display: flex;  flex-flow: row nowrap;  justify-content: center; }
-[path_item] { display: flex;  flex-flow: row nowrap;  padding: .5em 1em .5em 1em;  font-size: 1em; }
-[path_item]:hover { background-color: #303030; }
-[path_icon] { margin-right: .5em; }
-[path_sep] { display: flex;  flex-flow: row nowrap;  justify-content: center;  align-items: center;  user-select: none;  padding: 0 .5em 0 .5em;  color: #808080; }
-`;
-if(head.querySelector('#apps_path_style')===null){ SetStyleInternal$(css, 'apps_path_style') };
 
-} /*-SetPath$*/
+// List ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//let list_data=[ { key:`1`, name:`hello` }, { key:`2`, name:`world`}, ];
+//let list_item_html=`<div><span>{%name}</span></div>`;
+//let list_container='#layout_list';
+//let list_css=``;
 
 
-// Content -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+let h=``;  let list_props=list_items[0];  list_items.shift();
+for(let [i,x] of list_items.entries()){ let hi=list_item_html;  for(let [j,y] of list_props.entries()){ hi=hi.replace('%{'+y+'}', x[j]) } /*-for j*/  h=h+hi } /*-for i*/
+h=list_wrap_html.replace('%{}', h);
+SetHTML$({ action:'replace-inner', content1:'#'+list_container_id, content2:h });
+let list_style_id='app_'+list_container_id+'_style';  if(head.querySelector('#'+list_style_id)===null){ SetStyleInternal$(list_css, list_style_id) };
 
-function SetContent$(){ SetHTML$({ action:'replace-inner', content1:'#layout_cont', content2:`${it_cont}` }) }
+
+// SetList$(list_items, list_wrap_html, list_item_html, list_container_id, list_css);
+//SetHTML$({ action:'replace-inner', content1:list_container, content2:list_item_html, position:'end', data:list_data });
+
+
+}; /*-SetCont$*/
 
 
 // Layout --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -155,7 +124,7 @@ let lay_html=`
     <div id="layout_left"><div id="layout_tree"></div layout_tree></div layout_left>
     <div id="layout_center">
       <div id="layout_top"><div id="layout_path"></div layout_path></div layout_top>
-      <main id="layout_main"><div id="layout_list"></div layout_list><div id="layout_cont"></div layout_cont></main layout_main>
+      <main id="layout_main"><div id="layout_list"></div layout_list><div id="layout_cont">   <button onclick="SetCont$('--home--bedrooms--master--closet~~shelves')">hi</button>    </div layout_cont></main layout_main>
       <div id="layout_bottom"><div>BOTTOM</div></div layout_bottom>
     </div layout_center>
     <aside id="layout_right"><div>RIGHT</div></aside layout_right>
@@ -172,31 +141,30 @@ let lay_css=`
     #layout_center { display: flex;  flex-flow: column nowrap;  flex-basis: 100%; }
       #layout_top, #layout_main, #layout_bottom { }   #layout_top>#layout_path { }
       #layout_main { }   #layout_cont { padding: 1em; }
+
+[tree_nav] { display: flex;  flex-flow: column nowrap;  align-items: stretch;  width: 250px;  height: 100vh;  bottom: 0;  background-color: #202020;  border-right: 1px solid #808080;  }
+[tree_bar] { display: flex;  flex-flow: row nowrap;  border-bottom: 1px solid #808080; }
+[tree_bar_button] { display: flex;  flex-flow: row nowrap;  justify-content: center;  align-items: center;  padding: .5em .75em .5em .75em; }
+[tree_bar_button]:hover { background-color: #303030; }
+[tree_items] { display: flex;  flex-flow: column nowrap;  align-items: stretch; }
+[tree_item] { display: flex;  flex-flow: row nowrap;  padding: .5em 0em .5em 0em;  font-size: 1em; }
+[tree_item]:hover { background-color: #303030; }
+[tree_icon] { margin-right: .5em; }
+[tree_item_child]  { padding-left: 3.5em; }
+[tree_item_sibling] , [tree_item_top]~[tree_item_child] { padding-left: 2em; }
+[tree_item_parent] , [tree_item_top] { padding-left: .5em;  border-left: 4px inset #606060; }
+[tree_item_current] { font-weight: bold;  background-color: #404040; }
+
+[path_nav] { display: flex;  flex-flow: row wrap;  background-color: #202020;  border-bottom: 1px solid #808080; width: 100%; }
+[path_items] { display: flex;  flex-flow: row nowrap;  justify-content: center; }
+[path_item] { display: flex;  flex-flow: row nowrap;  padding: .5em 1em .5em 1em;  font-size: 1em; }
+[path_item]:hover { background-color: #303030; }
+[path_icon] { margin-right: .5em; }
+[path_sep] { display: flex;  flex-flow: row nowrap;  justify-content: center;  align-items: center;  user-select: none;  padding: 0 .5em 0 .5em;  color: #808080; }
+
 `;  SetStyleInternal$(lay_css,'apps_layout_style');
 
 } /*-SetLayout$*/
-
-
-// Functions -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-SetIconCharacter$('🧮');  SetTitleText$('Data');  
-
-SetLayout$();
-
-// SetItems$();
-// SetTree$();
-// SetPath$();
-// SetList$(list_items, list_wrap_html, list_item_html, list_container_id, list_css);
-
-
-let list_data= new Map([ [ '1', {'name':`hello`} ] , [ '2', {'name':`world`} ] ]);
-let list_item_html=`<div><span>{%name}</span></div>`;
-let list_container='#layout_list';
-let list_css=``;
-
-SetHTML$({ action:'replace-inner', content1:list_container, content2:list_item_html, position:'end', data:list_data });
-
-
 
 /* NOTES =============================================================================================================================================================================================
 
@@ -211,24 +179,19 @@ SetHTML$({ action:'replace-inner', content1:list_container, content2:list_item_h
               Item/Content - template+props
 
 
-
-Items:  Tree/Path > List > Item > Props/Cont [ name:value ]    type determines target/content   add|replace items of same type
-  Item-Prop:  id, type, parent(id), items(query|ref), content(html/text,query|ref), name, icon,  custom...
-    Prop-Types:  string, query, ref
+> Items:  Tree/Path > List > Item > Props/Cont [ name:value ]    type determines target/content   add|replace items of same type
+    Item-Prop:  id, type, parent(id), items(query|ref), content(html/text,query|ref), name, icon,  custom...
+      Prop-Types:  string, query, ref
 
 
 > Data :  let data = new Map( [ [ 'obj~path~parent~id', { parent, id, name, icon, type, content, ... } ] , [ ... ] ] );
-
 
 
 > Query:  js-boolean-expression    !!( ( name=='Bob' && age>=18) || /US/g.test(address) && isEmployed==true )
    - Group:  ( )  //  Join:  And( && ) , Or( || )  //  Condition:  Property + Operator + Value  //  Operators:  Any( ===  !==  ??-nullish)  ,  String( /rex/.test(str) )  ,  Number( >  <  >=  <= )  ,  Array ( a.includes(s), a.some/every(f) )  //  Datatypes:  String, Number, Boolean, Null, Undefined  //  String Formats( '$$bool:true', bool, css, date, html, id, js, json, null, num, qry, ref, regx, str, url )
 
 
-
 > Path: Type_RootId/Type_AncestorId/Type_ParentId/Type_ThisId
-
-
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -237,6 +200,8 @@ if no url or object, $.data assumed.  query on set of objects with same parent.
 
 let data_ref=`{ "url":"http://localhost/apps/github/apps/data/data.json", "path":"dataset_1.(data$.)nodes.home.nodes.kitchen.items", "query":"{{id}}==='sink'||{{id}}==='oven'" }`;
 let data_ref=`{ "object":"_.my_data", "path":"data.nodes.home.nodes.kitchen.items", "query":"{{id}}==='sink'||{{id}}==='oven'" }`;
+
+// https://stackoverflow.com/questions/8817394/javascript-get-deep-value-from-object-by-passing-path-to-it-as-string
 
 
 ====================================================================================================================================================================================================*/

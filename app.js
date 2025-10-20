@@ -1,21 +1,26 @@
-window.onerror=(message,source,linenum,colnum,error)=>{ let err=`${message}  [ ${source} > ${linenum}-${colnum} ]`;  alert(err);  return true }
+window.onerror=(message,source,lineno,colno,error)=>{ let er=`${message} : ${source} : ${lineno}-${colno}`;  console.log(er);  alert(er);  return true };
+window.onpopstate=(ev)=>{ SetLocationInfo$() };  // window.onhashchange=(ev)=>{ }  window.onload=(ev)=>{ }
+document.addEventListener('DOMContentLoaded',(ev)=>{ DOMContentLoaded$() });
 
-let $={/*svc-vars*/};  $.data={};  let win,hist,navn,clip,lang,ua,  doc,root,head,title,icon,base,body,h1,  cli_hgt,cli_wid,  loc,href,prot,ref,host,dom,path,srch,prms,hash,  app_url,app_js;
+let $={/*svc-vars*/};  $.data={};  let win,doc,loc,hist,navn,navr,clip,lang,ua,  href,prot,ref,host,dom,path,srch,prms,hash,  app_url,app_js,  root,head,title,icon,base,body,h1,  cli_hgt,cli_wid;
 let _={/*app-vars*/};  
 
 // PreLoad ===========================================================================================================================================================================================
 
-PreLoad$(); function PreLoad$(){
-win=window; hist=win.history; navn=win.navigation; clip=navigator.clipboard; lang=navigator.language; ua=navigator.userAgent; 
-doc=win.document; root=doc.documentElement; title=doc.title; head=doc.head; body=doc.body;
-loc=doc.location; href=loc.href; prot=loc.protocol+'://'; host=loc.host; path=loc.pathname; srch=loc.search; prms=new URLSearchParams(srch); hash=loc.hash;
-ref=href.replace(/^.+\/\/www\.|.+\/\//,''); dom=ref.substring(0,ref.indexOf('/')); dom=dom.substring(0,dom.lastIndexOf('.')); //href(ref)=prot/host(dom)/path/?srch&prms#hash
-app_url=prms.get('app'); app_js=app_url+'.js';  icon=head.querySelector('#app_icon');  base=head.querySelector('#app_base').setAttribute('href',app_url+'/'); 
-cli_hgt=root.clientHeight; cli_wid=root.clientWidth; 
-doc.querySelector('noscript').remove();
-SetStyleInternal$(` body { margin: unset;  font-family: sans-serif; }  button { all: unset;  user-select: none;  cursor: pointer; }  table { border-collapse: collapse; } `, 'apps_style'); 
-if(app_url!==null){ SetScriptExternal$(app_js,'app_script') } else{ SetTitleText$(`App not specified`); SetIconCharacter$(`⛔️`); body.insertAdjacentHTML('beforeend',`App not specified.`) }; 
-} /*-PreLoad*/  /*DOMContentLoaded*/
+function DOMContentLoaded$(){
+/*Window*/ win=window; doc=win.document; loc=win.location; hist=win.history; navn=win.navigation; navr=win.navigator;
+/*Navigator*/ clip=navr.clipboard; lang=navr.language; ua=navr.userAgent; 
+/*Location*/ SetLocationInfo$();
+/*Document*/ root=doc.documentElement; title=doc.title; head=doc.head; body=doc.body;  icon=head.querySelector('#app_icon');  base=head.querySelector('#app_base').setAttribute('href',app_url+'/');  cli_hgt=root.clientHeight; cli_wid=root.clientWidth;  doc.querySelector('noscript').remove();
+/*App*/ if(app_url!==null){ SetScriptExternal$(app_js,'app_script') } else{ SetTitleText$(`App not specified`); SetIconCharacter$(`⛔️`); body.insertAdjacentHTML('beforeend',`App not specified.`) }; 
+}; /*-PreLoad*/
+
+function SetLocationInfo$(){ href=loc.href; prot=loc.protocol+'//';  host=loc.host;  path=loc.pathname;  ref=href.replace(/^.+\/\/www\.|.+\/\//,'');  dom=ref.substring(0,ref.indexOf('/'));  dom=dom.substring(0,dom.lastIndexOf('.'));  srch=loc.search;  prms=new URLSearchParams(srch);  hash=loc.hash;  app_url=prms.get('app');  app_js=app_url+'.js'; };  // href = prot: // host /path ?srch&prms #hash
+
+function SetURL$(x){ let u=x.url;  for(let p of x.params){ u=u.replace(new RegExp(`([\?|\&]${p.key}=)[^\&|^\#]+`),`$1${p.value}`); };  if(x.action==='history.replaceState'){ hist.replaceState(null,'',u) };  return u };  // { action:'history.replaceState', url:'url', params:[ { key:'key', value:'value' } ] }
+
+//function SetURL$(x){ let u=new URL(x.url);  let ps=new URLSearchParams(u.search);  for(let p of x.params){ ps.set(p.key, p.value) };  u.search=ps;  if(x.action==='history.replaceState'){ hist.replaceState(null,'',u) };  return u };  // { action:'history.replaceState', url:'url', params:[ { key:'key', value:'value' } ] }
+
 
 // Functions =========================================================================================================================================================================================
 
@@ -36,6 +41,9 @@ function log(msg){ console.log(msg) }  function dir(obj){ console.dir(obj) }
 
 function HasValue$(x){ return ![undefined,null,{},[],''].includes(x) }  function IsNotNull$(x){ return ![undefined,null].includes(x) }  function IsDefined$(x){ return x!==undefined }  function IsJSON$(x){ return /^\s*(\{|\[)/.test(x) }  function IsHTML$(x){ return /<[a-z]/i.test(x) }  // /<[^>]+>/i ?
 
+// function Is|IsNot( undefined, null, empty, map, set, string, object, function, boolean, json, array, number, html, css )
+
+
 function RenameObject$(obj,old_key,new_key){ obj[new_key]=obj[old_key]; delete obj[old_key]; }   // ?  Object.assign(obj,{[new_key]:obj[old_key]}); delete obj[old_key];
 function RemoveArrayDuplicates$(x){ x=[...new Set(x)]; return x }
 function Evaluate$(s){ let f=new Function(`return ${s}`); let r=f(); return r } // Evaluate string as function
@@ -43,12 +51,11 @@ function ParseJSON$(x){ if(typeof x==='string'){ x=JSON.parse(x) }; return x }
 function Function$(x){ x=ParseJSON$(x); window[x.function](x) } // call function from JSON-string or JS-object
 async function Fetch$(x){ x=ParseJSON$(x);  if( !HasValue$(x.url) ){ return x };  let r=await fetch(x.url);  if(r.ok){ let d=await r.text();  if(IsJSON$(d)){ d=ParseJSON$(d) };  x.data=d;  Function$(x) } }
 
+
 // SetEvent( { action:'add|remove|toggle', event:'event', element:'window|document|selector', function:'function', data:{alert:'hi'} } );
 // function SetEvent(x){ if(IsJSON$(x)){ x=ParseJSON$(x) };  let el=body.querySelector(x.element);  if(x.action==='add'){ el.addEventListener(x.event, window[x.function].bind(this, x.data)) } }
 
 // HTML ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-// { action:'add|..', content1:'sel|html|node', content2:'sel|html|node', position:'before|begin|end|after|self?|inner?', data:{[{k:v},{k:v}]} }
 
 function SetHTML$(x){ let a=x.action; let c1=x.content1; let c2=x.content2; let p=x.position; let d=x.data;  if(a==null){return}
   else if(a==='add'){ c1=DatafyHTML$(c1,d);  c1=ConvertHTML$(c1);  c2=GetHTML$(c2);  for(const c2n of c2){ let c1c=c1.cloneNode(true);  InsertHTML$(c1c, c2n, p) } }
@@ -58,25 +65,13 @@ function SetHTML$(x){ let a=x.action; let c1=x.content1; let c2=x.content2; let 
   else if(a==='remove-inner'){ c1=GetHTML$(c1);  for(const c1n of c1){ c1n.replaceChildren() } }
   else if(a==='move'){ c1=GetHTML$(c1);  c2=doc.querySelector(c2);  for(const c1n of c1){ InsertHTML$(c1n, c2, p) } }
   else if(a==='copy'){ c1=GetHTML$(c1);  c1=MergeHTML$(c1);  c2=GetHTML$(c2);  for(const c2n of c2){ let c1c=c1.cloneNode(true);  InsertHTML$(c1c, c2n, p) } }
-} /*-SetHTML$*/
+} /*-SetHTML$*/  // { action:'add|..', content1:'sel'|'html'|node, content2:'sel'|'html'|node, position:'before|begin|end|after|self?|inner?', data:map }
 
 function GetHTML$(c){ if(typeof c!=='string'){ return [c] } else { return doc.querySelectorAll(c) } }
 function ConvertHTML$(c){ if(typeof c!=='string'){ return c }  let t=doc.createElement('template');  t.innerHTML=c;  f=t.content;  t.remove();  return f }
 function MergeHTML$(c){ let f=new DocumentFragment();  for(const n of c){ f.append(n.cloneNode(true)) };  return f }
 function InsertHTML$(c,n,p){ if(p==='before'){ n.before(c) } else if(p==='begin'){ n.prepend(c) } else if(p==='end'){ n.append(c) } else if(p==='after'){ n.after(c) } }
-
-
-
-function DatafyHTML$(c,d){ if(d==null){ return c }  let cd='';  
-  for(const [ik,iv] of d){ let di=d[ik];  let ci=c;  
-    for(const [pk,pv] in di){ ci=ci.replaceAll(`{%${pk}}`, pv) }
-    cd=cd+ci }  
-  return cd } // data:{ a:{ k:v } , b:{ k:v } }
-
-
-
-// function DatafyHTML$(c,d){ if(d==null){ return c }  let cd='';  for(const di of d){ let ci=c;  for(const dp in di){ let re=new RegExp(`\{\%${dp}\}`,'g');  ci=ci.replace(re, di[dp]) }  cd=cd+ci }  return cd } // data:{[{k:v},{k:v}]}   for(const [i,x] of items$.entries()){ 
-
+function DatafyHTML$(c,d){ if(d==null){ return c }  let cd='';  for(const i of d){ let ci=c;  for(const [k,v] of Object.entries(i)){ ci=ci.replaceAll(`{%${k}}`, v) };  cd=cd+ci };  return cd }
 
 // Dialog --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
