@@ -1,36 +1,42 @@
 // DATA ==============================================================================================================================================================================================
 
 let items=[
-/*Name	Menu	Domain	Path	Search	*/
-[`DuckDuckGo`,	``,	`duckduckgo.com`,	``,	`{dom}/?q={qry}`,	],
-[`YouTube`,	`+`,	`www.youtube.com`,	``,	``,	],
-[`New`,	`-`,	`www.youtube.com`,	`feed/subscriptions`,	``,	],
-[`Watch`,	`-`,	`www.youtube.com`,	`playlist?list=WL`,	``,	],
-[`Lists`,	`-`,	`www.youtube.com`,	`feed/playlists`,	``,	],
-[`Channels`,	`-`,	`www.youtube.com`,	`feed/channels`,	``,	],
-[`Search`,	`=`,	`www.youtube.com`,	``,	`{dom}/results?search_query={qry}`,	],
-[`DailyMail`,	``,	`www.dailymail.co.uk`,	`ushome/index.html`,	`{dgs}{dom}`,	],
-[`Wikipedia`,	``,	`en.wikipedia.org`,	``,	`{dgs}{dom}/wiki`,	],
-[`Weather`,	``,	`www.accuweather.com`,	`en/us/johnson-city/37604/weather-forecast/331088`,	``,	],
-[`Amazon`,	``,	`www.amazon.com`,	`hz/wishlist/ls/`,	`{dom}/s?k={qry}`,	],
-[`CNBC`,	``,	`www.cnbc.com`,	`#~~`,	`{dgs}{dom}`,	],
-[`TradingView`,	``,	`www.tradingview.com`,	`chart/4uKzkaDw/`,	``,	],
-[`M1 Finance`,	``,	`dashboard.m1.com`,	`d/home`,	``,	],
-[`Fidelity`,	``,	`digital.fidelity.com`,	`ftgw/digital/portfolio/summary`,	``,	],
-[`42 Macro`,	``,	`app.42macro.com`,	`dashboard`,	``,	],
-[`StockAnalysis`,	``,	`stockanalysis.com`,	``,	`{dom}/etf/{qry}`,	],
-[`PortfolioVis`,	``,	`www.portfoliovisualizer.com`,	``,	`{dom}/backtest-portfolio?s=y&startYear=&endYear=&includeYTD=true{qry}`,	],
-[`Rumble`,	``,	`rumble.com`,	`subscriptions`,	`{dom}/search/all?q={qry}`,	],
-[`Odysee`,	``,	`odysee.com`,	`$/playlists`,	`{dom}/$/search?q={qry}`,	],
-[`Feedly`,	``,	`feedly.com`,	``,	``,	],
-[`ProtonMail`,	``,	`mail.proton.me`,	``,	``,	],
-[`StackOverflow`,	``,	`stackoverflow.com`,	``,	`{dgs}{dom}/questions`,	],
-[`Mozilla`,	``,	`developer.mozilla.org`,	``,	`{dgs}{dom}/en-US/docs`,	],
+/*Name	Menu	Domain	Path	Search	Icon	*/
+[`DuckDuckGo`,	``,	`duckduckgo.com`,	``,	`{dom}/?q={qry}`,	``,	],
+[`YouTube`,	`+`,	`www.youtube.com`,	``,	``,	``,	],
+[`New`,	`-`,	`www.youtube.com`,	`feed/subscriptions`,	``,	``,	],
+[`Watch`,	`-`,	`www.youtube.com`,	`playlist?list=WL`,	``,	``,	],
+[`Lists`,	`-`,	`www.youtube.com`,	`feed/playlists`,	``,	``,	],
+[`Channels`,	`-`,	`www.youtube.com`,	`feed/channels`,	``,	``,	],
+[`Search`,	`=`,	`www.youtube.com`,	``,	`{dom}/results?search_query={qry}`,	``,	],
+[`DailyMail`,	``,	`www.dailymail.co.uk`,	`ushome/index.html`,	`{dgs}{dom}`,	``,	],
+[`Wikipedia`,	``,	`en.wikipedia.org`,	``,	`{dgs}{dom}/wiki`,	``,	],
+[`Weather`,	``,	`www.accuweather.com`,	`en/us/johnson-city/37604/weather-forecast/331088`,	``,	``,	],
+[`Amazon`,	``,	`www.amazon.com`,	`hz/wishlist/ls/`,	`{dom}/s?k={qry}`,	``,	],
+[`CNBC`,	``,	`www.cnbc.com`,	`#~~`,	`{dgs}{dom}`,	``,	],
+[`TradingView`,	``,	`www.tradingview.com`,	`chart/4uKzkaDw/`,	``,	``,	],
+[`M1 Finance`,	``,	`dashboard.m1.com`,	`d/home`,	``,	``,	],
+[`Fidelity`,	``,	`digital.fidelity.com`,	`ftgw/digital/portfolio/summary`,	``,	``,	],
+[`42 Macro`,	``,	`app.42macro.com`,	`dashboard`,	``,	``,	],
+[`StockAnalysis`,	``,	`stockanalysis.com`,	``,	`{dom}/etf/{qry}`,	``,	],
+[`PortfolioVis`,	``,	`www.portfoliovisualizer.com`,	``,	`{dom}/backtest-portfolio?s=y&startYear=&endYear=&includeYTD=true{qry}`,	``,	],
+[`Rumble`,	``,	`rumble.com`,	`subscriptions`,	`{dom}/search/all?q={qry}`,	``,	],
+[`Odysee`,	``,	`odysee.com`,	`$/playlists`,	`{dom}/$/search?q={qry}`,	``,	],
+[`Feedly`,	``,	`feedly.com`,	``,	``,	``,	],
+[`ProtonMail`,	``,	`mail.proton.me`,	``,	``,	``,	],
+[`StackOverflow`,	``,	`stackoverflow.com`,	``,	`{dgs}{dom}/questions`,	``,	],
+[`Mozilla`,	``,	`developer.mozilla.org`,	``,	`{dgs}{dom}/en-US/docs`,	``,	],
+[`Calc`,	``,	`webvia.github.io`,	`apps/app.html?app=calc`,	``,	`🔢`,	],
 ];
 
 // HTML ==============================================================================================================================================================================================
 
-function Items(){ let h=``;  for(const x of items){ let n=x[0]/*name*/; let m=x[1]/*menu*/; let d=x[2]/*domain*/; let p=x[3]/*path*/; let s=x[4].replace('{dom}',d).replace('{dgs}','duckduckgo.com/?q={qry}+site:')/*search*/;   let ico=`<img icon src="https://external-content.duckduckgo.com/ip3/${d}.ico">`;
+function Items(){ let h=``;  for(const x of items){ let n=x[0]/*name*/; let m=x[1]/*menu*/; let d=x[2]/*domain*/; let p=x[3]/*path*/; let s=x[4].replace('{dom}',d).replace('{dgs}','duckduckgo.com/?q={qry}+site:')/*search*/; let i=x[5]/*icon*/;  
+
+
+let ico=(i==='')?(`<img icon_ico src="https://external-content.duckduckgo.com/ip3/${d}.ico">`):(`<img icon_chr src="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text x=%22-.1em%22 y=%22.9em%22 font-size=%2280%22>${i}</text></svg>">`);
+
+
 /*item-go:*/      if(m===''){ h=`${h}<button item onclick="Go('${d}','${p}','${s}')" title="${d}/${p}">${ico}<x>${n}</x></button item>`;  continue }
 /*menu-open:*/    if(m==='+'){ h=`${h}<button item onclick="OpenMenu$()">${ico}<x>${n} ▾</x></button item><dialog menu onclick="CloseMenu$()">`;  continue }
 /*menu-item-go:*/ if(m==='-'||m==='='){ h=`${h}<button item onclick="Go('${d}','${p}','${s}')" title="${d}/${p}">${ico}<x>${n}</x></button item>${(m==='=')?`</dialog menu>`:``}`;  continue }
@@ -39,7 +45,7 @@ function Items(){ let h=``;  for(const x of items){ let n=x[0]/*name*/; let m=x[
 function HTML(){ let h=`
 <x content>
   <x top><x time id="time"></x time><form method="dialog" onsubmit="Go('duckduckgo.com','','duckduckgo.com/?q={qry}')"><input query id="query" type="search" enterkeyhint="search" placeholder="search" autocapitalize="off"/></form><x date id="date"></x date></x top>
-  <x items><button item onclick="window.open()" title="NewTab"><img icon src="https://external-content.duckduckgo.com/ip3/earth.google.com.ico"><x>NewTab</x></button item>${Items()}</x items>
+  <x items><button item onclick="window.open()" title="NewTab"><img icon_ico src="https://external-content.duckduckgo.com/ip3/earth.google.com.ico"><x>NewTab</x></button item>${Items()}</x items>
 </x content>
 `;  SetHTML$( { action:'add', content1:h, content2:body, position:'end' } ) }  HTML();
 
@@ -49,7 +55,7 @@ function CSS(){ let css=`
 [content] { display: flex;  flex-flow: column nowrap;  justify-content: center;  margin: .5em 2em 0 2em }
   [items] { display: flex;  flex-flow: row wrap;  justify-content: left;  padding: 1em }
     [item] { display: flex;  flex-flow: row nowrap;  align-items: center;  width: 8em;  padding: .5em 1em .5em 1em;  font-size: 1.5rem;  border-radius: .33em; }  [item]:hover { background-color: #23036A;  color: #DBB2FF;  outline: 1px solid #DBB2FF; }
-      [icon] { width: 1em;  height: 1em;  margin-right: .5em }
+      [icon_ico] { width: 1em;  height: 1em;  margin-right: .5em }  [icon_chr] { width: 1.25em;  height: 1.25em;  margin-right: .5em }
   [top] { display: grid;  grid-template-columns: 1fr auto 1fr;  padding: 1em 0 1em 0; }
     [time],[date] { display: flex;  flex-flow: row nowrap;  justify-content: center;  align-items: center;  color: #DBB2FF;  user-select: none; }
       [time] { font-size: 2.7rem; }  [date] { font-size: 2.3rem; }
