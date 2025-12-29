@@ -46,13 +46,12 @@ function HasValue$(x){ return ![undefined,null,{},[],''].includes(x) }  function
 
 function RenameObject$(obj,old_key,new_key){ obj[new_key]=obj[old_key]; delete obj[old_key]; }   // ?  Object.assign(obj,{[new_key]:obj[old_key]}); delete obj[old_key];
 function RemoveArrayDuplicates$(x){ x=[...new Set(x)]; return x }
-function Evaluate$(s){ let f=new Function(`return ${s}`); let r=f(); return r } // Evaluate string as function
+function Evaluate$(x){ let f=new Function(`return ${x}`); let r=f(); return r }  // Evaluate string as function    //function Eval(x){ return eval(x) }
+function Function$(x){ x=ParseJSON$(x); window[x.function](x) }  // Call function from JSON-string or JS-object
 function ParseJSON$(x){ if(typeof x==='string'){ x=JSON.parse(x) }; return x }
-function Function$(x){ x=ParseJSON$(x); window[x.function](x) } // call function from JSON-string or JS-object
 async function Fetch$(x){ x=ParseJSON$(x);  if( !HasValue$(x.url) ){ return x };  let r=await fetch(x.url);  if(r.ok){ let d=await r.text();  if(IsJSON$(d)){ d=ParseJSON$(d) };  x.data=d;  Function$(x) } }
 
-
-// SetEvent( { action:'add|remove|toggle', event:'event', element:'window|document|selector', function:'function', data:{alert:'hi'} } );
+// SetEvent( { action:'add|remove|toggle', event:'click|keydown|etc', element:'window|document|selector', function:'function', data:{alert:'hi'}, key:{key:'ctrl+x'} } );
 // function SetEvent(x){ if(IsJSON$(x)){ x=ParseJSON$(x) };  let el=body.querySelector(x.element);  if(x.action==='add'){ el.addEventListener(x.event, window[x.function].bind(this, x.data)) } }
 
 // HTML ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -131,5 +130,13 @@ let c = `>( <form>[id=f1] ( <fieldset>[class=fa fb] ( <input>[type=text] , <sele
 Summary:  '>( e[ a=v ; a ] ( e , e ) e ( { t } ) )<'
 Element Abbreviations/Expansions:  a-a, div-d, span-s, table-t, ul/ol
 Attribute Abbreviation:  alt/a, class/c, data-/d, disabled/di, form/f, hidden-hi, href-h, id/i, label/l, media/m, name/n, src/s, style/st, title/t, type/ty, value/v
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+> Virtual Keyboard :  let virtual_keyboard_is_open=false;  qi.addEventListener('keydown', Key);  if ('virtualKeyboard' in navigator) { navigator.virtualKeyboard.overlaysContent=true;  navigator.virtualKeyboard.addEventListener('geometrychange',(event)=>{ const{x,y,width,height}=event.target.boundingRect;  if(height>0){ virtual_keyboard_is_open=true; qi.removeEventListener('keydown', Key); qi.addEventListener('input', Key) } else{ virtual_keyboard_is_open=false; qi.removeEventListener('input', Key);  qi.addEventListener('keydown', Key) } }) };
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+> User Agent Type :  let ua_type=(/Macintosh|Windows/.test(ua))?'desktop':(/X11/.test(ua))?'mobile-desktop':'mobile';
 
 ====================================================================================================================================================================================================*/

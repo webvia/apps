@@ -1,39 +1,42 @@
 SetTitleText$('Calc'); SetIconCharacter$('🔢');
 
-let css=` /* ch=col_head, rh=row_head, cc=col_calc, rc=row_calc, cv=col_valu */ 
-body { margin: 0; padding: 0; background-color: #121212; color: #F8F8F8; font-size: 1.25em; font-family: monospace; }  table { border-collapse: collapse; }  td { padding: .25em 1em .25em 1em }
-[pb] { position: fixed; z-index:-1; width: 100vw; height: 100vh; } [pc] { margin: 1em; }
+let css=` /* ta=text_area, ca=calc_area, ch=col_head, rh=row_head, cc=col_calc, rc=row_calc, cv=col_valu */ 
+body { margin: 0; padding: 1.25em; background-color: #121212; color: #F8F8F8; font-size: 1.25em; font-family: monospace; }  table { border-collapse: collapse; }  td { padding: .25em 1em .25em 1em }
 [ch],[rh] { font-weight: bold; }  [cc],[rc] { font-weight: bold; color: #DBB2FF; background-color: #EEEEEE }  [cv] {  }  [v0] { font-weight: bold; color: #DBB2FF; }
-[ta] { display: block; width: 99%; height: 4em; font-size: 1em; font-family: monospace; margin-bottom: 1em; padding: .5em; }  [ta]:focus { outline: none; }  [ca] {  }
+[ta] { display: block; resize: none; width: 99%; height: 4em; font-size: 1em; font-family: monospace; margin-bottom: 1em; padding: .5em; }  [ta]:focus { outline: none; }  [ca] {  }
 `;  SetStyleInternal$(css);
 
 /* Page =========================================================================================================================================================================================== */
 
-let h=`<div pb></div><div pc><textarea ta id="ta" autofocus></textarea><div ca></div></div>`;  SetHTML$( { action:'add', content1:h, content2:body, position:'end' } );
+let h=`<textarea ta id="ta" autofocus></textarea ta><div ca></div ca>`;  SetHTML$( { action:'add', content1:h, content2:body, position:'end' } );
 
-let ta=body.querySelector('[ta]');  let ca=body.querySelector('[ca]');  let pb=body.querySelector('[pb]');
+let ta=body.querySelector('[ta]');  let ca=body.querySelector('[ca]');
 
-win.addEventListener('focus', Focus);
-pb.addEventListener('click', Calc);  pb.addEventListener('dblclick', Reset);
-ta.addEventListener('focus', Focus);  ta.addEventListener('paste', Paste);  ta.addEventListener('keydown', KeyDown);
+/* Events ========================================================================================================================================================================================= */
 
-function Focus(ev) { ta.focus();  ta.select() }
+win.addEventListener('focus', FocusEvt);   ta.addEventListener('keydown', KeyDownEvt);   ta.addEventListener('paste', PasteEvt);
 
-function Paste(ev){ setTimeout(()=>{ Clean() },1) }
+/* Keyboard ======================================================================================================================================================================================= */
 
-function Reset(){ ta.value=''; ca.innerHTML='';  Focus() }
+function KeyDownEvt(ev){ if(ev.altKey||ev.ctrlKey||ev.shiftKey){return};  let keys={ 'Tab':`TabKey`, 'Delete':`DeleteKey`, '=':`EqualsKey` };  let kf=keys[ev.key];  if(kf===undefined){return};  ev.preventDefault();  win[kf]() }
 
-function Clean(){ let d=ta.value;  if(d==''){return};  d=d.replace(/^[\s]*/,'').replace(/[\s]*$/,'').replace(/[ ]*/g,'');  ta.value=d;  Focus() }
+function TabKey(){ Tab() }   function DeleteKey(){ Reset() }   function EqualsKey(){ Calc() }
 
-function KeyDown(ev){ let key=ev.key;
-  if(key=='Tab'){ ev.preventDefault(); ta.setRangeText('\t',this.selectionStart,this.selectionEnd,'end') }  /* insert tab */
-  else if(key=='='){ ev.preventDefault(); Calc() }  /* run calc */
-  else if(key=='Delete'){ ev.preventDefault(); Reset() }  /* clear data */
-}
+/* Functions ====================================================================================================================================================================================== */
+
+function FocusEvt() { ta.focus() }  // ta.select()
+
+function PasteEvt(){ setTimeout(()=>{ Clean() },1) }
+
+function Reset(){ ta.value=''; ca.innerHTML='';  FocusEvt() }
+
+function Clean(){ let d=ta.value;  if(d==''){return};  d=d.replace(/^[\s]*/,'').replace(/[\s]*$/,'').replace(/[\, ]*/g,'');  ta.value=d;  FocusEvt() }
+
+function Tab(){ ta.setRangeText('\t',this.selectionStart,this.selectionEnd,'end') }
 
 /* Calc =========================================================================================================================================================================================== */
 
-function Calc(ev) { Clean();  let cols=0; let hc=``; let hr=``; let vals1=[]; let vals2=[]; let calcs1={}; let calcs2={}; 
+function Calc() { Clean();  let cols=0; let hc=``; let hr=``; let vals1=[]; let vals2=[]; let calcs1={}; let calcs2={}; 
 
 let d=ta.value;  if(d==''){return};  if(/[\n][^\t]/.test(d)){ cols=1 };  if(/[\t]/.test(d)){ cols=2 };
 

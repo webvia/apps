@@ -1,53 +1,45 @@
-// DATA ==============================================================================================================================================================================================
+// ITEMS =============================================================================================================================================================================================
 
 let items=[
 /*Name	Menu	Domain	Path	Search	Icon	*/
-[`DuckDuckGo`,	``,	`duckduckgo.com`,	``,	`{dom}/?q={qry}`,	``,	],
+[`New Tab`,	`?`,	``,	`window.open()`,	``,	`earth.google.com`,	],
+[`DuckDuckGo`,	`.`,	`duckduckgo.com`,	``,	`{dom}/?q={qry}`,	``,	],
 [`YouTube`,	`+`,	`www.youtube.com`,	``,	``,	``,	],
 [`New`,	`-`,	`www.youtube.com`,	`feed/subscriptions`,	``,	``,	],
 [`Watch`,	`-`,	`www.youtube.com`,	`playlist?list=WL`,	``,	``,	],
 [`Lists`,	`-`,	`www.youtube.com`,	`feed/playlists`,	``,	``,	],
 [`Channels`,	`-`,	`www.youtube.com`,	`feed/channels`,	``,	``,	],
 [`Search`,	`=`,	`www.youtube.com`,	``,	`{dom}/results?search_query={qry}`,	``,	],
-[`DailyMail`,	``,	`www.dailymail.co.uk`,	`ushome/index.html`,	`{dgs}{dom}`,	``,	],
-[`Wikipedia`,	``,	`en.wikipedia.org`,	``,	`{dgs}{dom}/wiki`,	``,	],
-[`Weather`,	``,	`www.accuweather.com`,	`en/us/johnson-city/37604/weather-forecast/331088`,	``,	``,	],
-[`Amazon`,	``,	`www.amazon.com`,	`hz/wishlist/ls/`,	`{dom}/s?k={qry}`,	``,	],
-[`CNBC`,	``,	`www.cnbc.com`,	`#~~`,	`{dgs}{dom}`,	``,	],
-[`TradingView`,	``,	`www.tradingview.com`,	`chart/4uKzkaDw/`,	``,	``,	],
-[`M1 Finance`,	``,	`dashboard.m1.com`,	`d/home`,	``,	``,	],
-[`Fidelity`,	``,	`digital.fidelity.com`,	`ftgw/digital/portfolio/summary`,	``,	``,	],
-[`42 Macro`,	``,	`app.42macro.com`,	`dashboard`,	``,	``,	],
-[`StockAnalysis`,	``,	`stockanalysis.com`,	``,	`{dom}/etf/{qry}`,	``,	],
-[`PortfolioVis`,	``,	`www.portfoliovisualizer.com`,	``,	`{dom}/backtest-portfolio?s=y&startYear=&endYear=&includeYTD=true{qry}`,	``,	],
-[`Rumble`,	``,	`rumble.com`,	`subscriptions`,	`{dom}/search/all?q={qry}`,	``,	],
-[`Odysee`,	``,	`odysee.com`,	`$/playlists`,	`{dom}/$/search?q={qry}`,	``,	],
-[`Feedly`,	``,	`feedly.com`,	``,	``,	``,	],
-[`ProtonMail`,	``,	`mail.proton.me`,	``,	``,	``,	],
-[`StackOverflow`,	``,	`stackoverflow.com`,	``,	`{dgs}{dom}/questions`,	``,	],
-[`Mozilla`,	``,	`developer.mozilla.org`,	``,	`{dgs}{dom}/en-US/docs`,	``,	],
-[`Calc`,	``,	`webvia.github.io`,	`apps/app.html?app=calc`,	``,	`🔢`,	],
+[`DailyMail`,	`.`,	`www.dailymail.co.uk`,	`ushome/index.html`,	`{dgs}{dom}`,	``,	],
+[`Wikipedia`,	`.`,	`en.wikipedia.org`,	``,	`{dgs}{dom}/wiki`,	``,	],
+[`Weather`,	`.`,	`www.accuweather.com`,	`en/us/johnson-city/37604/weather-forecast/331088`,	``,	``,	],
+[`Amazon`,	`.`,	`www.amazon.com`,	`hz/wishlist/ls/`,	`{dom}/s?k={qry}`,	``,	],
+[`CNBC`,	`.`,	`www.cnbc.com`,	`#~~`,	`{dgs}{dom}`,	``,	],
+[`TradingView`,	`.`,	`www.tradingview.com`,	`chart/4uKzkaDw/`,	``,	``,	],
+[`M1 Finance`,	`.`,	`dashboard.m1.com`,	`d/home`,	``,	``,	],
+[`Fidelity`,	`.`,	`digital.fidelity.com`,	`ftgw/digital/portfolio/positions`,	``,	``,	],
+[`42 Macro`,	`.`,	`app.42macro.com`,	`dashboard`,	``,	``,	],
+[`StockAnalysis`,	`.`,	`stockanalysis.com`,	``,	`{dom}/etf/{qry}`,	``,	],
+[`PortfolioVis`,	`.`,	`www.portfoliovisualizer.com`,	``,	`{dom}/backtest-portfolio?s=y&startYear=&endYear=&includeYTD=true&rebalanceType=1{qry}`,	``,	],
+[`Rumble`,	`.`,	`rumble.com`,	`subscriptions`,	`{dom}/search/all?q={qry}`,	``,	],
+[`Odysee`,	`.`,	`odysee.com`,	`$/playlists`,	`{dom}/$/search?q={qry}`,	``,	],
+[`Feedly`,	`.`,	`feedly.com`,	``,	``,	``,	],
+[`ProtonMail`,	`.`,	`mail.proton.me`,	``,	``,	``,	],
+[`StackOverflow`,	`.`,	`stackoverflow.com`,	``,	`{dgs}{dom}/questions`,	``,	],
+[`Mozilla`,	`.`,	`developer.mozilla.org`,	``,	`{dgs}{dom}/en-US/docs`,	``,	],
+[`Calculator`,	`.`,	`webvia.github.io`,	`apps/app.html?app=calc`,	``,	`www.calculator.net`,	],
 ];
 
 // HTML ==============================================================================================================================================================================================
 
-function Items(){ let h=``;  for(const x of items){ let n=x[0]/*name*/; let m=x[1]/*menu*/; let d=x[2]/*domain*/; let p=x[3]/*path*/; let s=x[4].replace('{dom}',d).replace('{dgs}','duckduckgo.com/?q={qry}+site:')/*search*/; let i=x[5]/*icon*/;  
+function Items(){ let h=``;  for(const x of items){ let n=x[0]/*name*/; let m=x[1]/*menu*/; let d=x[2]/*domain*/; let p=x[3]/*path*/; let s=x[4].replace('{dom}',d).replace('{dgs}','duckduckgo.com/?q={qry}+site:')/*search*/;  let i=x[5]/*icon*/;  let ico=`<img ico src="https://external-content.duckduckgo.com/ip3/${i!==''?i:d}.ico">`;
+  if(m==='?'){ h=`${h}<button item onclick="Evaluate$('${p}')">${ico}<x>${n}</x></button item>`;  continue }
+  if(m==='+'){ h=`${h}<button item onclick="OpenMenu$()">${ico}<x>${n} ▾</x></button item><dialog menu onclick="CloseMenu$()">`;  continue }
+  if(/\.|\-|\=/.test(m)){ h=`${h}<button item onclick="Go('${d}','${p}','${s}')" title="${d}/${p}">${ico}<x>${n}</x></button item>${(m==='=')?`</dialog menu>`:``}`;  continue }
+}/*-for*/  return h }/*-Items*/
 
-
-let ico=(i==='')?(`<img icon_ico src="https://external-content.duckduckgo.com/ip3/${d}.ico">`):(`<img icon_chr src="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text x=%22-.1em%22 y=%22.9em%22 font-size=%2280%22>${i}</text></svg>">`);
-
-
-/*item-go:*/      if(m===''){ h=`${h}<button item onclick="Go('${d}','${p}','${s}')" title="${d}/${p}">${ico}<x>${n}</x></button item>`;  continue }
-/*menu-open:*/    if(m==='+'){ h=`${h}<button item onclick="OpenMenu$()">${ico}<x>${n} ▾</x></button item><dialog menu onclick="CloseMenu$()">`;  continue }
-/*menu-item-go:*/ if(m==='-'||m==='='){ h=`${h}<button item onclick="Go('${d}','${p}','${s}')" title="${d}/${p}">${ico}<x>${n}</x></button item>${(m==='=')?`</dialog menu>`:``}`;  continue }
-}/*-for*/  return h }/*-List*/
-
-function HTML(){ let h=`
-<x content>
-  <x top><x time id="time"></x time><form method="dialog" onsubmit="Go('duckduckgo.com','','duckduckgo.com/?q={qry}')"><input query id="query" type="search" enterkeyhint="search" placeholder="search" autocapitalize="off"/></form><x date id="date"></x date></x top>
-  <x items><button item onclick="window.open()" title="NewTab"><img icon_ico src="https://external-content.duckduckgo.com/ip3/earth.google.com.ico"><x>NewTab</x></button item>${Items()}</x items>
-</x content>
-`;  SetHTML$( { action:'add', content1:h, content2:body, position:'end' } ) }  HTML();
+function HTML(){ let h=`<x content><x top><x time id="time"></x time><form method="dialog" onsubmit="Go('duckduckgo.com','','duckduckgo.com/?q={qry}')"><input query id="query" type="search" enterkeyhint="search" placeholder="search" autocapitalize="off"/></form><x date id="date"></x date></x top><x items>${Items()}</x items></x content>`;
+  SetHTML$( { action:'add', content1:h, content2:body, position:'end' } ) }  HTML();
 
 // CSS ===============================================================================================================================================================================================
 
@@ -55,7 +47,7 @@ function CSS(){ let css=`
 [content] { display: flex;  flex-flow: column nowrap;  justify-content: center;  margin: .5em 2em 0 2em }
   [items] { display: flex;  flex-flow: row wrap;  justify-content: left;  padding: 1em }
     [item] { display: flex;  flex-flow: row nowrap;  align-items: center;  width: 8em;  padding: .5em 1em .5em 1em;  font-size: 1.5rem;  border-radius: .33em; }  [item]:hover { background-color: #23036A;  color: #DBB2FF;  outline: 1px solid #DBB2FF; }
-      [icon_ico] { width: 1em;  height: 1em;  margin-right: .5em }  [icon_chr] { width: 1.25em;  height: 1.25em;  margin-right: .5em }
+      [ico] { width: 1em;  height: 1em;  margin-right: .5em }
   [top] { display: grid;  grid-template-columns: 1fr auto 1fr;  padding: 1em 0 1em 0; }
     [time],[date] { display: flex;  flex-flow: row nowrap;  justify-content: center;  align-items: center;  color: #DBB2FF;  user-select: none; }
       [time] { font-size: 2.7rem; }  [date] { font-size: 2.3rem; }
@@ -65,22 +57,27 @@ function CSS(){ let css=`
 
 // FUNC ==============================================================================================================================================================================================
 
-let qi=body.querySelector('#query');  let recall='';  SetIconCharacter$('⭐️');  SetTitleText$('Home');  
+let qi=body.querySelector('#query');  qi.addEventListener('input', Key);  let recall='';  SetIconCharacter$('⭐️');  SetTitleText$('Home');  
 
-function Go(d,p,s){ let qv=qi.value;  recall=qv;  qi.value='';  if(qv===null||qv===''){ let link=`https://${d}/${p}`;  win.open(link);  return };  if(s===''){ return };
-  if(d==='www.portfoliovisualizer.com'){ let qu=``;  let qs=qv.split(' ');  if(qs.length>0){ qu=qu+`&symbol1=${qs[0]}&allocation1_1=100` };  if(qs.length>1){ qu=qu+`&symbol2=${qs[1]}&allocation2_2=100` };  if(qs.length>2){ qu=qu+`&symbol3=${qs[2]}&allocation3_3=100` };  qv=qu; }  // rebalancing|rebalance|rebal = no_rebalancing | no | 0 | none
-  qv.replace(' ','+');  s=`https://${s}`.replace('{qry}',qv);  win.open(s); 
-}/*-Go*/
+function Key(){ let ev=event;  let k=ev.data;  if(!['?','=','!'].includes(k)){return};  ev.preventDefault();  if(k===''){return}
+/* ? recall */  else if(k==='?'){ qi.value=recall;  qi.select() }
+/* = calc   */  else if(k==='='){ let v=qi.value.replace('=','');  let c=Evaluate$(v);  qi.value=`${v} = ${c}` }
+/* ! clear  */  else if(k==='!'){ qi.value='';  qi.select() }
+}/*-Key*/
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-qi.addEventListener('input', Key);   // let res = str.slice(0, 1) + ch + str.slice(1);   ev.target.selectionStart   // if '', recall. 
-
-function Key(){ let ev=event;  let k=ev.data;  if(![ '?' , '=' , '!' , ',' ].includes(k)){return};  ev.preventDefault();  if(k===''){return}
-/* ? recall  */  else if(k==='?'){ qi.value=recall;  qi.select() }
-/* = calc    */  else if(k==='='){ let v=qi.value.replace('=','');  let c=eval(v);  qi.value=`${v} = ${c}` }
-/* ! , clear */  else if(k==='!'||k===','){ qi.value='';  qi.select() }
-}/*-Key*/
+function Go(d,p,s){ let qv=qi.value;  recall=qv;  qi.value='';  if(qv===null||qv===''){ win.open(`https://${d}/${p}`);  return };  if(s===''){return};  let u=``;  
+  if( d==='www.portfoliovisualizer.com' ){ let px=qv.split(' ');  if(px.length>3){return};  let sn=0;  let an=0;  
+    for( let i=0; i<px.length; i++ ){ let pi=px[i];  an=an+1;
+      if(pi.includes('/')){ let py=pi.split('/');  for( let j=0; j<py.length; j++ ){ let pj=py[j].split('-');  sn=sn+1;
+        u=`${u}&symbol${sn}=${pj[0].toUpperCase()}&allocation${sn}_${an}=${pj[1]}`;
+      }}/*-j*/
+      else{ sn=sn+1;  u=`${u}&symbol${sn}=${pi.toUpperCase()}&allocation${sn}_${an}=100` }/*-not j*/
+    }/*-i*/
+  qv=u; }/*-pv*/
+  win.open(`https://${s}`.replace('{qry}',qv.replace(' ','+')));
+}/*-Go*/
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -90,15 +87,6 @@ let date_el=body.querySelector('#date'); setInterval(Date_,600000); Date_(); fun
 
 /* NOTES =============================================================================================================================================================================================
 
-
-
-> Virtual Keyboard :  let virtual_keyboard_is_open=false;  qi.addEventListener('keydown', Key);  if ('virtualKeyboard' in navigator) { navigator.virtualKeyboard.overlaysContent=true;  navigator.virtualKeyboard.addEventListener('geometrychange',(event)=>{ const{x,y,width,height}=event.target.boundingRect;  if(height>0){ virtual_keyboard_is_open=true; qi.removeEventListener('keydown', Key); qi.addEventListener('input', Key) } else{ virtual_keyboard_is_open=false; qi.removeEventListener('input', Key);  qi.addEventListener('keydown', Key) } }) };
-
-
-> User Agent Type :  let ua_type=(/Macintosh|Windows/.test(ua))?'desktop':(/X11/.test(ua))?'mobile-desktop':'mobile';
-
-
 > DateTime (broken) :  function AddDateTime$(x){ let f=x.format;  let e=body.querySelector(x.element);  let i=x.interval;  setInterval( function(){ e.textContent=new Intl.DateTimeFormat(lang,f).format(new Date()) } , i ); }/-AddDateTime/   AddDateTime$( [ { format:{ hour:'numeric', minute:'2-digit' }, element:'#time', interval:30000 } , { format:{ weekday:'short', month:'short', day:'numeric' }, element:'#date', interval:600000 }  ] );
-
 
 ====================================================================================================================================================================================================*/
