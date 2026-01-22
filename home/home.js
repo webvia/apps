@@ -9,7 +9,8 @@ let items=[
 [`Watch`,	`-`,	`www.youtube.com`,	`playlist?list=WL`,	``,	``,	],
 [`Lists`,	`-`,	`www.youtube.com`,	`feed/playlists`,	``,	``,	],
 [`Channels`,	`-`,	`www.youtube.com`,	`feed/channels`,	``,	``,	],
-[`Search`,	`=`,	`www.youtube.com`,	``,	`{dom}/results?search_query={qry}`,	``,	],
+[`Search`,	`-`,	`www.youtube.com`,	``,	`{dom}/results?search_query={qry}`,	``,	],
+[`ElecViking`,	`=`,	`www.youtube.com`,	`@electricviking/videos`,	``,	``,	],
 [`DailyMail`,	`.`,	`www.dailymail.co.uk`,	`ushome/index.html`,	`{dgs}{dom}`,	``,	],
 [`Wikipedia`,	`.`,	`en.wikipedia.org`,	``,	`{dgs}{dom}/wiki`,	``,	],
 [`Weather`,	`.`,	`www.accuweather.com`,	`en/us/johnson-city/37604/weather-forecast/331088`,	``,	``,	],
@@ -18,7 +19,7 @@ let items=[
 [`TradingView`,	`.`,	`www.tradingview.com`,	`chart/4uKzkaDw/`,	``,	``,	],
 [`M1 Finance`,	`.`,	`dashboard.m1.com`,	`d/home`,	``,	``,	],
 [`Fidelity`,	`.`,	`digital.fidelity.com`,	`ftgw/digital/portfolio/positions`,	``,	``,	],
-[`42 Macro`,	`.`,	`app.42macro.com`,	`dashboard`,	``,	``,	],
+[`42 Macro`,	`.`,	`app.42macro.com`,	`signals`,	``,	``,	],
 [`StockAnalysis`,	`.`,	`stockanalysis.com`,	``,	`{dom}/etf/{qry}`,	``,	],
 [`PortfolioVis`,	`.`,	`www.portfoliovisualizer.com`,	``,	`{dom}/backtest-portfolio?s=y&startYear=&endYear=&includeYTD=true&rebalanceType=1{qry}`,	``,	],
 [`Rumble`,	`.`,	`rumble.com`,	`subscriptions`,	`{dom}/search/all?q={qry}`,	``,	],
@@ -28,6 +29,7 @@ let items=[
 [`StackOverflow`,	`.`,	`stackoverflow.com`,	``,	`{dgs}{dom}/questions`,	``,	],
 [`Mozilla`,	`.`,	`developer.mozilla.org`,	``,	`{dgs}{dom}/en-US/docs`,	``,	],
 [`Calculator`,	`.`,	`webvia.github.io`,	`apps/app.html?app=calc`,	``,	`www.calculator.net`,	],
+[`Calendar`,	`.`,	`calendar.google.com`,	`calendar/u/0/r`,	``,	``,	],
 ];
 
 // HTML ==============================================================================================================================================================================================

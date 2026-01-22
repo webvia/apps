@@ -32,7 +32,7 @@ function Reset(){ ta.value=''; ca.innerHTML='';  FocusEvt() }
 
 function Clean(){ let d=ta.value;  if(d==''){return};  d=d.replace(/^[\s]*/,'').replace(/[\s]*$/,'').replace(/[\, ]*/g,'');  ta.value=d;  FocusEvt() }
 
-function Tab(){ ta.setRangeText('\t',this.selectionStart,this.selectionEnd,'end') }
+function Tab(){ let v=ta.value; let s=ta.selectionStart; let e=ta.selectionEnd;  ta.value=v.substring(0,s)+'\t'+v.substring(e);  ta.selectionStart=ta.selectionEnd=s+1; }
 
 /* Calc =========================================================================================================================================================================================== */
 
