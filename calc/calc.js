@@ -22,29 +22,29 @@ let ta=body.querySelector('[ta]');  let ca=body.querySelector('[ca]');
 
 // Events ================================================================================================================================================================================
 
-win.addEventListener('focus', FocusEvt);   ta.addEventListener('keydown', KeyDownEvt);   ta.addEventListener('paste', PasteEvt);
+win.addEventListener('focus', Focus);   ta.addEventListener('keydown', KeyDown);   ta.addEventListener('paste', Paste);
 
 // Keyboard ==============================================================================================================================================================================
 
-function KeyDownEvt(ev){ if(ev.altKey||ev.ctrlKey||ev.shiftKey){return};  let keys={ 'Tab':`TabKey`, 'Delete':`DeleteKey`, '=':`EqualsKey` };  let kf=keys[ev.key];  if(kf===undefined){return};  ev.preventDefault();  win[kf]() }
+function KeyDown(ev){ if(ev.altKey||ev.ctrlKey||ev.shiftKey){return};  let keys={ 'Tab':`TabKey`, 'Delete':`DeleteKey`, '=':`EqualsKey` };  let kf=keys[ev.key];  if(kf===undefined){return};  ev.preventDefault();  win[kf]() }
 
 function TabKey(){ Tab() }   function DeleteKey(){ Reset() }   function EqualsKey(){ Calc() }
 
 // Functions =============================================================================================================================================================================
 
-function FocusEvt() { ta.focus() }  // ta.select()
+function Focus() { ta.focus() }  // ta.select()
 
-function PasteEvt(){ setTimeout(()=>{ Clean() },1) }
+function Paste(){ setTimeout(()=>{ Clean() },1) }
 
-function Reset(){ ta.value=''; ca.innerHTML='';  FocusEvt() }
+function Reset(){ ta.value=''; ca.innerHTML='';  Focus() }
 
-function Clean(){ let d=ta.value;  if(d==''){return};  d=d.replace(/^[\s]*/,'').replace(/[\s]*$/,'').replace(/[\, ]*/g,'');  ta.value=d;  FocusEvt() }
+function Clean(){ let d=ta.value;  if(d==''){return};  d=d.replace(/^[\s]*/,'').replace(/[\s]*$/,'').replace(/[\, ]*/g,'');  ta.value=d;  Focus() }
 
 function Tab(){ let v=ta.value; let s=ta.selectionStart; let e=ta.selectionEnd;  ta.value=v.substring(0,s)+'\t'+v.substring(e);  ta.selectionStart=ta.selectionEnd=s+1; }
 
 // Calc ==================================================================================================================================================================================
 
-function Calc() { navigator.virtualKeyboard.hide();  Clean();  let cols=0; let hc=``; let hr=``; let vals1=[]; let vals2=[]; let calcs1={}; let calcs2={}; 
+function Calc() { Focus();  ToggleVirtualKeyboard$();  Clean();  let cols=0; let hc=``; let hr=``; let vals1=[]; let vals2=[]; let calcs1={}; let calcs2={}; 
 
 let d=ta.value;  if(d==''){return};  if(/[\n][^\t]/.test(d)){ cols=1 };  if(/[\t]/.test(d)){ cols=2 };
 
