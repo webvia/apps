@@ -11,7 +11,7 @@ body { margin: 0; padding: 1.25em; background-color: #121212; color: #F8F8F8; fo
 
 let h=`<textarea ta id="ta" autofocus></textarea ta>
 
-${(ua_type==='mobile')?`<div ba><button bt onclick="Calc()">Calc</button bt>|<button bt onclick="Tab()">Tab</button bt>|<button bt onclick="Reset()">Reset</button bt></div ba>`:``}
+${(ua_type!=='desktop')?`<div ba><button bt onclick="Calc()">Calc</button bt>|<button bt onclick="Tab()">Tab</button bt>|<button bt onclick="Reset()">Reset</button bt></div ba>`:``}
 
 <div ca></div ca>`;  
 
