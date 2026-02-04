@@ -2,16 +2,16 @@ window.onerror=(message,source,lineno,colno,error)=>{ let er=`${message} : ${sou
 window.onpopstate=(ev)=>{ SetLocationInfo$() };  // window.onhashchange=(ev)=>{ }  window.onload=(ev)=>{ }
 document.addEventListener('DOMContentLoaded',(ev)=>{ DOMContentLoaded$() });
 
-let $={/*svc-vars*/};  $.data={};  let win,doc,loc,hist,navn,navr,clip,lang,ua,  href,prot,ref,host,dom,path,srch,prms,hash,  app_url,app_js,  root,head,title,icon,base,body,h1,  cli_hgt,cli_wid;
+let $={/*svc-vars*/};  $.data={};  let win,doc,loc,hist,navn,navr,clip,lang,ua,ua_type,  href,prot,ref,host,dom,path,srch,prms,hash,  app_url,app_js,  root,head,title,icon,base,body,h1,  cli_hgt,cli_wid;
 let _={/*app-vars*/};  
 
-// PreLoad ===========================================================================================================================================================================================
+// PreLoad ===============================================================================================================================================================================
 
 function DOMContentLoaded$(){
-/*Window*/ win=window; doc=win.document; loc=win.location; hist=win.history; navn=win.navigation; navr=win.navigator;
-/*Navigator*/ clip=navr.clipboard; lang=navr.language; ua=navr.userAgent; 
+/*Window*/ win=window;  doc=win.document;  loc=win.location;  hist=win.history;  navn=win.navigation;  navr=win.navigator;
+/*Navigator*/ clip=navr.clipboard;  lang=navr.language;  ua=navr.userAgent;  ua_type=(/Macintosh|Windows/.test(ua))?'desktop':(/X11/.test(ua))?'mobile-desktop':'mobile';
 /*Location*/ SetLocationInfo$();
-/*Document*/ root=doc.documentElement; title=doc.title; head=doc.head; body=doc.body;  icon=head.querySelector('#app_icon');  base=head.querySelector('#app_base').setAttribute('href',app_url+'/');  cli_hgt=root.clientHeight; cli_wid=root.clientWidth;  doc.querySelector('noscript').remove();
+/*Document*/ root=doc.documentElement;  title=doc.title;  head=doc.head;  body=doc.body;  icon=head.querySelector('#app_icon');  base=head.querySelector('#app_base').setAttribute('href',app_url+'/');  cli_hgt=root.clientHeight;  cli_wid=root.clientWidth;  doc.querySelector('noscript').remove();
 /*App*/ if(app_url!==null){ SetScriptExternal$(app_js,'app_script') } else{ SetTitleText$(`App not specified`); SetIconCharacter$(`⛔️`); body.insertAdjacentHTML('beforeend',`App not specified.`) }; 
 }; /*-PreLoad*/
 
@@ -22,7 +22,7 @@ function SetURL$(x){ let u=x.url;  for(let p of x.params){ u=u.replace(new RegEx
 //function SetURL$(x){ let u=new URL(x.url);  let ps=new URLSearchParams(u.search);  for(let p of x.params){ ps.set(p.key, p.value) };  u.search=ps;  if(x.action==='history.replaceState'){ hist.replaceState(null,'',u) };  return u };  // { action:'history.replaceState', url:'url', params:[ { key:'key', value:'value' } ] }
 
 
-// Functions =========================================================================================================================================================================================
+// Functions =============================================================================================================================================================================
 
 function SetTitleText$(txt){ doc.title=txt } // SetDocumentTitle(txt)
 function SetIconURL$(url){ icon.href=url } // SetDocumentIcon(char|imgurl)
@@ -54,7 +54,7 @@ async function Fetch$(x){ x=ParseJSON$(x);  if( !HasValue$(x.url) ){ return x };
 // SetEvent( { action:'add|remove|toggle', event:'click|keydown|etc', element:'window|document|selector', function:'function', data:{alert:'hi'}, key:{key:'ctrl+x'} } );
 // function SetEvent(x){ if(IsJSON$(x)){ x=ParseJSON$(x) };  let el=body.querySelector(x.element);  if(x.action==='add'){ el.addEventListener(x.event, window[x.function].bind(this, x.data)) } }
 
-// HTML ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// HTML ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function SetHTML$(x){ let a=x.action; let c1=x.content1; let c2=x.content2; let p=x.position; let d=x.data;  if(a==null){return}
   else if(a==='add'){ c1=DatafyHTML$(c1,d);  c1=ConvertHTML$(c1);  c2=GetHTML$(c2);  for(const c2n of c2){ let c1c=c1.cloneNode(true);  InsertHTML$(c1c, c2n, p) } }
@@ -72,7 +72,7 @@ function MergeHTML$(c){ let f=new DocumentFragment();  for(const n of c){ f.appe
 function InsertHTML$(c,n,p){ if(p==='before'){ n.before(c) } else if(p==='begin'){ n.prepend(c) } else if(p==='end'){ n.append(c) } else if(p==='after'){ n.after(c) } }
 function DatafyHTML$(c,d){ if(d==null){ return c }  let cd='';  for(const i of d){ let ci=c;  for(const [k,v] of Object.entries(i)){ ci=ci.replaceAll(`{%${k}}`, v) };  cd=cd+ci };  return cd }
 
-// Dialog --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Dialog --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function OpenDialog$(content,type,title,submitButton,closeButton){ // <button onclick="OpenDialog('<div>hi</div>','modal','Save','Cancel')">dialog</button>  // \moz_html__Element/dialog  
 let header=`<header id="dlg_top" style="text-align:right"><button id="dlg_button_close_top" onclick="CloseDialog$()" autofocus>❌️</button></header>`;
@@ -81,12 +81,12 @@ let h=`<dialog id="dlg" style="margin-top:0"><form id="dlg_form">${header}<artic
 body.insertAdjacentHTML('beforeend',h); SetStyleInternal$(` #dlg::backdrop { opacity: .5; } `); let d=doc.querySelector("#dlg");  if(type==='modal'){ d.showModal() } else{ d.show() }
 } /*-OpenDialog$*/   function CloseDialog$(data){ let d=doc.querySelector("#dlg"); d.close(); d.remove() }
 
-// Menu ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Menu ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function OpenMenu$(menuSelector){ let btn=body.querySelector('button:focus'); let mnu_sel=(menuSelector!=null)?menuSelector:'button:focus+dialog'; let mnu=body.querySelector(mnu_sel); let btn_rect=btn.getBoundingClientRect(); let btn_lft=btn_rect.left; let btn_bot=btn_rect.bottom; let btn_below_hgt=cli_hgt-btn_bot; let btn_rht_wid=cli_wid-btn_lft;  let mnu_sty=mnu.style; mnu_sty.padding='unset'; mnu_sty.maxHeight=`${cli_hgt-16}px`; mnu_sty.maxWidth=`${cli_wid-16}px`;  mnu.showModal(); mnu.focus();  let mnu_rect=mnu.getBoundingClientRect(); let mnu_hgt=mnu_rect.height; let mnu_wid=mnu_rect.width;  if(mnu_hgt<btn_below_hgt){mnu_sty.marginTop=`${btn_bot}px`}else{mnu_sty.marginBottom=`${8}px`} if(mnu_wid<btn_rht_wid){mnu_sty.marginLeft=`${btn_lft}px`}else{mnu_sty.marginRight=`${8}px`}
 } /*-OpenMenu$*/   function CloseMenu$(){ let mnu=body.querySelector('dialog:focus-within');  mnu.close() }
 
-/* Notes =============================================================================================================================================================================================
+/* Notes =================================================================================================================================================================================
 
 > Platform:  Variables, Components, Events/Listeners/Keyboard, Data-Fetch/Push, Clipboard, Selection, Location/URL, CSS, Displays  ...
 
@@ -112,7 +112,7 @@ Misc: button, icon, badge, progress, tag, ..
 Data/Storage:  Storage_API, Cookie_Store_API, Web_Storage_API, IndexedDB_API, File_System_Access_API, File_API, Cache
 Displays:  @media screen and (max-width: 767px) { ... }   @media screen and (min-width: 768px) { ... }    <=480 - 481-767 - 768-1024 - 1025-1280 - 1281=<
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 async function addHTMLExternal(url,selector,position) { let u=url; let s=selector; let p=position; if(u===null){return}; if(s===null){s='body'}; if(p===null){p='beforeend'};
   if(u.startsWith('https://')||u.startsWith('http://')){ u=`${u}` } else if(u.startsWith('//')){ u=`https:${u}` } else if(u.startsWith('/')){ u=`${app_url}${u}` };
@@ -122,7 +122,7 @@ async function addHTMLExternal(url,selector,position) { let u=url; let s=selecto
 async function addHTMLExternalIndex(){ await addHTMLExternal(app_h); addScriptExternal(app_js) } addHTMLExternalIndex();   let app_h=`${app_url}/${app_url}.html`; 
 async function addExtHTMLMore(){ await addExtHTML('/more.html','#index','beforeend'); let more=doc.querySelector('#more'); console.log(more.textContent) } addExtHTMLMore();
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function HTMLifyContent(c){ if(!c.startsWith('>(')){ return c }  return c } // end HTMLifyContent
 find first ')'  >  find prev '('  >  find prev-prev '(' or ','  >  get 'elem' between prev-prev '(' or ',' and next '(' or '['  >  replace 'elem' with '<elem>'  >  replace ')' with '</elem>'  >  REPEAT
@@ -131,12 +131,8 @@ Summary:  '>( e[ a=v ; a ] ( e , e ) e ( { t } ) )<'
 Element Abbreviations/Expansions:  a-a, div-d, span-s, table-t, ul/ol
 Attribute Abbreviation:  alt/a, class/c, data-/d, disabled/di, form/f, hidden-hi, href-h, id/i, label/l, media/m, name/n, src/s, style/st, title/t, type/ty, value/v
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 > Virtual Keyboard :  let virtual_keyboard_is_open=false;  qi.addEventListener('keydown', Key);  if ('virtualKeyboard' in navigator) { navigator.virtualKeyboard.overlaysContent=true;  navigator.virtualKeyboard.addEventListener('geometrychange',(event)=>{ const{x,y,width,height}=event.target.boundingRect;  if(height>0){ virtual_keyboard_is_open=true; qi.removeEventListener('keydown', Key); qi.addEventListener('input', Key) } else{ virtual_keyboard_is_open=false; qi.removeEventListener('input', Key);  qi.addEventListener('keydown', Key) } }) };
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-> User Agent Type :  let ua_type=(/Macintosh|Windows/.test(ua))?'desktop':(/X11/.test(ua))?'mobile-desktop':'mobile';
-
-====================================================================================================================================================================================================*/
+========================================================================================================================================================================================*/
