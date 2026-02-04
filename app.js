@@ -22,7 +22,7 @@ function SetURL$(x){ let u=x.url;  for(let p of x.params){ u=u.replace(new RegEx
 //function SetURL$(x){ let u=new URL(x.url);  let ps=new URLSearchParams(u.search);  for(let p of x.params){ ps.set(p.key, p.value) };  u.search=ps;  if(x.action==='history.replaceState'){ hist.replaceState(null,'',u) };  return u };  // { action:'history.replaceState', url:'url', params:[ { key:'key', value:'value' } ] }
 
 
-function ToggleVirtualKeyboard$(){ if(vk.overlaysContent===false){ navigator.virtualKeyboard.show() } else{ navigator.virtualKeyboard.hide() } }
+function ToggleVirtualKeyboard$(){ if(navigator.virtualKeyboard.overlaysContent){ navigator.virtualKeyboard.hide() } else{ navigator.virtualKeyboard.show() } }
 
 // Functions =============================================================================================================================================================================
 
