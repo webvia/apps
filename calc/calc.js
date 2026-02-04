@@ -44,7 +44,7 @@ function Tab(){ let v=ta.value; let s=ta.selectionStart; let e=ta.selectionEnd; 
 
 // Calc ==================================================================================================================================================================================
 
-function Calc() { vk.hide();  Clean();  let cols=0; let hc=``; let hr=``; let vals1=[]; let vals2=[]; let calcs1={}; let calcs2={}; 
+function Calc() { ToggleVirtualKeyboard$();  Clean();  let cols=0; let hc=``; let hr=``; let vals1=[]; let vals2=[]; let calcs1={}; let calcs2={}; 
 
 let d=ta.value;  if(d==''){return};  if(/[\n][^\t]/.test(d)){ cols=1 };  if(/[\t]/.test(d)){ cols=2 };
 
