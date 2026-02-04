@@ -4,11 +4,19 @@ let css=` /* ta=text_area, ca=calc_area, ch=col_head, rh=row_head, cc=col_calc, 
 body { margin: 0; padding: 1.25em; background-color: #121212; color: #F8F8F8; font-size: 1.5em; font-family: monospace; }  table { border-collapse: collapse; }  td { padding: .25em 1em .25em 1em }
 [ch],[rh] { font-weight: bold; }  [cc],[rc] { font-weight: bold; color: #DBB2FF; background-color: #EEEEEE }  [cv] {  }  [v0] { font-weight: bold; color: #DBB2FF; }
 [ta] { display: block; resize: none; width: 99%; height: 4em; font-size: 1em; font-family: monospace; margin-bottom: 1em; padding: .5em; }  [ta]:focus { outline: none; }  [ca] {  }
+[bt] { padding: .25em .5em .25em .5em }
 `;  SetStyleInternal$(css);
 
 // Page ==================================================================================================================================================================================
 
-let h=`<textarea ta id="ta" autofocus></textarea ta><div ca></div ca>`;  SetHTML$( { action:'add', content1:h, content2:body, position:'end' } );
+let h=`<textarea ta id="ta" autofocus></textarea ta>
+
+<div ba><button bt onclick="Calc()">Calc</button bt>|<button bt onclick="Tab()">Tab</button bt>|<button bt onclick="Reset()">Reset</button bt></div ba>
+
+<div ca></div ca>`;  
+
+
+SetHTML$( { action:'add', content1:h, content2:body, position:'end' } );
 
 let ta=body.querySelector('[ta]');  let ca=body.querySelector('[ca]');
 

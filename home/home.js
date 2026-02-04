@@ -44,7 +44,7 @@ function HTML(){ let h=`<x content><x top><x time id="time"></x time><form metho
 
 // CSS ===================================================================================================================================================================================
 
-function CSS(){ let css=` body { font-size: 100% }
+function CSS(){ let css=` 
 [content] { display: flex;  flex-flow: column nowrap;  justify-content: center;  margin: .5em 2em 0 2em }
   [items] { display: flex;  flex-flow: row wrap;  justify-content: left;  padding: 1em }
     [item] { display: flex;  flex-flow: row nowrap;  align-items: center;  width: 8em;  padding: .5em 1em .5em 1em;  font-size: 1.5em;  border-radius: .33em; }  [item]:hover { background-color: #23036A;  color: #DBB2FF;  outline: 1px solid #DBB2FF; }
