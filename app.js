@@ -2,13 +2,13 @@ window.onerror=(message,source,lineno,colno,error)=>{ let er=`${message} : ${sou
 window.onpopstate=(ev)=>{ SetLocationInfo$() };  // window.onhashchange=(ev)=>{ }  window.onload=(ev)=>{ }
 document.addEventListener('DOMContentLoaded',(ev)=>{ DOMContentLoaded$() });
 
-let $={/*svc-vars*/};  $.data={};  let win,doc,loc,hist,navn,navr,clip,lang,ua,ua_type,  href,prot,ref,host,dom,path,srch,prms,hash,  app_url,app_js,  root,head,title,icon,base,body,h1,  cli_hgt,cli_wid;
+let $={/*svc-vars*/};  $.data={};  let win,doc,loc,hist,navn,navr,vk,clip,lang,ua,ua_type,  href,prot,ref,host,dom,path,srch,prms,hash,  app_url,app_js,  root,head,title,icon,base,body,h1,  cli_hgt,cli_wid;
 let _={/*app-vars*/};  
 
 // PreLoad ===============================================================================================================================================================================
 
 function DOMContentLoaded$(){
-/*Window*/ win=window;  doc=win.document;  loc=win.location;  hist=win.history;  navn=win.navigation;  navr=win.navigator;
+/*Window*/ win=window;  doc=win.document;  loc=win.location;  hist=win.history;  navn=win.navigation;  navr=win.navigator;  vk=navr.virtualKeyboard;
 /*Navigator*/ clip=navr.clipboard;  lang=navr.language;  ua=navr.userAgent;  ua_type=(/Macintosh|Windows/.test(ua))?'desktop':(/X11/.test(ua))?'mobile-desktop':'mobile';
 /*Location*/ SetLocationInfo$();
 /*Document*/ root=doc.documentElement;  title=doc.title;  head=doc.head;  body=doc.body;  icon=head.querySelector('#app_icon');  base=head.querySelector('#app_base').setAttribute('href',app_url+'/');  cli_hgt=root.clientHeight;  cli_wid=root.clientWidth;  doc.querySelector('noscript').remove();
@@ -21,6 +21,8 @@ function SetURL$(x){ let u=x.url;  for(let p of x.params){ u=u.replace(new RegEx
 
 //function SetURL$(x){ let u=new URL(x.url);  let ps=new URLSearchParams(u.search);  for(let p of x.params){ ps.set(p.key, p.value) };  u.search=ps;  if(x.action==='history.replaceState'){ hist.replaceState(null,'',u) };  return u };  // { action:'history.replaceState', url:'url', params:[ { key:'key', value:'value' } ] }
 
+
+function ToggleVirtualKeyboard$(){ if(vk.overlaysContent===false;){ vk.show() } else{ vk.hide() } }
 
 // Functions =============================================================================================================================================================================
 
