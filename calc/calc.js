@@ -38,13 +38,13 @@ function Paste(){ setTimeout(()=>{ Clean() },1) }
 
 function Reset(){ ta.value=''; ca.innerHTML='';  Focus() }
 
-function Clean(){ let d=ta.value;  if(d==''){return};  d=d.replace(/^[\s]*/,'').replace(/[\s]*$/,'').replace(/[\, ]*/g,'');  ta.value=d;  Focus() }
+function Clean(){ let d=ta.value;  if(d==''){return};  d=d.replace(/^[\s]*/,'').replace(/[\s]*$/,'').replace(/[\, ]*/g,'');  ta.value=d;   }
 
 function Tab(){ let v=ta.value; let s=ta.selectionStart; let e=ta.selectionEnd;  ta.value=v.substring(0,s)+'\t'+v.substring(e);  ta.selectionStart=ta.selectionEnd=s+1; }
 
 // Calc ==================================================================================================================================================================================
 
-function Calc() { Clean();  ToggleVirtualKeyboard$();  let cols=0; let hc=``; let hr=``; let vals1=[]; let vals2=[]; let calcs1={}; let calcs2={}; 
+function Calc() { Clean();  let cols=0; let hc=``; let hr=``; let vals1=[]; let vals2=[]; let calcs1={}; let calcs2={}; 
 
 let d=ta.value;  if(d==''){return};  if(/[\n][^\t]/.test(d)){ cols=1 };  if(/[\t]/.test(d)){ cols=2 };
 

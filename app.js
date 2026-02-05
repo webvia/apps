@@ -19,10 +19,11 @@ function SetLocationInfo$(){ href=loc.href; prot=loc.protocol+'//';  host=loc.ho
 
 function SetURL$(x){ let u=x.url;  for(let p of x.params){ u=u.replace(new RegExp(`([\?|\&]${p.key}=)[^\&|^\#]+`),`$1${p.value}`); };  if(x.action==='history.replaceState'){ hist.replaceState(null,'',u) };  return u };  // { action:'history.replaceState', url:'url', params:[ { key:'key', value:'value' } ] }
 
-//function SetURL$(x){ let u=new URL(x.url);  let ps=new URLSearchParams(u.search);  for(let p of x.params){ ps.set(p.key, p.value) };  u.search=ps;  if(x.action==='history.replaceState'){ hist.replaceState(null,'',u) };  return u };  // { action:'history.replaceState', url:'url', params:[ { key:'key', value:'value' } ] }
 
+// function SetURL$(x){ let u=new URL(x.url);  let ps=new URLSearchParams(u.search);  for(let p of x.params){ ps.set(p.key, p.value) };  u.search=ps;  if(x.action==='history.replaceState'){ hist.replaceState(null,'',u) };  return u };  // { action:'history.replaceState', url:'url', params:[ { key:'key', value:'value' } ] }
 
-function ToggleVirtualKeyboard$(){ vk.overlaysContent=true;  if(vk.boundingRect.height===0){ vk.show() } else{ vk.hide() };  vk.overlaysContent=false; }
+// function ToggleVirtualKeyboard$(){ vk.overlaysContent=true;  if(vk.boundingRect.height===0){ vk.show() } else{ vk.hide() };  vk.overlaysContent=false; }
+
 
 // Functions =============================================================================================================================================================================
 
