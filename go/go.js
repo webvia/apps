@@ -15,7 +15,7 @@ let i={
 'amz_q'    : `www.amazon.com/s?k={%v}`,
 'ddg_i'    : `external-content.duckduckgo.com/iu/?u=https://{%v}`,
 'ddg_q'    : `duckduckgo.com/?q={%v}`,
-'dm'       : `www.dailymail.co.uk/news/article-{%v}.html#~`,
+'dm'       : `www.dailymail.co.uk/news/article-{%v}#~`,
 'api'      : `developer.mozilla.org/en-US/docs/Web/API/{%v}`,
 'js'       : `developer.mozilla.org/en-US/docs/Web/JavaScript/{%v}`,
 'js_ref'   : `developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/{%v}`,

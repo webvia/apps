@@ -22,8 +22,6 @@ function SetURL$(x){ let u=x.url;  for(let p of x.params){ u=u.replace(new RegEx
 
 // function SetURL$(x){ let u=new URL(x.url);  let ps=new URLSearchParams(u.search);  for(let p of x.params){ ps.set(p.key, p.value) };  u.search=ps;  if(x.action==='history.replaceState'){ hist.replaceState(null,'',u) };  return u };  // { action:'history.replaceState', url:'url', params:[ { key:'key', value:'value' } ] }
 
-// function ToggleVirtualKeyboard$(){ vk.overlaysContent=true;  if(vk.boundingRect.height===0){ vk.show() } else{ vk.hide() };  vk.overlaysContent=false; }
-
 
 // Functions =============================================================================================================================================================================
 
@@ -136,6 +134,10 @@ Attribute Abbreviation:  alt/a, class/c, data-/d, disabled/di, form/f, hidden-hi
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-> Virtual Keyboard :  let virtual_keyboard_is_open=false;  qi.addEventListener('keydown', Key);  if ('virtualKeyboard' in navigator) { navigator.virtualKeyboard.overlaysContent=true;  navigator.virtualKeyboard.addEventListener('geometrychange',(event)=>{ const{x,y,width,height}=event.target.boundingRect;  if(height>0){ virtual_keyboard_is_open=true; qi.removeEventListener('keydown', Key); qi.addEventListener('input', Key) } else{ virtual_keyboard_is_open=false; qi.removeEventListener('input', Key);  qi.addEventListener('keydown', Key) } }) };
+> Virtual Keyboard
+
+let virtual_keyboard_is_open=false;  qi.addEventListener('keydown', Key);  if ('virtualKeyboard' in navigator) { navigator.virtualKeyboard.overlaysContent=true;  navigator.virtualKeyboard.addEventListener('geometrychange',(event)=>{ const{x,y,width,height}=event.target.boundingRect;  if(height>0){ virtual_keyboard_is_open=true; qi.removeEventListener('keydown', Key); qi.addEventListener('input', Key) } else{ virtual_keyboard_is_open=false; qi.removeEventListener('input', Key);  qi.addEventListener('keydown', Key) } }) };
+
+function ToggleVirtualKeyboard$(){ vk.overlaysContent=true;  if(vk.boundingRect.height===0){ vk.show() } else{ vk.hide() };  vk.overlaysContent=false; }
 
 ========================================================================================================================================================================================*/

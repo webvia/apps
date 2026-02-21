@@ -1,4 +1,4 @@
-// ITEMS =================================================================================================================================================================================
+// ITEMS =================================================================================================================================================================
 
 let items=[
 /*Name	Menu	Domain	Path	Search	Icon	*/
@@ -31,7 +31,7 @@ let items=[
 [`Calendar`,	`.`,	`calendar.google.com`,	`calendar/u/0/r`,	``,	``,	],
 ];
 
-// HTML ==================================================================================================================================================================================
+// HTML ==================================================================================================================================================================
 
 function Items(){ let h=``;  for(const x of items){ let n=x[0]/*name*/; let m=x[1]/*menu*/; let d=x[2]/*domain*/; let p=x[3]/*path*/; let s=x[4].replace('{dom}',d).replace('{dgs}','duckduckgo.com/?q={qry}+site:')/*search*/;  let i=x[5]/*icon*/;  let ico=`<img ico src="https://external-content.duckduckgo.com/ip3/${i!==''?i:d}.ico">`;
   if(m==='?'){ h=`${h}<button item onclick="Evaluate$('${p}')">${ico}<x>${n}</x></button item>`;  continue }
@@ -42,9 +42,9 @@ function Items(){ let h=``;  for(const x of items){ let n=x[0]/*name*/; let m=x[
 function HTML(){ let h=`<x content><x top><x time id="time"></x time><form method="dialog" onsubmit="Go('duckduckgo.com','','duckduckgo.com/?q={qry}')"><input query id="query" type="search" enterkeyhint="search" placeholder="search" autocapitalize="off"/></form><x date id="date"></x date></x top><x items>${Items()}</x items></x content>`;
   SetHTML$( { action:'add', content1:h, content2:body, position:'end' } ) }  HTML();
 
-// CSS ===================================================================================================================================================================================
+// CSS ===================================================================================================================================================================
 
-function CSS(){ let css=` 
+function CSS(){ let css=` body { font-size: 1.25em; }
 [content] { display: flex;  flex-flow: column nowrap;  justify-content: center;  margin: .5em 2em 0 2em }
   [items] { display: flex;  flex-flow: row wrap;  justify-content: left;  padding: 1em }
     [item] { display: flex;  flex-flow: row nowrap;  align-items: center;  width: 8em;  padding: .5em 1em .5em 1em;  font-size: 1.5em;  border-radius: .33em; }  [item]:hover { background-color: #23036A;  color: #DBB2FF;  outline: 1px solid #DBB2FF; }
@@ -56,7 +56,7 @@ function CSS(){ let css=`
   [menu] { flex-flow: column nowrap;  outline: 1px solid #DBB2FF;  border-radius: .33em; }
 `;  SetStyleInternal$(css) }  CSS();
 
-// FUNC ==================================================================================================================================================================================
+// FUNC ==================================================================================================================================================================
 
 let qi=body.querySelector('#query');  qi.addEventListener('input', Key);  let recall='';  SetIconCharacter$('⭐️');  SetTitleText$('Home');  
 
@@ -66,7 +66,7 @@ function Key(){ let ev=event;  let k=ev.data;  if(!['?','=','!'].includes(k)){re
 /* ! clear  */  else if(k==='!'){ qi.value='';  qi.select() }
 }/*-Key*/
 
-// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function Go(d,p,s){ let qv=qi.value;  recall=qv;  qi.value='';  if(qv===null||qv===''){ win.open(`https://${d}/${p}`);  return };  if(s===''){return};  let u=``;  
   if( d==='www.portfoliovisualizer.com' ){ let px=qv.split(' ');  if(px.length>3){return};  let sn=0;  let an=0;  
@@ -80,14 +80,14 @@ function Go(d,p,s){ let qv=qi.value;  recall=qv;  qi.value='';  if(qv===null||qv
   win.open(`https://${s}`.replace('{qry}',qv.replace(' ','+')));
 }/*-Go*/
 
-// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 let time_el=body.querySelector('#time'); setInterval(Time_,20000); Time_(); function Time_(){ time_el.textContent=new Intl.DateTimeFormat(lang,{hour:'numeric',minute:'2-digit'}).format(new Date()).split(' ')[0] }
 
 let date_el=body.querySelector('#date'); setInterval(Date_,600000); Date_(); function Date_(){ date_el.textContent=new Intl.DateTimeFormat(lang,{weekday:'short',month:'short',day:'numeric'}).format(new Date()) }
 
-/* NOTES =================================================================================================================================================================================
+/* NOTES =================================================================================================================================================================
 
 > DateTime (broken) :  function AddDateTime$(x){ let f=x.format;  let e=body.querySelector(x.element);  let i=x.interval;  setInterval( function(){ e.textContent=new Intl.DateTimeFormat(lang,f).format(new Date()) } , i ); }/-AddDateTime/   AddDateTime$( [ { format:{ hour:'numeric', minute:'2-digit' }, element:'#time', interval:30000 } , { format:{ weekday:'short', month:'short', day:'numeric' }, element:'#date', interval:600000 }  ] );
 
-========================================================================================================================================================================================*/
+========================================================================================================================================================================*/
