@@ -27,8 +27,10 @@ let items=[
 [`ProtonMail`,	`.`,	`mail.proton.me`,	``,	``,	``,	],
 [`StackOverflow`,	`.`,	`stackoverflow.com`,	``,	`{dgs}{dom}/questions`,	``,	],
 [`Mozilla`,	`.`,	`developer.mozilla.org`,	``,	`{dgs}{dom}/en-US/docs`,	``,	],
-[`Calculator`,	`.`,	`webvia.github.io`,	`apps/app.html?app=calc`,	``,	`www.calculator.net`,	],
 [`Calendar`,	`.`,	`calendar.google.com`,	`calendar/u/0/r`,	``,	``,	],
+[`Tools`,	`+`,	`onlinetools.com`,	``,	``,	``,	],
+[`Calculator`,	`-`,	`webvia.github.io`,	`apps/app.html?app=calc`,	``,	`www.calculator.net`,	],
+[`Day of Week`,	`=`,	`www.timeanddate.com`,	``,	`{dom}/date/weekday.html?{qry}`,	``,	],
 ];
 
 // HTML ==================================================================================================================================================================
@@ -76,7 +78,9 @@ function Go(d,p,s){ let qv=qi.value;  recall=qv;  qi.value='';  if(qv===null||qv
       }}/*-j*/
       else{ sn=sn+1;  u=`${u}&symbol${sn}=${pi.toUpperCase()}&allocation${sn}_${an}=100` }/*-not j*/
     }/*-i*/
-  qv=u; }/*-pv*/
+  qv=u; }/*-portfoliovisualizer*/
+  else if( d==='www.timeanddate.com' ){ qv=qv.split('-'); qv=`year=${qv[0]}&month=${qv[1]}&day=${qv[2]}`;
+  }/*-timeanddate*/
   win.open(`https://${s}`.replace('{qry}',qv.replace(' ','+')));
 }/*-Go*/
 
