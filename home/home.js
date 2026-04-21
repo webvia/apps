@@ -10,7 +10,7 @@ let items=[
 [`Lists`,	`-`,	`www.youtube.com`,	`feed/playlists`,	``,	``,	],
 [`Channels`,	`-`,	`www.youtube.com`,	`feed/channels`,	``,	``,	],
 [`Search`,	`=`,	`www.youtube.com`,	``,	`{dom}/results?search_query={qry}`,	``,	],
-[`DailyMail`,	`.`,	`www.dailymail.co.uk`,	`ushome/index.html`,	`{dgs}{dom}`,	``,	],
+[`DailyMail`,	`.`,	`www.dailymail.com`,	`ushome/index.html`,	`{dgs}{dom}`,	``,	],
 [`Wikipedia`,	`.`,	`en.wikipedia.org`,	``,	`{dgs}{dom}/wiki`,	``,	],
 [`Weather`,	`.`,	`www.accuweather.com`,	`en/us/johnson-city/37604/weather-forecast/331088`,	``,	``,	],
 [`Amazon`,	`.`,	`www.amazon.com`,	`hz/wishlist/ls/`,	`{dom}/s?k={qry}`,	``,	],
