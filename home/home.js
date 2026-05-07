@@ -60,13 +60,31 @@ function CSS(){ let css=` body { font-size: 1.15em; }
 
 // FUNC ==================================================================================================================================================================
 
-let qi=body.querySelector('#query');  qi.addEventListener('input', Key);  let recall='';  SetIconCharacter$('⭐️');  SetTitleText$('Home');  
+let qi=body.querySelector('#query');  qi.addEventListener('keydown', KeyDown);  let recall='';  SetIconCharacter$('⭐️');  SetTitleText$('Home');  
 
-function Key(){ let ev=event;  let k=ev.data;  if(!['?','=','!'].includes(k)){return};  ev.preventDefault();  if(k===''){return}
-/* ? recall */  else if(k==='?'){ qi.value=recall;  qi.select() }
-/* = calc   */  else if(k==='='){ let v=qi.value.replace('=','');  let c=Evaluate$(v);  qi.value=`${v} = ${c}` }
-/* ! clear  */  else if(k==='!'){ qi.value='';  qi.select() }
-}/*-Key*/
+function KeyDown(ev){ if(ev.altKey||ev.ctrlKey||ev.shiftKey){return};  let keys={ ';':`Recall`, 'Delete':`Clear`, '=':`Calc` };  let kf=keys[ev.key];  if(kf===undefined){return};  ev.preventDefault();  win[kf]() }
+
+function Recall(){ qi.value=recall }
+
+function Clear(){ qi.value='' }
+
+// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+function Calc(){ qi.value.replace('=','');  let qv=qi.value;  recall=qv;  let v=qv;  let c;  
+
+if(v.includes('~')){ /*val met~imp*/  let vx=v.split(' ');  let vv=vx[0];  let vu=vx[1];  let vui=vu.split('~')[1];
+
+let units={ 'km~mi':`0.621371`, 'm~ft':`3.28084`, 'cm~in':`0.39`, 'mm~in':`0.039`, 'l~qt':`1.057`, 'l~gl':`0.264`, 'ml~cp':`0.0042`, 'ml~oz':`0.0338`, 'c~f':`1.8+32`, 'kg~t':`0.0011`, 'kg~lb':`2.20462`, 'g~oz':`0.035`, 'g~lb':`0.002205`, 'mg~oz':`0.000035` };
+
+let uu=units[vu];  c=Evaluate$(`${vv}*${uu}`)+` ${vui}`;
+
+}/*-if*/
+
+else{ c=Evaluate$(v) }
+
+qi.value=`${v} = ${c}`;
+
+}/*-Calc*/
 
 // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -89,6 +107,7 @@ function Go(d,p,s){ let qv=qi.value;  recall=qv;  qi.value='';  if(qv===null||qv
 let time_el=body.querySelector('#time'); setInterval(Time_,20000); Time_(); function Time_(){ time_el.textContent=new Intl.DateTimeFormat(lang,{hour:'numeric',minute:'2-digit'}).format(new Date()).split(' ')[0] }
 
 let date_el=body.querySelector('#date'); setInterval(Date_,600000); Date_(); function Date_(){ date_el.textContent=new Intl.DateTimeFormat(lang,{weekday:'short',month:'short',day:'numeric'}).format(new Date()) }
+
 
 /* NOTES =================================================================================================================================================================
 
