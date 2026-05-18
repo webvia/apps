@@ -15,7 +15,7 @@ let i={
 /* Amazon Search  */  'amz_q'    : `www.amazon.com/s?k={%v}`,
 /* Duckdg Image   */  'ddg_i'    : `external-content.duckduckgo.com/iu/?u=https://{%v}`,
 /* Duckdg Search  */  'ddg_q'    : `duckduckgo.com/?q={%v}`,
-/* Dailym Article */  'dm'       : `www.dailymail.com/news/article-{%v}#~`,
+/* Dailym Article */  'dm'       : `www.dailymail.com/news/article-{%v}`,
 /* Mozdev Api     */  'api'      : `developer.mozilla.org/en-US/docs/Web/API/{%v}`,
 /* Mozdev Js      */  'js'       : `developer.mozilla.org/en-US/docs/Web/JavaScript/{%v}`,
 /* Mozdev Ref     */  'js_ref'   : `developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/{%v}`,
