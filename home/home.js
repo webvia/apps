@@ -13,7 +13,7 @@ let items=[
 [`Wikipedia`,	`.`,	`en.wikipedia.org`,	``,	`{dgs}{dom}/wiki`,	``,	],
 [`Weather`,	`.`,	`www.accuweather.com`,	`en/us/johnson-city/37604/weather-forecast/331088`,	``,	``,	],
 [`Amazon`,	`.`,	`www.amazon.com`,	`hz/wishlist/ls/`,	`{dom}/s?k={qry}`,	``,	],
-[`CNBC`,	`.`,	`www.cnbc.com`,	`#links~`,	`{dgs}{dom}`,	``,	],
+[`CNBC`,	`.`,	`www.cnbc.com`,	`#~ll`,	`{dgs}{dom}`,	``,	],
 [`TradingView`,	`.`,	`www.tradingview.com`,	`chart/4uKzkaDw/`,	``,	``,	],
 [`M1 Finance`,	`.`,	`dashboard.m1.com`,	`d/home`,	``,	``,	],
 [`Fidelity`,	`.`,	`digital.fidelity.com`,	`ftgw/digital/portfolio/positions`,	``,	``,	],
@@ -21,7 +21,7 @@ let items=[
 [`StockAnalysis`,	`.`,	`stockanalysis.com`,	``,	`{dom}/etf/{qry}`,	``,	],
 [`PortfolioVis`,	`.`,	`www.portfoliovisualizer.com`,	``,	`{dom}/backtest-portfolio?s=y&startYear=&endYear=&includeYTD=true&rebalanceType=1{qry}`,	``,	],
 [`Rumble`,	`.`,	`rumble.com`,	`subscriptions`,	`{dom}/search/all?q={qry}`,	``,	],
-[`Odysee`,	`.`,	`odysee.com`,	`$/playlists`,	`{dom}/$/search?q={qry}`,	``,	],
+[`Odysee`,	`.`,	`odysee.com`,	`$/following`,	`{dom}/$/search?q={qry}`,	``,	],
 [`Feedly`,	`.`,	`feedly.com`,	``,	``,	``,	],
 [`ProtonMail`,	`.`,	`mail.proton.me`,	``,	``,	``,	],
 [`StackOverflow`,	`.`,	`stackoverflow.com`,	``,	`{dgs}{dom}/questions`,	``,	],
@@ -38,7 +38,7 @@ let items=[
 // HTML ==================================================================================================================================================================
 
 function Items(){ let h=``;  for(const x of items){ let n=x[0]/*name*/; let m=x[1]/*menu*/; let d=x[2]/*domain*/; let p=x[3]/*path*/; let s=x[4].replace('{dom}',d).replace('{dgs}','duckduckgo.com/?q={qry}+site:')/*search*/;  let i=x[5]/*icon*/;  let ico=`<img ico src="https://external-content.duckduckgo.com/ip3/${i!==''?i:d}.ico">`;
-  if(m==='?'){ h=`${h}<button item onclick="Evaluate$('${p}')">${ico}<x>${n}</x></button item>`;  continue }
+  if(m==='?'){ h=`${h}<button item onclick="EvaluateJS$('${p}')">${ico}<x>${n}</x></button item>`;  continue }
   if(m==='+'){ h=`${h}<button item onclick="OpenMenu$()">${ico}<x>${n} ▾</x></button item><dialog menu onclick="CloseMenu$()">`;  continue }
   if(/\.|\-|\=/.test(m)){ h=`${h}<button item onclick="Go('${d}','${p}','${s}')" title="${d}/${p}">${ico}<x>${n}</x></button item>${(m==='=')?`</dialog menu>`:``}`;  continue }
 }/*-for*/  return h }/*-Items*/
@@ -78,11 +78,11 @@ if(v.includes('~')){ /*val met~imp*/  let vx=v.split(' ');  let vv=vx[0];  let v
 
 let units={ 'km~mi':`0.621371`, 'm~ft':`3.28084`, 'cm~in':`0.39`, 'mm~in':`0.039`, 'l~qt':`1.057`, 'l~gl':`0.264`, 'ml~cp':`0.0042`, 'ml~oz':`0.0338`, 'c~f':`1.8+32`, 'kg~t':`0.0011`, 'kg~lb':`2.20462`, 'g~oz':`0.035`, 'g~lb':`0.002205`, 'mg~oz':`0.000035` };
 
-let uu=units[vu];  c=Evaluate$(`${vv}*${uu}`)+` ${vui}`;
+let uu=units[vu];  c=EvaluateJS$(`${vv}*${uu}`)+` ${vui}`;
 
 }/*-if*/
 
-else{ c=Evaluate$(v) }
+else{ c=EvaluateJS$(v) }
 
 qi.value=`${v} = ${c}`;
 
@@ -109,7 +109,6 @@ function Go(d,p,s){ let qv=qi.value;  recall=qv;  qi.value='';  if(qv===null||qv
 let time_el=body.querySelector('#time'); setInterval(Time_,20000); Time_(); function Time_(){ time_el.textContent=new Intl.DateTimeFormat(lang,{hour:'numeric',minute:'2-digit'}).format(new Date()).split(' ')[0] }
 
 let date_el=body.querySelector('#date'); setInterval(Date_,600000); Date_(); function Date_(){ date_el.textContent=new Intl.DateTimeFormat(lang,{weekday:'short',month:'short',day:'numeric'}).format(new Date()) }
-
 
 /* NOTES =================================================================================================================================================================
 

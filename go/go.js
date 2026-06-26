@@ -4,6 +4,7 @@ if(s.startsWith('_')){ GoTo(`en.wikipedia.org/wiki/Category:${s.substring(1)}`);
 
 let i={
 /* Wikiped Search */  'w_q'      : `en.wikipedia.org/w/index.php?search={%v}`,
+/* Youtube Video  */  'yt'       : `www.youtube.com/watch?v={%v}`,
 /* Youtube Video  */  'yt_v'     : `www.youtube.com/watch?v={%v}`,
 /* Youtube Plist  */  'yt_p'     : `www.youtube.com/playlist?list={%v}`,
 /* Youtube Chan   */  'yt_c'     : `www.youtube.com/@{%v}/videos`,

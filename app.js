@@ -1,54 +1,54 @@
+// >> TOP
+let $={/*svc-vars*/};  $.id='';  $.data={};  let _={/*app-vars*/};  let /*win*/ win,doc,loc,hist,clip,  /*nav*/ navr,vkbd,lang,ua,ua_type,  /*loc*/ href,hrf,host,dom,path,srch,prms,hash,  /*doc*/ root,head,title,icon,base,body,links,h1,cli_hei,cli_wid,  /*app*/ app_url,app_js;
+
+// Start -----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Start$(); function Start$(){
 window.onerror=(message,source,lineno,colno,error)=>{ let er=`${message} : ${source} : ${lineno}-${colno}`;  console.log(er);  alert(er);  return true };
-window.onpopstate=(ev)=>{ SetLocationInfo$() };
-
-let $={/*svc-vars*/};  $.data={};  let _={/*app-vars*/};  
-let /*win*/ win,doc,loc,hist,clip,  /*nav*/ navr,vir_key,lang,ua,ua_type,  /*loc*/ href,prot,ref,host,dom,path,srch,prms,hash,  /*doc*/ root,head,title,icon,base,body,links,h1,cli_hei,cli_wid,  /*app*/ app_url,app_js;
-
-// Load ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-DOMContentLoaded$();  function DOMContentLoaded$(){  //document.addEventListener('DOMContentLoaded',(ev)=>{ DOMContentLoaded$() });
-/*win*/ win=window;  doc=win.document;  loc=win.location;  hist=win.history;  navr=win.navigator;  vir_key=navr.virtualKeyboard;
+window.onpopstate=(ev)=>{ SetLocationInfo$() };  window.onhashchange=(ev)=>{ SetLocationInfo$() }; // 
+/*win*/ win=window;  doc=win.document;  loc=win.location;  hist=win.history;  navr=win.navigator;  vkbd=navr.virtualKeyboard;
 /*nav*/ clip=navr.clipboard;  lang=navr.language;  ua=navr.userAgent;  ua_type=(/Macintosh|Windows/.test(ua))?'desktop':(/X11/.test(ua))?'mobile-desktop':'mobile';
 /*loc*/ SetLocationInfo$();
 /*doc*/ root=doc.documentElement;  head=doc.head;  title=doc.title;  body=doc.body;  links=doc.links;  h1=body.querySelector('h1'); h1=(h1!==null)?h1.textContent.trim():title;  icon=head.querySelector('#app_icon');  base=head.querySelector('#app_base').setAttribute('href',app_url+'/');  cli_hei=root.clientHeight;  cli_wid=root.clientWidth;  doc.querySelector('noscript').remove();
 /*app*/ if(app_url!==null){ SetScriptExternal$(app_js,'app_script') } else{ SetTitleText$(`App not specified`); SetIconCharacter$(`⛔️`); body.insertAdjacentHTML('beforeend',`App not specified.`) }; 
-}; /*-DOMContentLoaded$*/
+}; /*-Start$*/
 
-// Location --------------------------------------------------------------------------------------------------------------------------------------------------------------
-function SetLocationInfo$(){ 
-  href=loc.href;  prot=loc.protocol;  host=loc.hostname;  path=loc.pathname;  srch=loc.search;  hash=loc.hash;  prms=new URLSearchParams(srch);  
-  ref=href.replace(/^https\:\/\//,'').replace(/^www\./,'');  dom=host.substring(0,host.lastIndexOf('.')).replace(/^www\./,'');
-  app_url=prms.get('app');  app_js=app_url+'.js';  
-}
-// href[ protocol: // host[ hostname(domain|ip) : port ] /pathname ?search&p=v #hash ]
+function SetLocationInfo$(){ href=loc.href;  host=loc.hostname;  path=loc.pathname;  srch=loc.search;  hash=loc.hash;  prms=new URLSearchParams(srch);  
+hrf=href.replace(/^https\:\/\/www\.|https\:\/\//,'');  dom=host.substring(0,host.lastIndexOf('.')).replace(/^www\./,'');  app_url=prms.get('app');  app_js=app_url+'.js' } /*-SetLocationInfo$*/  // href[ protocol: // host[ hostname(domain|ip) : port ] /pathname ?search&p=v #hash ]
 
-
+// SetURL ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 function SetURL$(x){ let u=new URL(x.url);  let ps=new URLSearchParams(u.search);  for(let p of x.params){ ps.set(p.key, p.value) };  u.search=ps;  if(x.action==='history.replaceState'){ hist.replaceState(null,'',u) };  return u };  // { action:'history.replaceState', url:'url', params:[ { key:'key', value:'value' } ] }
 
-// function SetURL$(x){ let u=x.url;  for(let p of x.params){ u=u.replace(new RegExp(`([\?|\&]${p.key}=)[^\&|^\#]+`),`$1${p.value}`); };  if(x.action==='history.replaceState'){ hist.replaceState(null,'',u) };  return u }  // { action:'history.replaceState', url:'url', params:[ { key:'key', value:'value' } ] }
+// function SetURL$(x){ let u=x.url;  for(let p of x.params){ u=u.replace(new RegExp(`([\?|\&]${p.key}=)[^\&|^\#]+`),`$1${p.value}`); };  if(x.action==='history.replaceState'){ hist.replaceState(null,'',u) };  return u }  // { action:'history.replaceState', url:'url', params:[ { key:'key', value:'value' } ] }   // action:'history.pushState|replaceState|hashChange'
 
-// action : history.pushStsate|replaceState|hashChange
-
-// Functions =============================================================================================================================================================
-
+// >> Misc ===============================================================================================================================================================
 function log(msg){ console.log(msg) }  function dir(obj){ console.dir(obj) }
 
 // Test ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 function HasValue$(x){ return ![undefined,null,{},[],''].includes(x) }  function IsNotNull$(x){ return ![undefined,null].includes(x) }  function IsDefined$(x){ return x!==undefined }  function IsJSON$(x){ return /^\s*(\{|\[)/.test(x) }  function IsHTML$(x){ return /<[a-z]/i.test(x) }  // /<[^>]+>/i ?
 function HasChildren$(x){ return Object.keys(x).length!==0 }
-
 function Matches$(regexp_str,test_val){ let regexp=new RegExp(regexp_str);  return regexp.test(test_val) }
 
 // Modify ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 function CopyObject$(obj){ return JSON.parse(JSON.stringify(obj)); }
 function RenameObject$(obj,old_key,new_key){ obj[new_key]=obj[old_key]; delete obj[old_key]; }   // ?  Object.assign(obj,{[new_key]:obj[old_key]}); delete obj[old_key];
 function RemoveArrayDuplicates$(x){ x=[...new Set(x)]; return x }
-function Evaluate$(x){ let f=new Function(`return ${x}`); let r=f(); return r }  // Evaluate string as function    //function Eval(x){ return eval(x) }
-function Function$(x){ x=ParseJSON$(x); window[x.function](x) }  // Call function from JSON-string or JS-object
-function ParseJSON$(x){ if(typeof x==='string'){ x=JSON.parse(x) }; return x }
-async function Fetch$(x){ x=ParseJSON$(x);  if( !HasValue$(x.url) ){ return x };  let r=await fetch(x.url);  if(r.ok){ let d=await r.text();  if(IsJSON$(d)){ d=ParseJSON$(d) };  x.data=d;  Function$(x) } }
+function EvaluateJS$(x){ let f=new Function(`return ${x}`); let r=f(); return r }  // Evaluate string as function    //function Eval(x){ return eval(x) }
+function CallFunction$(x){ x=ParseJSON$(x); window[x.func](x) }  // Call function from JSON-string or JS-object  { func:'name', ... }
+function ParseJSON$(x){ if(typeof x==='string' && IsJSON$(x)){ x=JSON.parse(x) }; return x }
 
-// HTML ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+async function GetData$(x){ x=ParseJSON$(x);  let r=await fetch(x.url);  if(r.ok){ let d=await r.text();  d=ParseJSON$(d);  window[x.func](d) } }
+ // GetData$({ url:'data.json', func:'UseData' });  function UseData(data){ ... }
+
+
+async function GenerateID$(x){ x=ParseJSON$(x); let t=x.type;  let f=x.func;  let u=`https://cdn.jsdelivr.net/npm/`;
+ if(t==='uuidv4'){ window[f](crypto.randomUUID()); return }
+ if(t==='nanoid'){ let m=await import(`${u}nanoid/nanoid.js`);  window[f](m.nanoid());  return }
+ if(t==='ulid'){ let m=await import(`${u}ulid/dist/browser/index.js`);  window[f](m.ulid());  return }
+ if(t==='cuid2'){ let m=await import(`${u}@paralleldrive/cuid2/index.js`);  window[f](m.createId());  return } // doesn't work.
+} // GenerateID$({ type:'ulid', func:'UseID' });  function UseID(id){ alert(id) }
+
+
 function SetTitleText$(txt){ doc.title=txt } // SetDocumentTitle(txt)
 function SetIconURL$(url){ icon.href=url } // SetDocumentIcon(char|imgurl)
 function SetIconCharacter$(chr){ icon.href=`data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text x=%22-.1em%22 y=%22.9em%22 font-size=%2280%22>${chr}</text></svg>` }
@@ -65,19 +65,16 @@ function SetScriptExternal$(url,id){ let e=doc.createElement('script'); e.src=ur
 // SetEvent( { action:'add|remove|toggle', event:'click|keydown|etc', element:'window|document|selector', function:'function', data:{alert:'hi'}, key:{key:'ctrl+x'} } );
 // function SetEvent(x){ if(IsJSON$(x)){ x=ParseJSON$(x) };  let el=body.querySelector(x.element);  if(x.action==='add'){ el.addEventListener(x.event, window[x.function].bind(this, x.data)) } }
 
-// HTML ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-// SetHTML$({ action:'add|..', content1:'sel'|'html'|node, content2:'sel'|'html'|node, position:'before|begin|end|after|self?|inner?', data:map });
-
-function SetHTML$(x){ let a=x.action; let c1=x.content1; let c2=x.content2; let p=x.position; let d=x.data;  if(a==null){return}
-  else if(a==='add'){ c1=DatafyHTML$(c1,d);  c1=ConvertHTML$(c1);  c2=GetHTML$(c2);  for(const c2n of c2){ let c1c=c1.cloneNode(true);  InsertHTML$(c1c, c2n, p) } }
-  else if(a==='replace'){ c1=GetHTML$(c1);  c2=DatafyHTML$(c2,d);  c2=ConvertHTML$(c2);  for(const c1n of c1){ let c2c=c2.cloneNode(true);  c1n.replaceWith(c2c) } }
-  else if(a==='replace-inner'){ c1=GetHTML$(c1);  c2=DatafyHTML$(c2,d);  c2=ConvertHTML$(c2);  for(const c1n of c1){ let c2c=c2.cloneNode(true);  c1n.replaceChildren(c2c) } }
-  else if(a==='remove'){ c1=GetHTML$(c1);  for(const c1n of c1){ c1n.replaceWith() } }
-  else if(a==='remove-inner'){ c1=GetHTML$(c1);  for(const c1n of c1){ c1n.replaceChildren() } }
-  else if(a==='move'){ c1=GetHTML$(c1);  c2=doc.querySelector(c2);  for(const c1n of c1){ InsertHTML$(c1n, c2, p) } }
-  else if(a==='copy'){ c1=GetHTML$(c1);  c1=MergeHTML$(c1);  c2=GetHTML$(c2);  for(const c2n of c2){ let c1c=c1.cloneNode(true);  InsertHTML$(c1c, c2n, p) } }
-} /*-SetHTML$*/
+// >> HTML ===============================================================================================================================================================
+function SetHTML$(x){ let a=x.action; let c1=x.content1; let c2=x.content2; let p=x.position; let d=x.data;
+ if(a==='add'){ c1=DatafyHTML$(c1,d);  c1=ConvertHTML$(c1);  c2=GetHTML$(c2);  for(const c2n of c2){ let c1c=c1.cloneNode(true);  InsertHTML$(c1c, c2n, p) }; return }
+ if(a==='replace'){ c1=GetHTML$(c1);  c2=DatafyHTML$(c2,d);  c2=ConvertHTML$(c2);  for(const c1n of c1){ let c2c=c2.cloneNode(true);  c1n.replaceWith(c2c) }; return }
+ if(a==='replace-inner'){ c1=GetHTML$(c1);  c2=DatafyHTML$(c2,d);  c2=ConvertHTML$(c2);  for(const c1n of c1){ let c2c=c2.cloneNode(true);  c1n.replaceChildren(c2c) }; return }
+ if(a==='remove'){ c1=GetHTML$(c1);  for(const c1n of c1){ c1n.replaceWith() }; return }
+ if(a==='remove-inner'){ c1=GetHTML$(c1);  for(const c1n of c1){ c1n.replaceChildren() }; return }
+ if(a==='move'){ c1=GetHTML$(c1);  c2=doc.querySelector(c2);  for(const c1n of c1){ InsertHTML$(c1n, c2, p) }; return }
+ if(a==='copy'){ c1=GetHTML$(c1);  c1=MergeHTML$(c1);  c2=GetHTML$(c2);  for(const c2n of c2){ let c1c=c1.cloneNode(true);  InsertHTML$(c1c, c2n, p) }; return }
+} /*-SetHTML$*/ // { action:'add|..', content1:'sel'|'html'|node, content2:'sel'|'html'|node, position:'before|begin|end|after|self?|inner?', data:map }
 
 function GetHTML$(c){ if(typeof c!=='string'){ return [c] } else { return doc.querySelectorAll(c) } }
 function ConvertHTML$(c){ if(typeof c!=='string'){ return c }  let t=doc.createElement('template');  t.innerHTML=c;  f=t.content;  t.remove();  return f }
@@ -85,8 +82,11 @@ function MergeHTML$(c){ let f=new DocumentFragment();  for(const n of c){ f.appe
 function InsertHTML$(c,n,p){ if(p==='before'){ n.before(c) } else if(p==='begin'){ n.prepend(c) } else if(p==='end'){ n.append(c) } else if(p==='after'){ n.after(c) } }
 function DatafyHTML$(c,d){ if(d==null){ return c }  let cd='';  for(const i of d){ let ci=c;  for(const [k,v] of Object.entries(i)){ ci=ci.replaceAll(`{%${k}}`, v) };  cd=cd+ci };  return cd }
 
-// Dialog ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Menu ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+function OpenMenu$(menuSelector){ let btn=body.querySelector('button:focus'); let mnu_sel=(menuSelector!=null)?menuSelector:'button:focus+dialog'; let mnu=body.querySelector(mnu_sel); let btn_rect=btn.getBoundingClientRect(); let btn_lft=btn_rect.left; let btn_bot=btn_rect.bottom; let btn_below_hgt=cli_hei-btn_bot; let btn_rht_wid=cli_wid-btn_lft;  let mnu_sty=mnu.style; mnu_sty.padding='unset'; mnu_sty.maxHeight=`${cli_hei-16}px`; mnu_sty.maxWidth=`${cli_wid-16}px`;  mnu.showModal(); mnu.focus();  let mnu_rect=mnu.getBoundingClientRect(); let mnu_hgt=mnu_rect.height; let mnu_wid=mnu_rect.width;  if(mnu_hgt<btn_below_hgt){mnu_sty.marginTop=`${btn_bot}px`}else{mnu_sty.marginBottom=`${8}px`} if(mnu_wid<btn_rht_wid){mnu_sty.marginLeft=`${btn_lft}px`}else{mnu_sty.marginRight=`${8}px`}
+} /*-OpenMenu$*/   function CloseMenu$(){ let mnu=body.querySelector('dialog:focus-within');  mnu.close() }
 
+// Dialog ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 function OpenDialog$(content,type,title,submitButton,closeButton){ // <button onclick="OpenDialog('<div>hi</div>','modal','Save','Cancel')">dialog</button>  // \moz_html__Element/dialog  
 let header=`<header id="dlg_top" style="text-align:right"><button id="dlg_button_close_top" onclick="CloseDialog$()" autofocus>❌️</button></header>`;
 let footer=(submitButton==null)?``:`<footer id="dlg_bottom" style="text-align:right"><button id="dlg_button_close" onclick="CloseDialog$()">${closeButton}</button><button id="dlg_button_submit" formmethod="dialog">${submitButton}</button></footer>`;
@@ -94,12 +94,7 @@ let h=`<dialog id="dlg" style="margin-top:0"><form id="dlg_form">${header}<artic
 body.insertAdjacentHTML('beforeend',h); SetStyleInternal$(` #dlg::backdrop { opacity: .5; } `); let d=doc.querySelector("#dlg");  if(type==='modal'){ d.showModal() } else{ d.show() }
 } /*-OpenDialog$*/   function CloseDialog$(data){ let d=doc.querySelector("#dlg"); d.close(); d.remove() }
 
-// Menu ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-function OpenMenu$(menuSelector){ let btn=body.querySelector('button:focus'); let mnu_sel=(menuSelector!=null)?menuSelector:'button:focus+dialog'; let mnu=body.querySelector(mnu_sel); let btn_rect=btn.getBoundingClientRect(); let btn_lft=btn_rect.left; let btn_bot=btn_rect.bottom; let btn_below_hgt=cli_hei-btn_bot; let btn_rht_wid=cli_wid-btn_lft;  let mnu_sty=mnu.style; mnu_sty.padding='unset'; mnu_sty.maxHeight=`${cli_hei-16}px`; mnu_sty.maxWidth=`${cli_wid-16}px`;  mnu.showModal(); mnu.focus();  let mnu_rect=mnu.getBoundingClientRect(); let mnu_hgt=mnu_rect.height; let mnu_wid=mnu_rect.width;  if(mnu_hgt<btn_below_hgt){mnu_sty.marginTop=`${btn_bot}px`}else{mnu_sty.marginBottom=`${8}px`} if(mnu_wid<btn_rht_wid){mnu_sty.marginLeft=`${btn_lft}px`}else{mnu_sty.marginRight=`${8}px`}
-} /*-OpenMenu$*/   function CloseMenu$(){ let mnu=body.querySelector('dialog:focus-within');  mnu.close() }
-
-/* Notes =================================================================================================================================================================
+/* >> Notes ==============================================================================================================================================================
 
 > Platform:  Variables, Components, Events/Listeners/Keyboard, Data-Fetch/Push, Clipboard, Selection, Location/URL, CSS, Displays  ...
 
@@ -127,6 +122,10 @@ Displays:  @media screen and (max-width: 767px) { ... }   @media screen and (min
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+document.addEventListener('DOMContentLoaded',(ev)=>{ Start$() });
+
+
+
 async function addHTMLExternal(url,selector,position) { let u=url; let s=selector; let p=position; if(u===null){return}; if(s===null){s='body'}; if(p===null){p='beforeend'};
   if(u.startsWith('https://')||u.startsWith('http://')){ u=`${u}` } else if(u.startsWith('//')){ u=`https:${u}` } else if(u.startsWith('/')){ u=`${app_url}${u}` };
   try { let r = await fetch(u); 
@@ -141,6 +140,6 @@ async function addExtHTMLMore(){ await addExtHTML('/more.html','#index','beforee
 
 let virtual_keyboard_is_open=false;  qi.addEventListener('keydown', Key);  if ('virtualKeyboard' in navigator) { navigator.virtualKeyboard.overlaysContent=true;  navigator.virtualKeyboard.addEventListener('geometrychange',(event)=>{ const{x,y,width,height}=event.target.boundingRect;  if(height>0){ virtual_keyboard_is_open=true; qi.removeEventListener('keydown', Key); qi.addEventListener('input', Key) } else{ virtual_keyboard_is_open=false; qi.removeEventListener('input', Key);  qi.addEventListener('keydown', Key) } }) };
 
-function ToggleVirtualKeyboard$(){ vir_key.overlaysContent=true;  if(vir_key.boundingRect.height===0){ vir_key.show() } else{ vir_key.hide() };  vir_key.overlaysContent=false; }
+function ToggleVirtualKeyboard$(){ vkbd.overlaysContent=true;  if(vkbd.boundingRect.height===0){ vkbd.show() } else{ vkbd.hide() };  vkbd.overlaysContent=false; }
 
 ========================================================================================================================================================================*/
