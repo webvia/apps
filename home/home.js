@@ -13,7 +13,7 @@ let items=[
 [`Wikipedia`,	`.`,	`en.wikipedia.org`,	``,	`{dgs}{dom}/wiki`,	``,	],
 [`Weather`,	`.`,	`www.accuweather.com`,	`en/us/johnson-city/37604/weather-forecast/331088`,	``,	``,	],
 [`Amazon`,	`.`,	`www.amazon.com`,	`hz/wishlist/ls/`,	`{dom}/s?k={qry}`,	``,	],
-[`CNBC`,	`.`,	`www.cnbc.com`,	`#~ll`,	`{dgs}{dom}`,	``,	],
+[`CNBC`,	`.`,	`www.cnbc.com`,	`#~l`,	`{dgs}{dom}`,	``,	],
 [`TradingView`,	`.`,	`www.tradingview.com`,	`chart/4uKzkaDw/`,	``,	``,	],
 [`M1 Finance`,	`.`,	`dashboard.m1.com`,	`d/home`,	``,	``,	],
 [`Fidelity`,	`.`,	`digital.fidelity.com`,	`ftgw/digital/portfolio/positions`,	``,	``,	],

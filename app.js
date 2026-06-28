@@ -1,11 +1,12 @@
 // >> TOP
 let $={/*svc-vars*/};  $.id='';  $.data={};  let _={/*app-vars*/};  let /*win*/ win,doc,loc,hist,clip,  /*nav*/ navr,vkbd,lang,ua,ua_type,  /*loc*/ href,hrf,host,dom,path,srch,prms,hash,  /*doc*/ root,head,title,icon,base,body,links,h1,cli_hei,cli_wid,  /*app*/ app_url,app_js;
+/*win*/ win=window;  doc=win.document;  loc=win.location;  hist=win.history;  navr=win.navigator;  vkbd=navr.virtualKeyboard;
+
+window.onerror=(message,source,lineno,colno,error)=>{ let er=`${message} : ${source} : ${lineno}-${colno}`;  console.log(er);  alert(er);  return true };
+window.onpopstate=(ev)=>{ SetLocationInfo$() };  window.onhashchange=(ev)=>{ SetLocationInfo$() }; // 
 
 // Start -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 Start$(); function Start$(){
-window.onerror=(message,source,lineno,colno,error)=>{ let er=`${message} : ${source} : ${lineno}-${colno}`;  console.log(er);  alert(er);  return true };
-window.onpopstate=(ev)=>{ SetLocationInfo$() };  window.onhashchange=(ev)=>{ SetLocationInfo$() }; // 
-/*win*/ win=window;  doc=win.document;  loc=win.location;  hist=win.history;  navr=win.navigator;  vkbd=navr.virtualKeyboard;
 /*nav*/ clip=navr.clipboard;  lang=navr.language;  ua=navr.userAgent;  ua_type=(/Macintosh|Windows/.test(ua))?'desktop':(/X11/.test(ua))?'mobile-desktop':'mobile';
 /*loc*/ SetLocationInfo$();
 /*doc*/ root=doc.documentElement;  head=doc.head;  title=doc.title;  body=doc.body;  links=doc.links;  h1=body.querySelector('h1'); h1=(h1!==null)?h1.textContent.trim():title;  icon=head.querySelector('#app_icon');  base=head.querySelector('#app_base').setAttribute('href',app_url+'/');  cli_hei=root.clientHeight;  cli_wid=root.clientWidth;  doc.querySelector('noscript').remove();
