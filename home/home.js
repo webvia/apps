@@ -31,7 +31,7 @@ let items=[
 [`Drive`,	`.`,	`drive.google.com`,	`drive/home`,	``,	``,	],
 [`Voice`,	`=`,	`voice.google.com`,	`u/0/messages`,	``,	``,	],
 [`Tools`,	`+`,	`onlinetools.com`,	``,	``,	``,	],
-[`Calculator`,	`-`,	`webvia.github.io`,	`apps/app.html?app=calc`,	``,	`www.calculator.net`,	],
+[`Calc`,	`-`,	`webvia.github.io`,	`apps/app.html?app=calc`,	``,	`www.calculator.net`,	],
 [`Day of Week`,	`=`,	`www.timeanddate.com`,	``,	`{dom}/date/weekday.html?{qry}`,	``,	],
 ];
 
@@ -100,7 +100,7 @@ function Go(d,p,s){ let qv=qi.value;  recall=qv;  qi.value='';  if(qv===null||qv
     }/*-i*/
   qv=u; }/*-portfoliovisualizer*/
   else if( d==='www.timeanddate.com' ){ qv=qv.split('-'); qv=`year=${qv[0]}&month=${qv[1]}&day=${qv[2]}`;
-  }/*-timeanddate*/
+  }/*-timeanddate  https://www.timeanddate.com/date/weekday.html?month=02&day=09&year=1997 */
   win.open(`https://${s}`.replace('{qry}',qv.replace(' ','+')));
 }/*-Go*/
 

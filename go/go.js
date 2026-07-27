@@ -1,22 +1,22 @@
-Go();  function Go(){ let s=prms.get('s')+hash;  if(s==''){ return };  // http://localhost/apps/github/apps/app.html?app=go&s=$(CURRENT_WORD)   s=shorthand
+Go();  function Go(){ let s=prms.get('s')+hash;  if(s==''){ return };  // http://localhost/apps/github/apps/app.html?app=go&s=$(CURRENT_WORD)
 
 if(s.startsWith('_')){ GoTo(`en.wikipedia.org/wiki/Category:${s.substring(1)}`);  return };  if(!s.includes('__')){ GoTo(`en.wikipedia.org/wiki/${s}`);  return };
 
 let i={
-/* Wikiped Search */  'w_q'      : `en.wikipedia.org/w/index.php?search={%v}`,
+/* Wikiped Search */  'wp_q'     : `en.wikipedia.org/w/index.php?search={%v}`,
 /* Youtube Video  */  'yt'       : `www.youtube.com/watch?v={%v}`,
-/* Youtube Video  */  'yt_v'     : `www.youtube.com/watch?v={%v}`,
 /* Youtube Plist  */  'yt_p'     : `www.youtube.com/playlist?list={%v}`,
 /* Youtube Chan   */  'yt_c'     : `www.youtube.com/@{%v}/videos`,
 /* Youtube Ch Pls */  'yt_cp'    : `www.youtube.com/@{%v}/playlists`,
 /* Youtube Ch Rel */  'yt_cr'    : `www.youtube.com/@{%v}/releases`,
 /* Youtube Search */  'yt_q'     : `www.youtube.com/results?search_query={%v}`,
-/* Amazon Product */  'amz_p'    : `www.amazon.com/dp/{%v}`,
-/* Amazon Store   */  'amz_s'    : `www.amazon.com/stores/page/{%v}`,
-/* Amazon Search  */  'amz_q'    : `www.amazon.com/s?k={%v}`,
-/* Duckdg Image   */  'ddg_i'    : `external-content.duckduckgo.com/iu/?u=https://{%v}`,
-/* Duckdg Search  */  'ddg_q'    : `duckduckgo.com/?q={%v}`,
+/* Amazon Product */  'am'       : `www.amazon.com/dp/{%v}`,
+/* Amazon Store   */  'am_s'     : `www.amazon.com/stores/page/{%v}`,
+/* Amazon Search  */  'am_q'     : `www.amazon.com/s?k={%v}`,
+/* Duckdg Image   */  'dg_i'     : `external-content.duckduckgo.com/iu/?u=https://{%v}`,
+/* Duckdg Search  */  'dg_q'     : `duckduckgo.com/?q={%v}`,
 /* Dailym Article */  'dm'       : `www.dailymail.com/news/article-{%v}`,
+/* Cinemaholic    */  'ch'       : `thecinemaholic.com/{%v}`,
 /* Mozdev Api     */  'api'      : `developer.mozilla.org/en-US/docs/Web/API/{%v}`,
 /* Mozdev Js      */  'js'       : `developer.mozilla.org/en-US/docs/Web/JavaScript/{%v}`,
 /* Mozdev Ref     */  'js_ref'   : `developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/{%v}`,
