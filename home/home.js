@@ -15,7 +15,7 @@ let items=[
 [`Amazon`,	`.`,	`www.amazon.com`,	`hz/wishlist/ls/`,	`{dom}/s?k={qry}`,	``,	],
 [`CNBC`,	`.`,	`www.cnbc.com`,	`#~l`,	`{dgs}{dom}`,	``,	],
 [`TradingView`,	`.`,	`www.tradingview.com`,	`chart/4uKzkaDw/`,	``,	``,	],
-[`M1 Finance`,	`.`,	`dashboard.m1.com`,	`d/home`,	``,	``,	],
+[`M1 Finance`,	`.`,	`dashboard.m1.com`,	``,	``,	``,	],
 [`Fidelity`,	`.`,	`digital.fidelity.com`,	`ftgw/digital/portfolio/positions`,	``,	``,	],
 [`42 Macro`,	`.`,	`app.42macro.com`,	`signals`,	``,	``,	],
 [`StockAnalysis`,	`.`,	`stockanalysis.com`,	``,	`{dom}/etf/{qry}`,	``,	],
@@ -23,9 +23,9 @@ let items=[
 [`Rumble`,	`.`,	`rumble.com`,	`subscriptions`,	`{dom}/search/all?q={qry}`,	``,	],
 [`Odysee`,	`.`,	`odysee.com`,	`$/following`,	`{dom}/$/search?q={qry}`,	``,	],
 [`Feedly`,	`.`,	`feedly.com`,	``,	``,	``,	],
-[`ProtonMail`,	`.`,	`mail.proton.me`,	``,	``,	``,	],
 [`StackOverflow`,	`.`,	`stackoverflow.com`,	``,	`{dgs}{dom}/questions`,	``,	],
 [`Mozilla`,	`.`,	`developer.mozilla.org`,	``,	`{dgs}{dom}/en-US/docs`,	``,	],
+[`Walmart`,	`.`,	`www.walmart.com`,	`lists/favorites`,	``,	``,	],
 [`Google`,	`+`,	`www.google.com`,	``,	``,	``,	],
 [`Calendar`,	`.`,	`calendar.google.com`,	`calendar/u/0/r`,	``,	``,	],
 [`Drive`,	`.`,	`drive.google.com`,	`drive/home`,	``,	``,	],
@@ -33,6 +33,11 @@ let items=[
 [`Tools`,	`+`,	`onlinetools.com`,	``,	``,	``,	],
 [`Calc`,	`-`,	`webvia.github.io`,	`apps/app.html?app=calc`,	``,	`www.calculator.net`,	],
 [`Day of Week`,	`=`,	`www.timeanddate.com`,	``,	`{dom}/date/weekday.html?{qry}`,	``,	],
+[`Proton`,	`+`,	`proton.me`,	``,	``,	``,	],
+[`Mail`,	`-`,	`mail.proton.me`,	``,	``,	``,	],
+[`Drive`,	`-`,	`drive.proton.me`,	``,	``,	``,	],
+[`Pass`,	`=`,	`pass.proton.me`,	``,	``,	``,	],
+
 ];
 
 // HTML ==================================================================================================================================================================
