@@ -15,7 +15,7 @@ let items=[
 [`Amazon`,	`.`,	`www.amazon.com`,	`hz/wishlist/ls/`,	`{dom}/s?k={qry}`,	``,	],
 [`CNBC`,	`.`,	`www.cnbc.com`,	`#~l`,	`{dgs}{dom}`,	``,	],
 [`TradingView`,	`.`,	`www.tradingview.com`,	`chart/4uKzkaDw/`,	``,	``,	],
-[`M1 Finance`,	`.`,	`dashboard.m1.com`,	``,	``,	``,	],
+[`M1 Finance`,	`.`,	`dashboard.m1.com`,	`welcome`,	``,	``,	],
 [`Fidelity`,	`.`,	`digital.fidelity.com`,	`ftgw/digital/portfolio/positions`,	``,	``,	],
 [`42 Macro`,	`.`,	`app.42macro.com`,	`signals`,	``,	``,	],
 [`StockAnalysis`,	`.`,	`stockanalysis.com`,	``,	`{dom}/etf/{qry}`,	``,	],
@@ -30,14 +30,11 @@ let items=[
 [`Calendar`,	`.`,	`calendar.google.com`,	`calendar/u/0/r`,	``,	``,	],
 [`Drive`,	`.`,	`drive.google.com`,	`drive/home`,	``,	``,	],
 [`Voice`,	`=`,	`voice.google.com`,	`u/0/messages`,	``,	``,	],
-[`Tools`,	`+`,	`onlinetools.com`,	``,	``,	``,	],
-[`Calc`,	`-`,	`webvia.github.io`,	`apps/app.html?app=calc`,	``,	`www.calculator.net`,	],
-[`Day of Week`,	`=`,	`www.timeanddate.com`,	``,	`{dom}/date/weekday.html?{qry}`,	``,	],
 [`Proton`,	`+`,	`proton.me`,	``,	``,	``,	],
 [`Mail`,	`-`,	`mail.proton.me`,	``,	``,	``,	],
 [`Drive`,	`-`,	`drive.proton.me`,	``,	``,	``,	],
 [`Pass`,	`=`,	`pass.proton.me`,	``,	``,	``,	],
-
+[`Calc`,	`.`,	`webvia.github.io`,	`apps/app.html?app=calc`,	``,	`www.calculator.net`,	],
 ];
 
 // HTML ==================================================================================================================================================================
@@ -75,23 +72,7 @@ function Recall(){ qi.value=recall }
 
 function Clear(){ qi.value='' }
 
-// -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-function Calc(){ qi.value.replace('=','');  let qv=qi.value;  recall=qv;  let v=qv;  let c;  
-
-if(v.includes('~')){ /*val met~imp*/  let vx=v.split(' ');  let vv=vx[0];  let vu=vx[1];  let vui=vu.split('~')[1];
-
-let units={ 'km~mi':`0.621371`, 'm~ft':`3.28084`, 'cm~in':`0.39`, 'mm~in':`0.039`, 'l~qt':`1.057`, 'l~gl':`0.264`, 'ml~cp':`0.0042`, 'ml~oz':`0.0338`, 'c~f':`1.8+32`, 'kg~t':`0.0011`, 'kg~lb':`2.20462`, 'g~oz':`0.035`, 'g~lb':`0.002205`, 'mg~oz':`0.000035` };
-
-let uu=units[vu];  c=EvaluateJS$(`${vv}*${uu}`)+` ${vui}`;
-
-}/*-if*/
-
-else{ c=EvaluateJS$(v) }
-
-qi.value=`${v} = ${c}`;
-
-}/*-Calc*/
+function Calc(){ qi.value.replace('=','');  let qv=qi.value;  recall=qv;  let v=qv;  let c;  c=EvaluateJS$(v);  qi.value=`${v} = ${c}`; }/*-Calc*/
 
 // -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

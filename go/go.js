@@ -7,7 +7,7 @@ let i={
 /* Youtube Video  */  'yt'       : `www.youtube.com/watch?v={%v}`,
 /* Youtube Plist  */  'yt_p'     : `www.youtube.com/playlist?list={%v}`,
 /* Youtube Chan   */  'yt_c'     : `www.youtube.com/@{%v}/videos`,
-/* Youtube Ch Pls */  'yt_cp'    : `www.youtube.com/@{%v}/playlists`,
+/* Youtube Ch Pls */  'yt_cp'    : `www.youtube.com/@{%v}/playlists?view=1&sort=lad&flow=grid`,
 /* Youtube Ch Rel */  'yt_cr'    : `www.youtube.com/@{%v}/releases`,
 /* Youtube Search */  'yt_q'     : `www.youtube.com/results?search_query={%v}`,
 /* Amazon Product */  'am'       : `www.amazon.com/dp/{%v}`,
