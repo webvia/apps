@@ -34,7 +34,8 @@ let items=[
 [`Mail`,	`-`,	`mail.proton.me`,	``,	``,	``,	],
 [`Drive`,	`-`,	`drive.proton.me`,	``,	``,	``,	],
 [`Pass`,	`=`,	`pass.proton.me`,	``,	``,	``,	],
-[`Calc`,	`.`,	`webvia.github.io`,	`apps/app.html?app=calc`,	``,	`www.calculator.net`,	],
+[`Calculate`,	`.`,	`webvia.github.io`,	`apps/app.html?app=calc`,	``,	`www.calculator.net`,	],
+[`Day of Week`,	`=`,	`www.timeanddate.com`,	``,	`{dom}/date/weekday.html?{qry}`,	``,	],
 ];
 
 // HTML ==================================================================================================================================================================

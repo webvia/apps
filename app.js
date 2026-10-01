@@ -1,5 +1,5 @@
 // >> TOP
-let $={/*svc-vars*/};  $.id='';  $.data={};  let _={/*app-vars*/};  let /*win*/ win,doc,loc,hist,clip,navr,  /*nav*/ vkbd,lang,ua,ua_type,  /*loc*/ href,hrf,host,dom,path,srch,prms,hash,  /*doc*/ root,head,title,icon,base,body,links,h1,cli_hei,cli_wid,  /*app*/ app_url,app_js;
+let $={ id:'', data:{}, events:{} };   let _={/*app-vars*/};  let /*win*/ win,doc,loc,hist,clip,navr,  /*nav*/ vkbd,lang,ua,ua_type,  /*loc*/ href,hrf,host,dom,path,srch,prms,hash,  /*doc*/ root,head,title,icon,base,body,links,h1,cli_hei,cli_wid,  /*app*/ app_url,app_js;
 
 // Start -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 Start$(); function Start$(){ /*win*/ win=window;  doc=win.document;  loc=win.location;  hist=win.history;  navr=win.navigator;  vkbd=navr.virtualKeyboard;
@@ -61,9 +61,6 @@ function SetScriptExternal$(url,id){ let e=doc.createElement('script'); e.src=ur
 
 // function SetModules$(modules){} // tree, etc ...  let components=(o.components!=null)?o.components:null;
 
-// SetEvent( { action:'add|remove|toggle', event:'click|keydown|etc', element:'window|document|selector', function:'function', data:{alert:'hi'}, key:{key:'ctrl+x'} } );
-// function SetEvent(x){ if(IsJSON$(x)){ x=ParseJSON$(x) };  let el=body.querySelector(x.element);  if(x.action==='add'){ el.addEventListener(x.event, window[x.function].bind(this, x.data)) } }
-
 // >> HTML ===============================================================================================================================================================
 function SetHTML$(x){ let a=x.action; let c1=x.content1; let c2=x.content2; let p=x.position; let d=x.data;
  if(a==='add'){ c1=DatafyHTML$(c1,d);  c1=ConvertHTML$(c1);  c2=GetHTML$(c2);  for(const c2n of c2){ let c1c=c1.cloneNode(true);  InsertHTML$(c1c, c2n, p) }; return }
@@ -121,10 +118,6 @@ Displays:  @media screen and (max-width: 767px) { ... }   @media screen and (min
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-document.addEventListener('DOMContentLoaded',(ev)=>{ Start$() });
-
-
-
 async function addHTMLExternal(url,selector,position) { let u=url; let s=selector; let p=position; if(u===null){return}; if(s===null){s='body'}; if(p===null){p='beforeend'};
   if(u.startsWith('https://')||u.startsWith('http://')){ u=`${u}` } else if(u.startsWith('//')){ u=`https:${u}` } else if(u.startsWith('/')){ u=`${app_url}${u}` };
   try { let r = await fetch(u); 
@@ -135,7 +128,12 @@ async function addExtHTMLMore(){ await addExtHTML('/more.html','#index','beforee
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-> Virtual Keyboard
+function SetEvent$(x){ x.target.addEventListener(x.event, window[x.function].bind(this, x.data));  let keys_funcs=x.keys_functions;  let keys_keys=Object.keys(keys_funcs);  $.events[x.id]=x; }
+{ (id:'<target-event>',) target:win|doc|body|elem_var, event:'click|keydown|etc', exclude_elements:[<elem_vars>], exclude_editable:true, data:{props}, multi_key:true, modifier_keys:'ctrl+alt+shift', keys_functions:{'<k>':'<f>'} }  // (ctrl~meta  alt~opt)
+function DoEvent$(id){ }
+function RemoveEvent$(id){ let x=$.events[id]; delete $.events[id] }
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 let virtual_keyboard_is_open=false;  qi.addEventListener('keydown', Key);  if ('virtualKeyboard' in navigator) { navigator.virtualKeyboard.overlaysContent=true;  navigator.virtualKeyboard.addEventListener('geometrychange',(event)=>{ const{x,y,width,height}=event.target.boundingRect;  if(height>0){ virtual_keyboard_is_open=true; qi.removeEventListener('keydown', Key); qi.addEventListener('input', Key) } else{ virtual_keyboard_is_open=false; qi.removeEventListener('input', Key);  qi.addEventListener('keydown', Key) } }) };
 

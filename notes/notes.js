@@ -1,3 +1,24 @@
+// >> CSS
+function CSS(){ let css=`
+#notes { position:fixed;  z-index:1;  top:0; right:calc(100vw - 180px); bottom:0; left:0; }
+.note { width:calc(100vw - 180px);  padding:8px;  font:16px monospace; }  .note:focus { outline:none; }
+
+#bar { position:fixed;  z-index:2;  left:calc(100vw - 180px); right:0; top:0; bottom:0;  background:rgba(128,128,128,.32);  user-select:none; }
+#bar_tabs>input { display:none; }  
+#bar_tabs>input+label { text-align:center;  cursor:pointer;  background:rgba(128,128,128,.32);   padding: 4px 0 4px 0; }  
+#bar_tabs>input:checked+label { background:rgba(128,128,128,0); }  
+.btt { display: block; float: left; width: 45px; }
+.btc { display: none; float: left; }  
+#btt1:checked~#btc1, #btt2:checked~#btc2, #btt3:checked~#btc3, #btt4:checked~#btc4 { display: block; }
+#find_form { padding: 8px 0px 16px 4px; }
+#find_form buttonbutton, #find_form textarea, #find_form select { display: block;  width: 100%; }  textarea { resize: none; }  textarea:focus { outline: none; }
+
+#find { position:fixed;  z-index:2;  top:calc(100vh - 200px); right:180px; bottom:0; left:0;  border-top: 1px solid gray;  background:rgba(128,128,128,.08); }
+#find_bar { background:rgba(128,128,128,.32); padding: 4px 8px 4px 8px; }  
+#find_results { height:100%; }
+`;  SetStyleInternal$(css) }  CSS();
+
+// =======================================================================================================================================================================
 // >> HTML
 function HTML(){ let h=`
 <div id="notes"><div class="note" id="note1" contenteditable="true" tabindex="0">notes</div note></div notes>
@@ -33,27 +54,6 @@ let notes=body.querySelector('#notes');  let note=body.querySelector('#notes>:fi
 let bar=body.querySelector('#bar');  let fr=body.querySelector('#find_results');
 let tab1=body.querySelector('#btt1'); let tab2=body.querySelector('#btt2'); let tab3=body.querySelector('#btt3'); let tab4=body.querySelector('#btt4'); 
 let find=body.querySelector('#find'); let find_text=body.querySelector('#find_text'); let repl_text=body.querySelector('#repl_text');
-
-// =======================================================================================================================================================================
-// >> CSS
-function CSS(){ let css=`
-#notes { position:fixed;  z-index:1;  top:0; right:calc(100vw - 180px); bottom:0; left:0; }
-.note { width:calc(100vw - 180px);  padding:8px;  font:16px monospace; }  .note:focus { outline:none; }
-
-#bar { position:fixed;  z-index:2;  left:calc(100vw - 180px); right:0; top:0; bottom:0;  background:rgba(128,128,128,.32);  user-select:none; }
-#bar_tabs>input { display:none; }  
-#bar_tabs>input+label { text-align:center;  cursor:pointer;  background:rgba(128,128,128,.32);   padding: 4px 0 4px 0; }  
-#bar_tabs>input:checked+label { background:rgba(128,128,128,0); }  
-.btt { display: block; float: left; width: 45px; }
-.btc { display: none; float: left; }  
-#btt1:checked~#btc1, #btt2:checked~#btc2, #btt3:checked~#btc3, #btt4:checked~#btc4 { display: block; }
-#find_form { padding: 8px 0px 16px 4px; }
-#find_form buttonbutton, #find_form textarea, #find_form select { display: block;  width: 100%; }  textarea { resize: none; }  textarea:focus { outline: none; }
-
-#find { position:fixed;  z-index:2;  top:calc(100vh - 200px); right:180px; bottom:0; left:0;  border-top: 1px solid gray;  background:rgba(128,128,128,.08); }
-#find_bar { background:rgba(128,128,128,.32); padding: 4px 8px 4px 8px; }  
-#find_results { height:100%; }
-`;  SetStyleInternal$(css) }  CSS();
 
 // =======================================================================================================================================================================
 // Events
