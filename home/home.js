@@ -5,10 +5,10 @@ let items=[
 [`New Tab`,	`?`,	``,	`window.open()`,	``,	`earth.google.com`,	],
 [`DuckDuckGo`,	`.`,	`duckduckgo.com`,	``,	`{dom}/?q={qry}`,	``,	],
 [`YouTube`,	`+`,	`www.youtube.com`,	``,	``,	``,	],
+[`Watch`,	`-`,	`www.youtube.com`,	`playlist?list=WL`,	`{dom}/results?search_query={qry}`,	``,	],
 [`New`,	`-`,	`www.youtube.com`,	`feed/subscriptions`,	`{dom}/results?search_query={qry}`,	``,	],
-[`Watch`,	`-`,	`www.youtube.com`,	`playlist?list=WL`,	``,	``,	],
-[`Lists`,	`-`,	`www.youtube.com`,	`feed/playlists`,	``,	``,	],
-[`Channels`,	`=`,	`www.youtube.com`,	`feed/channels`,	``,	``,	],
+[`Lists`,	`-`,	`www.youtube.com`,	`feed/playlists`,	`{dom}/results?search_query={qry}`,	``,	],
+[`Channels`,	`=`,	`www.youtube.com`,	`feed/channels`,	`{dom}/results?search_query={qry}`,	``,	],
 [`DailyMail`,	`.`,	`www.dailymail.com`,	`ushome/index.html`,	`{dgs}{dom}`,	``,	],
 [`Wikipedia`,	`.`,	`en.wikipedia.org`,	``,	`{dgs}{dom}/wiki`,	``,	],
 [`Weather`,	`.`,	`www.accuweather.com`,	`en/us/johnson-city/37604/weather-forecast/331088`,	``,	``,	],
@@ -59,7 +59,7 @@ function CSS(){ let css=` body { font-size: 1.15em; }
   [top] { display: grid;  grid-template-columns: 1fr auto 1fr;  padding: 1em 0 1em 0; }
     [time],[date] { display: flex;  flex-flow: row nowrap;  justify-content: center;  align-items: center;  color: #DBB2FF;  user-select: none; }
       [time] { font-size: 2.7em; }  [date] { font-size: 2.3em; }
-    [query] { width: 30em;  padding: .5em;  font-size: 1.25em;  font-family: inherit;  border-radius: .33em;  border: none;  outline: 1px solid #DBB2FF; background-color: #212121;  color: #F8F8F8; }   [query]:hover, [query]:focus { outline: 2px solid #DBB2FF; }
+    [query] { width: 24em;  padding: .5em;  font-size: 1.25em;  font-family: inherit;  border-radius: .33em;  border: none;  outline: 1px solid #DBB2FF; background-color: #212121;  color: #F8F8F8; }   [query]:hover, [query]:focus { outline: 2px solid #DBB2FF; }
   [menu] { flex-flow: column nowrap;  outline: 1px solid #DBB2FF;  border-radius: .33em; }
 `;  SetStyleInternal$(css) }  CSS();
 
